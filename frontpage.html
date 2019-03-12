@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="normalize.css">
+<link rel="stylesheet" type="text/css" href="fonts/stylesheet.css">
+<link rel="stylesheet" type="text/css" href="home.css">
+<link rel="stylesheet" type="text/css" href="cssmenu.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script>
+
+// Chrome 26 needs this
+// Safari 6 needs this
+
+// Firefox 19 doesn't need it
+// IE 10 doesn't need it
+	$(function() {
+
+		causeRepaintsOn = $("h1, h2, h3, p, main, menu, cssmenu");
+
+		$(window).resize(function() {
+			causeRepaintsOn.css("z-index", 1);
+		});
+
+	});
+</script>
+
+<script>
+	$(document).ready(function(){
+
+		$('a.clickit').click(function(e) {
+			var anchor = $(this), h;
+			h = anchor.attr('href');
+			e.preventDefault();
+			$("body").css("overflow-x" , "hidden");
+			$("#page-wrap").css("overflow-y" , "visible");
+			$("#page-wrap").css("height", $(window).height());
+			$("#page-wrap").css("-webkit-transition","none");
+			$("#page-wrap").css("-moz-transition","none");
+			$("#page-wrap").css("-ms-transition","none");
+			$("#page-wrap").css("-o-transition","none");
+			$("#page-wrap").css("transition","none");
+			$("#page-wrap").animate({'left' : -$(window).width()}, 1000, function() {
+				window.location = h;
+			});
+		});
+
+	});
+	function kickoff() {
+		$("#page-wrap").css("transform","translateX(0%)");
+		$("body").css("overflow-x" , "hidden");
+	}
+	function bgSwap(color) {
+		$("body").css("background",color+"");
+	}
+</script>
+</head>
+
+<body>
+<div id="page-wrap">
+
+	<div id="main">
+		<h1>NICO <br /> ZEVALLOS</h1>
+		
+		<div id='cssmenu'>
+			<ul>
+			   <li class='has-sub'><h2><a href='#'><span>PROJECTS</span></h2></a>
+				  <ul>
+					 <li><a href='liar.html' class='clickit' onclick = "bgSwap('#a5c5cf')"><span><p><i>Liar</i> - video performance 2008-2012</p></span></a>
+						<img src="thumbs/liar.png" style = "top: 0;">
+					 </li>
+					 <li><a href='#' class="clickit" ><span><p><i>Unsake (Torture)</i> - machine performance 2012</p></span></a>
+						<img src="thumbs/torture.png" style = "top: -100%;">
+					 </li>
+					 <li><a href='#' class="clickit" ><span><p><i>Alexander</i> - machine performance 2013</p></span></a>
+						<img src="thumbs/alexander.png" style = "top: -200%;">
+					 </li>
+					 <li><a href='#' class="clickit" ><span><p><i>Vicmar I</i> - game 2013</p></span></a>
+						<img src="thumbs/game.png" style = "top: -300%;">
+					 </li>
+				  </ul>
+				  
+			   </li>
+			   <li class='has-sub'><h2><a href='#'><span>BIO</span></a></h2>
+				   <ul>
+						 <li><a href='#'><span><p>Statement</p></span></a>
+						 </li>
+						 <li><a href='#'><span><p>Resume</p></span></a>
+						 </li>
+						 <li><a href='#'><span><p>About</p></span></a>
+						 </li>
+				   </ul>
+				</li>
+			   <li class='has-sub'><h2><a href='#'><span>FRIENDS</span></a></h2>
+				   <ul>
+						 <li><a href='#'><span><p>Caroline Record</p></span></a>
+						 </li>
+						 <li><a href='#'><span><p>Anna Shepperson</p></span></a>
+						 </li>
+						 <li><a href='#'><span><p>Nathan Trevino</p></span></a>
+						 </li>
+						 <li><a href='#'><span><p>Christina Lee</p></span></a>
+						 </li>
+						 <li><a href='#'><span><p>Keith La</p></span></a>
+						 </li>
+				   </ul>
+				</li>
+			   <span></span>
+			</ul>
+		</div>
+	</div>
+
+	<div id="padded_left">
+		<div style="position:relative;">
+		<p>
+		<img src = "home_bg.png" style="position: absolute; left: 0px; top:0px; height:40vw;" onload="kickoff()">
+		<img src = "anim_center.gif" style="position: absolute; left: 10.91vw; top:22.55vw; height:2.279vw;">
+		<img src = "anim_axle.gif" style="position: absolute; left: 7.796vw; top:36.82vw; height:3.06vw;">
+		</p>
+		</div>
+	</div>
+
+</div>
+
+</body>
+
+</html>

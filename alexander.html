@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Alexander</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="normalize.css">
+<link rel="stylesheet" type="text/css" href="fonts/stylesheet.css">
+<link rel="stylesheet" type="text/css" href="alexander.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script> //resize & refresh script
+	
+    $(document).ready(function(){
+		resizer();
+		$('a.clickit').click(function(e) {
+			var anchor = $(this), h;
+			h = anchor.attr('href');
+			e.preventDefault();
+			$("body").css("overflow-x" , "hidden");
+			$("body").css("background" , "#a2a2a2");
+			//$("#slide1_container").css("overflow-y" , "visible");
+			//$("#slide1_container").css("height", $(window).height());
+			$("#slide1_container").css("transform","translateX(100%)");
+			$("#slide1_container").animate({'left' : -$(window).width()}, 1000, function() {
+				window.location = h;
+			});
+		});
+
+	});
+    
+	function resizer() {
+			//slide1_controls.left = $(window).height()*.05;
+			//slide1_controls.bottom = $(window).height()*.05;
+			$("#main").css("-webkit-transition","none");
+			$("#main").css("-moz-transition","none");
+			$("#main").css("-ms-transition","none");
+			$("#main").css("-o-transition","none");
+			$("#main").css("transition","none");
+			//main.style.height = $(window).height()*.8-200;
+			//main.style.height -= 40;
+			//document.getElementById('main').style.max-width = $(window).width()*.8;
+		}
+	// Chrome 26 needs this
+	// Safari 6 needs this
+
+	// Firefox 19 doesn't need it
+	// IE 10 doesn't need 
+	$(function() {
+
+		causeRepaintsOn = $("h1, h2, h3, p, main, slide1_container, slide1_controls, home_controls, float_right");
+
+		$(window).resize(function() {
+			causeRepaintsOn.css("z-index", 1);
+			resizer();
+		});
+
+	});
+</script>
+</head>
+<body>
+<script>
+function kickoff() {
+	$("body").css("overflow-x" , "hidden");
+	resizer();
+	$("#slide1_container").css("transform","translateX(0%)");
+	//document.getElementById('main').style.max-width = $(window).width()*.8;
+}
+</script>
+<div id="slide1_container">
+	<div id="slide1_content">
+        <div style="text-align:center; width:960px; margin:auto;">
+        <iframe onload="kickoff()" id="ytplayer" type="text/html" width="960" height="270" src="https://www.youtube.com/embed/R05N11jQWXM?controls=0&fs=1&loop=1&modestbranding=1&rel=0&showinfo=0&color=white&iv_load_policy=3" frameborder="0" allowfullscreen>
+        </iframe>
+        <iframe id="ytplayer" type="text/html" width="414" height="304" src="https://www.youtube.com/embed/6ybGNj4lgwc?controls=0&fs=1&loop=1&modestbranding=1&rel=0&showinfo=0&color=white&iv_load_policy=3" frameborder="0" allowfullscreen>
+        </iframe>
+        <iframe id="ytplayer" type="text/html" width="541" height="304" src="https://www.youtube.com/embed/h80mYqZku90?controls=0&fs=1&loop=1&modestbranding=1&rel=0&showinfo=0&color=white&iv_load_policy=3" frameborder="0" allowfullscreen>
+        </iframe>
+        <iframe id="ytplayer" type="text/html" width="960" height="540" src="https://www.youtube.com/embed/hHiu9F0OyBc?controls=1&fs=1&loop=1&modestbranding=1&rel=0&showinfo=0&color=white&iv_load_policy=3" frameborder="0" allowfullscreen>
+        </iframe>
+        <div style = "width:960px; text-align:justify; margin: 0 auto 0 auto;">
+        <p>
+		<br /> 
+        And then Ptlomeos took [Alexander] to Egypt and made a leaden slab for him and poured upon him mnesiotas honey and hipatic aloe; and the body was embalmed with incense and oil and put upon a mule cart and taken to Egypt.
+        </p>
+        <p>
+        <br />
+        - The Romance of Alexander the Great by Pseudo-Callisthenes
+		<br /> <br /> 
+        </p>
+        </div>
+        </div>
+    </div>
+    <div id = "controls">
+        <p id="slide1_controls"><a class = "clickit" href="index.html">&larr; Home</a></p>
+    </div>
+</div>
+</body>
+
+</html>

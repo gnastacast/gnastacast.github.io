@@ -1,0 +1,101 @@
+html {
+       /*overflow-y: scroll;*/
+}
+body
+{
+	float:none;
+	overflow:auto;
+	background:#fff;
+}
+h1,h2,p,a,ul
+	{
+		font-style:none;
+		font-weight:normal;
+		text-decoration:none;
+		margin:0px;
+		padding:0px;
+		color:#000;
+		font-family: Georgia;
+		transition:color 0.2s;
+		-webkit-transition:color 0.2s; /* Safari */
+	}
+	
+h1
+	{
+		text-align:center;
+		line-height:80pt;
+		font-size: 80pt;
+	}
+h2
+	{
+		font-size:16pt;
+		text-align:center;
+	}
+p
+	{
+		margin:40px 0px;
+		font-size:20pt;
+	}
+
+#slide1_container
+{
+        /*left:100%;
+		position:absolute;*/
+		-webkit-transform:translateX(100%);
+		transform:translateX(100%);
+		-webkit-transition:all 1.0s ease-in-out;
+		-moz-transition:all 1.0s ease-in-out;
+		-o-transition:all 1.0s ease-in-out;
+		transition:all 1.0s ease-in-out;
+		overflow-y:auto; /* So the sliding bit doesn't stick out. */
+		overflow-x:hidden;
+		width:100%;
+		height:100%;
+        background:#fff;
+        
+
+	}
+	
+#slide1_content {
+	/* This is the bit that moves. It has 4 images, so 4 * 450 = 1800. You could use javascript
+	to work this out instead by counting images. */
+	/*min-width:1800px;
+	width:150%;
+	*/
+	-webkit-transition:all 1.0s ease-in-out;
+	-moz-transition:all 1.0s ease-in-out;
+	-o-transition:all 1.0s ease-in-out;
+	transition:all 1.0s ease-in-out;
+}
+
+#slide1_controls span, p {
+	margin:0;
+}
+
+#controls{
+	z-index:101;
+	position: fixed;
+    top:10px;
+    left:10px;
+	vertical-align:center;
+	height:auto;
+    background:#fff;
+}
+
+#slide1_controls
+{
+	
+	}
+
+#slide1_controls span, a {
+    cursor:pointer;
+  }
+	
+
+#float_right
+	{
+		position:relative;
+		float:right;
+		margin-left:3%;
+	}
+

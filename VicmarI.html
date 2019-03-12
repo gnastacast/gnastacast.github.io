@@ -1,0 +1,161 @@
+<html>
+<head>
+<title>Vicmar I</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="normalize.css">
+<link rel="stylesheet" type="text/css" href="fonts/stylesheet.css">
+<link rel="stylesheet" type="text/css" href="VicmarI.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<!--====================FANCYBOX=====================-->
+<script src="fancybox/jquery.fancybox.js"></script>
+<link rel="stylesheet" type="text/css" href="fancybox/jquery.fancybox.css">
+<script type='text/javascript'>//<![CDATA[ fancybox
+
+// Fires whenever a player has finished loading
+function onPlayerReady(event) {
+    event.target.playVideo();
+}
+
+// Fires when the player's state changes.
+function onPlayerStateChange(event) {
+    // Close after the current one is finished playing
+    if (event.data === 0) {
+        $.fancybox.close();
+    }
+}
+
+// The API will call this function when the page has finished downloading the JavaScript for the player API
+function onYouTubePlayerAPIReady() {
+    
+    // Initialise the fancyBox after the DOM is loaded
+    $(document).ready(function() {
+		$(".fancypdf").click(function(){
+			 $.fancybox({
+			   type: 'html',
+			   autoSize: false,
+			   openEffect  : 'none',
+               closeEffect : 'none',
+               nextEffect  : 'none',
+               prevEffect  : 'none',
+			   content: '<embed src="'+this.href+'#nameddest=self&page=1&view=FitH,0&zoom=80,0,0" type="application/pdf" height="99%" width="100%" />',
+			 }); //fancybox
+			 return false;
+		}); //click
+		
+        $(".fancybox")
+            //.attr('rel', 'gallery')
+            .fancybox({
+				height		: $(window).height()*.8,
+                openEffect  : 'none',
+                closeEffect : 'none',
+                nextEffect  : 'none',
+                prevEffect  : 'none',
+                padding     : 0,
+                beforeShow  : function() {
+                    // Find the iframe ID
+                    var id = $.fancybox.inner.find('iframe').attr('id');
+                    
+                    // Create video player object and add event listeners
+                    var player = new YT.Player(id, {
+                        events: {
+                            'onReady': onPlayerReady,
+                            'onStateChange': onPlayerStateChange
+                        }
+                    });
+                }
+            });
+    });
+    
+}
+//]]>  
+
+</script>
+<!--====================/FANCYBOX====================-->
+<script> //resize & refresh script
+
+
+	function resizer() {
+			$("#main").css("-webkit-transition","none");
+			$("#main").css("-moz-transition","none");
+			$("#main").css("-ms-transition","none");
+			$("#main").css("-o-transition","none");
+			$("#main").css("transition","none");
+			main.style.marginLeft = $(window).width()*0;
+			main.style.marginRight = $(window).width()*0;
+			controls.style.marginLeft = $(window).width()*.2;
+			//main.style.marginRight = $(window).width()*.2;
+			//main.style.height = $(window).height()*.8-200;
+			//main.style.height -= 40;
+			//document.getElementById('main').style.max-width = $(window).width()*.8;
+		}
+	// Chrome 26 needs this
+	// Safari 6 needs this
+
+	// Firefox 19 doesn't need it
+	// IE 10 doesn't need 
+	$(function() {
+
+		causeRepaintsOn = $("h1, h2, h3, p, main, slide1_container, slide1_controls, home_controls, float_right");
+
+		$(window).resize(function() {
+			causeRepaintsOn.css("z-index", 1);
+			resizer();
+		});
+
+	});
+</script>
+</head>
+<body bgcolor="#CAC9C9" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<?php include_once("analyticstracking.php") ?>
+<!--====================FANCYBOX=====================-->
+<script src="http://www.youtube.com/player_api"></script>
+<!--====================/FANCYBOX====================-->
+<script>
+
+	$(document).ready(function(){
+
+		$('a.clickit').click(function(e) {
+			var anchor = $(this), h;
+			h = anchor.attr('href');
+			e.preventDefault();
+			$("body").css("overflow-x" , "hidden");
+			$("body").css("background" , "#a2a2a2");
+			//$("#slide1_container").css("overflow-y" , "visible");
+			//$("#slide1_container").css("height", $(window).height());
+			$("#slide1_container").css("transform","translateX(100%)");
+			$("#slide1_container").animate({'left' : -$(window).width()}, 1000, function() {
+				window.location = h;
+			});
+		});
+
+	});
+
+function kickoff() {
+	$("body").css("overflow-x" , "hidden");
+	resizer();
+	$("#slide1_container").css("transform","translateX(0%)");
+	//document.getElementById('main').style.max-width = $(window).width()*.8;
+}
+</script>
+
+<div id="slide1_container">
+<div id="main">
+	<img src="images/VicmarI.jpg" alt="" onload="kickoff()" id="fullsize" style="width:100%;">
+	<p style="text-align: center;">Download full game</p>
+	<p style="text-align: center;"><a title="WINDOWS" href="https://www.dropbox.com/s/8yqjgetxg8mxx2r/WINDOWS.zip">WINDOWS</a> // <a title="LINUX" href="https://www.dropbox.com/s/p3w4y9507g375ny/LINUX.zip">LINUX</a> // <a title="OSX" href="https://www.dropbox.com/s/lh0mv8wdw0qxmts/OSX.zip">OSX</a></p>
+	<p style="text-align: center;">No installation required</p>
+	<p style="text-align: justify;">
+	In a game there is a memory cultivated into a fantasy.  From the southernmost tip of South America<a href="#ftnt1" name="ftnt_ref1"><sup>[1]</sup></a> a boat is transplanted to a placeless glade. In a clearing there are three actors. One plans its trajectory along pre-ordained paths, another lives entirely in its present tense and immediate surroundings. Even the most complex of them, a surrogate as a main entrance, is reduced to a moving trigger with no real agency. Artificial intelligence is too strong a term for these algorithms. A better term might be apparent intelligence. Apparent intelligence because they do not truly sense. Goals are vector transformations, as are obstacles, as are selves. The trees know the goat boy&#8217;s position in the way a telepath might absorb a stray thought. Instant, exact, free from context and only in relation to themselves.  A ray is fired from the center of a rigid body and impacts on a triangular plane, returning a distance<a href="#ftnt2" name="ftnt_ref2"><sup>[2]</sup></a>. A bastardized echolocation. Apparent intelligence because the appearance of complexity comes only from the complexity of their surroundings. Our behavior could look erratic, unfathomable, free willed, yet if you put us in an infinitely smooth unfeeling field what intelligence could we be said to have?  Our behaviour is erratic because we react to an erratic world<a href="#ftnt3" name="ftnt_ref3"><sup>[3]</sup></a>. In this pastiche/painting/playset we can deconstruct a behaviour into its primitive wants / fears / desires. Are we reactive machines? Is there something more? Does the mimesis of an intelligence deserve to be ascribed a kind of agency? Do we have a will if we have no purpose, or are we a wander algorithm with curiosity?
+	</p>
+
+	<p style="text-align: justify;"><a href="#ftnt_ref1" name="ftnt1"><sup>[1]</sup></a><a class="fancybox fancybox.image"  href="images/punto_natales.jpg" data-slb-group="665" data-slb-active="1">Punto Natales, Chile</a></p>
+	<p style="text-align: justify;"><a href="#ftnt_ref2" name="ftnt2"><sup>[2]</sup></a><a class="fancybox fancybox.iframe"  href="http://en.wikipedia.org/wiki/Ray_casting">Ray Casting</a></p>
+	<p style="text-align: justify;"><a href="#ftnt_ref3" name="ftnt3"><sup>[3]</sup></a><a class="fancypdf"  href="images/ArchitectureOfComplexity.HSimon1962.pdf">Herbert Simon <i>The Architecture of Complexity</i></a></p>
+	<p style="text-align: right;"><a class="fancybox fancybox.iframe" href="http://www.youtube.com/v/0Fxawoz0n6o?version=3&enablejsapi=1&wmode=opaque&autohide=1&autoplay=1&modestbranding=1&showinfo=0"> Video documentation</a></p>
+	</div>
+<div id = "controls">
+	<p id="slide1_controls"><a class = "clickit" href="index.html"  style="padding:50px;">&larr; Home</a> </p>
+</div>
+	</div>
+</body>
+</html>

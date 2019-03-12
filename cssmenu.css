@@ -1,0 +1,137 @@
+#cssmenu ul,
+#cssmenu li,
+#cssmenu span,
+#cssmenu a, 
+#cssmenu h2{
+  /* margin-right: 2rem; */
+  position: relative;
+}
+#cssmenu {
+  width: auto;
+}
+#cssmenu:after,
+#cssmenu ul:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+#cssmenu ul {
+  list-style: none;
+  margin:0;
+  margin-bottom:15px;
+  padding:0;
+}
+#cssmenu > ul {
+  margin-bottom:20px;
+  display:block;
+  margin-left:5px;
+}
+
+#cssmenu > ul > li {
+  /* padding: 1rem 0; */
+  display:block;
+  /* padding-right:20px; */
+}
+
+#cssmenu > ul:last-child {
+	margin-right:0;
+}
+
+#cssmenu > ul > li > a {
+  color: #000;
+}
+#cssmenu > ul > li:hover>a{
+	color:#fff;
+}
+
+#cssmenu > ul > li:first-child > a {
+  border-radius: 5px 0 0 0;
+  -moz-border-radius: 5px 0 0 0;
+  -webkit-border-radius: 5px 0 0 0;
+}
+
+#cssmenu .has-sub {
+  z-index: 1;
+}
+
+#cssmenu .has-sub ul {
+  overflow:hidden;
+  position: relative;
+  top: 100%;
+  left: 0;
+  margin-bottom:3rem;
+  
+}
+
+#cssmenu .has-sub ul:after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  position: absolute;
+  left: 50%;
+  top: -15px;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 15px solid rgba(0,0,0,.33);
+  margin-left: -15px;
+}
+
+#cssmenu .has-sub:hover > ul {
+  display: block;
+  opacity:1;
+  transition:opacity 0.2s;
+  -webkit-transition:opacity 0.2s;/* Safari */
+  -ms-transition:opacity 0.2s;
+  -0-transition:opacity 0.2s;
+}
+
+#cssmenu .has-sub img {
+  background:#f7cd88;
+  position:absolute;
+  height:500%; 
+  display: none;
+  left: 100%;
+  margin-left:5%;
+}
+#cssmenu .has-sub h2{
+	padding-bottom:20px;
+}
+#cssmenu .has-sub ul li a {
+  /*background: #888;*/
+  background:rgba(0,0,0,.33);
+  filter: none;
+  display: block;
+  line-height: 120%;
+  padding: 20px;
+  color: #ffffff;
+}
+#cssmenu .has-sub ul li:hover {
+  background: #f7cd88;
+}
+#cssmenu .has-sub ul li:hover a {
+  background: #f7cd88;
+}
+#cssmenu .has-sub ul li:hover img {
+  display: block;
+}
+@media (min-width: 1130px) {
+	#cssmenu .has-sub > ul {
+	  width: 100%;
+	  /*display: none;*/
+	  opacity:0;
+	  position: absolute;
+	  overflow:visible;
+	  }
+	#cssmenu > ul > li:hover:after {
+	  opacity: 1;
+	}
+	#cssmenu > ul > li {
+	  display:inline-block;
+	  margin-right: 4rem;
+	}
+
+	#cssmenu .has-sub h2{
+	  padding-bottom:1.2vw;
+	}
+}

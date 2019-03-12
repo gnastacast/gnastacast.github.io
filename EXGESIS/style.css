@@ -1,0 +1,123 @@
+/* ============================================================
+  PRIMARY STRUCTURE
+============================================================ */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+#wrapper {
+  display:inline-block;
+  max-width:960px;
+  margin: 0 auto;
+}
+
+body{
+  max-width:1700px;
+  margin: 0 auto;
+}
+/* ============================================================
+  SECTIONS
+============================================================ */
+section.module:last-child {
+  margin-bottom: 0;
+}
+section.module h2 {
+  margin-bottom: 40px;
+  font-family: "Roboto", serif;
+  font-size: 30px;
+}
+section.module p {
+  margin-bottom: 40px;
+  font-size: 16px;
+  font-weight: 300;
+}
+section.module p:last-child {
+  margin-bottom: 0;
+}
+section.module.content {
+  padding: 40px 0;
+  background-color:none;
+}
+section.module.parallax {
+  padding: 240px 0;
+  background-position: center 0;
+}
+section.module.parallax h1 {
+  color: #1e1e1e;
+  font-size: 48px;
+  line-height: 1;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px black;
+}
+section.module.parallax-1 {
+    background-image: url(Bird_01.jpg);
+    background-size: 80%;
+    background-repeat: no-repeat;
+}
+section.module.parallax-2 {
+    background-image: url(Bird_04.jpg);
+    background-size: 80%;
+    background-repeat: no-repeat;
+}
+
+#text {
+  display:inline-block;
+  vertical-align:top;
+  max-width:960px;
+  padding:50px;
+  margin:0 auto;
+}
+
+p{
+    padding-bottom: 15px;
+    text-indent: 50px;
+}
+
+@media all and (min-width: 600px) {
+  section.module h2 {
+    font-size: 42px;
+  }
+  section.module p {
+    font-size: 20px;
+  }
+  section.module.parallax {
+    padding: 300px 0;
+  }
+  section.module.parallax h1 {
+    font-size: 96px;
+  }
+}
+@media all and (min-width: 960px) {
+  section.module.parallax h1 {
+    font-size: 160px;
+  }
+}
+@media all and (min-width: 1020px) {
+  #wrapper {
+    width:70%;
+    max-width:none;
+  }
+
+  #text {
+    width:29%;
+    font-size: 14px;
+    margin:0;
+    margin-top:50px;
+    padding:0;
+  }
+}
+
+@media all and (min-width: 1310px) {
+  #text {
+    font-size: 18;
+  }
+}
+
+@media all and (min-width: 1550px) {
+  #text {
+    font-size: 20px;
+  }
+}

@@ -1,0 +1,244 @@
+
+<html>
+<head>
+<title>Liar</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="normalize.css">
+<link rel="stylesheet" type="text/css" href="fonts/stylesheet.css">
+<link rel="stylesheet" type="text/css" href="Liar.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+
+<!--====================FANCYBOX=====================-->
+
+<script src="fancybox/jquery.fancybox.js"></script>
+<link rel="stylesheet" type="text/css" href="fancybox/jquery.fancybox.css">
+<script type='text/javascript'>//<![CDATA[ fancybox
+
+// Fires whenever a player has finished loading
+function onPlayerReady(event) {
+    event.target.playVideo();
+}
+
+// Fires when the player's state changes.
+function onPlayerStateChange(event) {
+    // Close after the current one is finished playing
+    if (event.data === 0) {
+        $.fancybox.close();
+    }
+}
+
+// The API will call this function when the page has finished downloading the JavaScript for the player API
+function onYouTubePlayerAPIReady() {
+    
+    // Initialise the fancyBox after the DOM is loaded
+    $(document).ready(function() {
+		
+        $(".fancybox")
+            //.attr('rel', 'gallery')
+            .fancybox({
+				height		: $(window).height()*.8,
+				width		: $(window).height()*1.4,
+                openEffect  : 'none',
+                closeEffect : 'none',
+                nextEffect  : 'none',
+                prevEffect  : 'none',
+                padding     : 0,
+                beforeShow  : function() {
+                    // Find the iframe ID
+                    var id = $.fancybox.inner.find('iframe').attr('id');
+                    
+                    // Create video player object and add event listeners
+                    var player = new YT.Player(id, {
+                        events: {
+                            'onReady': onPlayerReady,
+                            'onStateChange': onPlayerStateChange
+                        }
+                    });
+                }
+            });
+    });
+    
+}
+//]]>  
+
+</script>
+<!--====================/FANCYBOX====================-->
+<script> //resize & refresh script
+
+
+	function resizer() {
+			var img = document.getElementById('fullsize');
+			img.style.height = $(screen).height / $(window).devicePixelRatio - $(window).screenTop;
+			img.style.width = $(window).height()*1.295;
+			//slide1_controls.left = $(window).height()*.05;
+			//slide1_controls.bottom = $(window).height()*.05;
+			$("#main").css("-webkit-transition","none");
+			$("#main").css("-moz-transition","none");
+			$("#main").css("-ms-transition","none");
+			$("#main").css("-o-transition","none");
+			$("#main").css("transition","none");
+			main.style.padding = $(window).height()*.10;
+			controls.style.padding = $(window).height()*.10;
+			//main.style.height = $(window).height()*.8-200;
+			//main.style.height -= 40;
+			//document.getElementById('main').style.max-width = $(window).width()*.8;*/
+		}
+	// Chrome 26 needs this
+	// Safari 6 needs this
+
+	// Firefox 19 doesn't need it
+	// IE 10 doesn't need 
+	$(function() {
+
+		causeRepaintsOn = $("h1, h2, h3, p, main, slide1_container, slide1_controls, home_controls, float_right");
+		$(window).resize(function() {
+			causeRepaintsOn.css("z-index", 1);
+			resizer();
+		});
+
+	});
+</script>
+</head>
+<body bgcolor="#CAC9C9" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<?php include_once("analyticstracking.php") ?>
+<!--====================FANCYBOX=====================-->
+<script src="http://www.youtube.com/player_api"></script>
+<!--====================/FANCYBOX====================-->
+<script>
+
+	$(document).ready(function(){
+		resizer();
+		$('a.clickit').click(function(e) {
+			var anchor = $(this), h;
+			h = anchor.attr('href');
+			e.preventDefault();
+			$("body").css("overflow-x" , "hidden");
+			$("body").css("background" , "#a2a2a2");
+			//$("#slide1_container").css("overflow-y" , "visible");
+			//$("#slide1_container").css("height", $(window).height());
+			$("#slide1_container").css("transform","translateX(100%)");
+			$("#slide1_container").animate({'left' : -$(window).width()}, 1000, function() {
+				window.location = h;
+			});
+		});
+
+	});
+
+function kickoff() {
+	$("body").css("overflow-x" , "hidden");
+	$(window).resize();
+	$("#slide1_container").css("transform","translateX(0%)");
+	//document.getElementById('main').style.max-width = $(window).width()*.8;
+}
+
+var liars = new Array();
+liars[0] = "Liar I / 2009 / 3\'19\'\'";
+liars[1] = "Liar II / 2011 / 7\'53\'\'";
+liars[2] = "Liar III / 2012 / 10\'59\'\'";
+
+function showPanel(index,href) {
+  var text = document.getElementById('text_holder'); 
+  text.style.top = $(window).height()/2+(index-2)*$(window).height()*.315;
+  text.style.display='inline';
+  var fieldNameElement = document.getElementById('description_text');
+  while(fieldNameElement.childNodes.length >= 1) {
+    fieldNameElement.removeChild(fieldNameElement.firstChild);
+  }
+  fieldNameElement.appendChild(fieldNameElement.ownerDocument.createTextNode(liars[index-1]));
+}
+/*
+$(document).ready(function() {
+  $(".selected").hide();
+  $('#slide1_controls').on('click', 'span', function(){
+	if($(this).index()==0){
+		$("#slide1_content").css("transform","translateX(0%)");
+		//$("#main").animate({'left' : 0}, 1000);
+		$("#main").css("transform","translateX(0%)");
+	}
+	if($(this).index()==1){
+		//--------- (100%-oversize) oversize ----------------------//
+		var percentage = $(window).width()-$("#slide1_content").width();
+		var percentage = 100*percentage/$("#slide1_content").width();
+		$("#slide1_content").css("transform","translateX("+percentage+"%)");
+		//$("#main").animate({'left' : -1000}, 1000);
+		$("#main").css("-webkit-transition","all 1.0s ease-in-out");
+		$("#main").css("-moz-transition","all 1.0s ease-in-out");
+		$("#main").css("-ms-transition","all 1.0s ease-in-out");
+		$("#main").css("-o-transition","all 1.0s ease-in-out");
+		$("#main").css("transition","all 1.0s ease-in-out");
+		$("#main").css("transform","translateX("+percentage+"%)");
+	}
+	if($(this).index()!=2){
+		$("#slide1_controls span").show();
+		$(this).addClass("selected");
+		$(this).hide();
+	}
+  });
+});
+*/
+
+</script>
+<!--div id="page-wrap">-->
+
+<div id="slide1_container">
+	<div id="slide1_content">
+		<div id="float_right">
+		<div id="video_holder">
+			<a class="fancybox fancybox.iframe" href="http://www.youtube.com/v/NKhAsx1fOsw?version=3&enablejsapi=1&wmode=opaque&autohide=1&autoplay=1&modestbranding=1&showinfo=0" onmouseover="showPanel(1);" onmouseout="document.getElementById('text_holder').style.display='none';">
+			<img src="thumbs/liar1.png">
+			<div id="text_holder">
+			<p id="description_text"></p>
+			</div>
+			</a>
+			<a class="fancybox fancybox.iframe" href="http://www.youtube.com/v/M2MI-T4Ic_8?version=3&enablejsapi=1&wmode=opaque&autohide=1&autoplay=1&modestbranding=1&showinfo=0">
+			<img src="thumbs/liar2.png" onmouseover="showPanel(2);" onmouseout="document.getElementById('text_holder').style.display='none';">
+			</a>
+			<a class="fancybox fancybox.iframe" href="http://www.youtube.com/v/kqdxMKfYB48?version=3&enablejsapi=1&wmode=opaque&autohide=1&autoplay=1&modestbranding=1&showinfo=0">
+			<img src="thumbs/liar3.png" onmouseover="showPanel(3);" onmouseout="document.getElementById('text_holder').style.display='none';">
+			</a>
+			<div id="text_holder">
+			<p id="description_text"></p>
+			</div>
+		</div>
+
+		<h1><img src="images/Liar.png" alt="" onload="kickoff()" id="fullsize"></h1>
+		</div>
+		
+		<div id="main">
+			<h1>
+			Liar
+			</h1>
+			<p>
+			<!-- Throne of the matador: The real me plants himself securely in the world,
+            ejaculating gelatin forms onto supple fabric breasts. I peer down from my pedestal
+            formed by my own masculine intervention into their soft, unformed flesh, rending
+            and stitching and stretching to my will. I have made it this far and am crowning myself
+            emperor of my moment. A brick of it lies encased in meaty gelatin. The imposter frays
+            at the edges. I sink into my halfhearted creations. I pull them over myself, entrenching
+            myeself in a womb of my own invention. The height of my creative abilities and I have 
+            come up with lumps. A mask as a shield against being recognized for my impotence. I cower
+            from the only edge I manage to create, the single sharp and lear result of the whole
+            process. A lump of meat stuff waiting to be recyled into something more useful. I, the 
+            imposter, the real me smiles at his audience. The camera makes for an empty friend. I 
+            pretend to hold its attention and admiration. There are no characters. I am my own shattered
+            adonis. I am Narcissus' self-obsessed echo. I cower behind greek references because I'm
+            ashamed of my own contribution.
+            -->
+            I am a parody of my need to create. I am Matthew Barney, Jackson Pollock, Narcissus and Adonis.
+            I strut for the camera, for an audience, nervously flicking smutz from an envious
+            womb, worrying at a slab of time that has jellied and congealed. At the climax of every brusquely
+            constructed scene there is a shiver. A moment of truthfullness accessed by the artifice.
+            
+            </p>
+		</div>
+	</div>
+	
+<div id = "controls">
+	<p id="slide1_controls"><!--<span class="selected">&larr; Statement </span> <span class>Videos &rarr;</span><br /><br />--><a class = "clickit" href="index.html">&larr; Home</a> </p>
+</div>
+
+
+</div>
+</body>
+</html>
