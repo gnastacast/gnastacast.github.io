@@ -1,11 +1,4 @@
 html,body {
-    font-family: georgia, serif;
-    /*font-family: 'IM Fell English SC', serif;*/
-    /*background-color: #e4e4e4;*/
-    overscroll-behavior-y: contain;
-    background-color:white;
-    margin: 0px;
-    overflow: hidden;
     height:100%;
 }
 
