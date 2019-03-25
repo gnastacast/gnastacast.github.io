@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Roboto:400,700");
+/*@import url("https://fonts.googleapis.com/css?family=Roboto:400,700");*/
 @import url("glyph_icons.css");
 
 ul.dots * {
@@ -55,7 +55,7 @@ ul.dots li mark {
   left: -10px;
   font-size: 10px;
   line-height: 20px;
-  font-family: 'Roboto', sans-serif;
+  font-family: sans-serif;
   font-weight: 400;
   color: #FFF;
   font-weight: 700;
