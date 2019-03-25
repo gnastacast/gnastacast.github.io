@@ -9,19 +9,27 @@
     <script src="audioplayerengine/jquery.js"></script>
     <script src="audioplayerengine/amazingaudioplayer.js"></script>
     <link rel="stylesheet" type="text/css" href="audioplayerengine/initaudioplayer-1.css">
+    <link rel="stylesheet" type="text/css" href="notifications.css">
     <script src="audioplayerengine/initaudioplayer-1.js"></script>
 </head>
 
 <body>
 
 <div class="bg_heart">
-	<img src="st-valentine.jpg" height="100%" style="display:inline-block; height:100vh;"/>
-
+    <div class="fg_singer">
+        <ul class="dots">
+            <li>
+              <a href="#" onclick="return overlayOn()">
+              <span class="glyphicon glyphicon-envelope"><mark class="big swing">1</mark></span>
+              </a>  
+            </li>
+        </ul>
+        <!-- <img src="tunnel.png" style="display:inline-block; height:100%;"/> -->
+    </div>
     <!-- Insert to your webpage where you want to display the audio player -->
     <div id="amazingaudioplayer-1" style="top: 0px; left: 0px; position: absolute;">
         <ul class="amazingaudioplayer-audios" style="display:none;">
             <li data-artist="Chong and Friends" data-title="Secret Tunnel" data-album="Avatar: The Last Airbender" data-info="" data-image="" data-duration="42">
-                <!-- <div class="amazingaudioplayer-source" data-src="audios/01%20Chong%20and%20Friends%20-%20Secret%20Tunnel.mp3" data-type="audio/mpeg" /> -->
                 <div class="amazingaudioplayer-source" data-src="https://drive.google.com/uc?export=download&id=1vMP0OkLZjJsN4idozqk9KwDVG0ZAj1at" data-type="audio/mpeg" />
             </li>
             <li data-artist="OutKast" data-title="Happy Valentine&apos;s Day" data-album="The Love Below" data-info="" data-image="" data-duration="323">
@@ -70,10 +78,76 @@
                 <div class="amazingaudioplayer-source" data-src="https://drive.google.com/uc?export=download&id=11TXArcjonDAsKPeCnutM7Wp_BK8gdDS1" data-type="audio/mpeg" />
             </li>
         </ul>
-        <div style="background-color:white;">
+        <ul class="dots" style="padding:0px">
+            <li>
+              <a href="https://drive.google.com/file/d/1ukvDF3jDA97SmBgzbdIsLKirnADys64I/view?usp=sharing">
+                <span class="glyphicon glyphicon-download" style="padding:0px; line-height: 25px; width:100px"></span>
+              </a>
+            </li>
+        </ul>
+        <!-- <div style="background-color:white;">
         <a href="https://drive.google.com/file/d/1ukvDF3jDA97SmBgzbdIsLKirnADys64I/view?usp=sharing">&nbsp; &nbsp; &nbsp; DOWNLOAD</a>
-        </div>
+        </div> -->
     </div>
+</div>
+
+<div id="overlay">
+    <div id="overlay_text">
+        <p>
+            March 2019,
+        </p>
+        <p>
+            Dear Micaela,
+        </p>
+        <p>
+            It'll be two years since we met this coming September. Holding your hand still makes me feel giddy. I love seeing you from across a room and being able to watch you talk or make someone laugh or use your garlic press or pause to think about what you're writing. Watching you read your writing made my heart feel like it was about to jump out of my chest and be unable to stop grinning and then getting misty eyed with the effort of not beaming at you like a maniac. I like reading something and getting excited to hear your take on it before I'm through the first paragraph. I love sitting in a movie theatre and slipping my hand into yours. I love making you tea and I love making food together. I love the way you get serious and nod when you taste something you're making and I love the high pitched 'mm' you make before critiquing it. I love how quiet you are when you are writing and I love how loud you are in your sleep. I love talking to you on long walks and I love picking music for each other on long drives. You're really extraordinary and I love you. Here is a short list of some wonderful things that have happened in these last two years.
+        </p>
+        <ul>
+            <li> We took a bus from Loja to Lima. That's more than 800 miles! </li>
+            <li> We hung out with each other's Grandmas. You had long conversations in Spanish! </li>
+            <li> We hung out in hammocks by a waterfall. </li>
+            <li> We spent a valentine's day in a penthouse suite with floor to ceiling windows </li>
+            <li> We survived cooking for an entire wedding party of strangers </li>
+            <li> We had lunch three times in Atlanta </li>
+            <li> We took a boat right up to Niagra Falls and skipped rocks on Lake Erie </li>
+            <li> We relaxed on the beach between flights in Florida </li>
+            <li> We had the two best lunches I've ever had on the same day in Lima </li>
+            <li> We spent three hours on a boat that was a spa on the icy st. lawrence river </li>
+            <li> We hiked through the cloud forest in Baños </li>
+            <li> We made pickles, sauerkraut, bagels, fresh pasta, fermented honey, sushi, and tacos, all from scratch! </li>
+            <li> We had high tea with fancy tiny sandwiches in Pittsburgh </li>
+            <li> We walked through Central Park with your Mom </li>
+            <li> We sat through a whole season of The Bachelor together </li>
+            <li> We went to two weddings </li>
+            <li> We saw the music from Harry Potter performed live </li>
+            <li> We saw and supported a lot of local theater and poetry </li>
+            <li> We participated in our communities through protest and democracy </li>
+            <li> You had your first poetry reading ever and it was a smashing success. </li>
+            <li> I finished two dream artworks that I've been thinking about for years </li>
+            <li> You impressed my grandmother so much she made you a hat </li>
+            <li> I met half your family at once and had a great time </li>
+            <li> You killed it in a dance show you worked really hard on </li>
+            <li> I was in a goofy play and had a great time </li>
+            <li> You got your wisdom teeth out and I took great care of you (besides making you watch Moon) </li>
+            <li> I broke my wrist and you took great care of me </li>
+            <li> You were officially recognized as a science writer (Golden quill nominated, I might add) </li>
+            <li> I got to answer your question at a talk I gave (About the prostate poker, no less) </li>
+            <li> We've made out in Breezewood, DC, Lima, Piura, Loja, Trujillo, Huanchaco, Atlanta, Quito, Ft. Lauderdale, Baños, NYC, Erie, Niagara, Buffalo, Boston, Cicero, Syracuse, Thousand Islands, Montreal, and most of all Pittsburgh. </li>
+        </ul>
+        <p>
+            It's been passionate and exciting and world-bounding and it's also seen us both grow as people. I'm really proud of you and very much in love and I can't wait to see what the future brings.
+        </p>
+        <p> Love, </p>
+        <p style="margin-left:20pt"> Nico </p>
+    </div>
+    <ul class="dots" style="padding:0px">
+        <li>
+          <a href="#" onclick="return overlayOff()">
+          <span class="glyphicon glyphicon-remove"></span>
+          </a>  
+        </li>
+    </ul>
+</div>
 
 <script  src="valentine.js"></script>
 

@@ -8,8 +8,64 @@ html,body{
     left: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden
+    overflow: hidden;
+    background-image: url('st-valentine.jpg');
+    background-size: contain;
+
  }
+
+ .fg_singer {
+    position: absolute;
+    right:0;
+    bottom:0;
+    height:100vh;
+    width:100vw;
+    max-width: 500px;
+    background-image: url('tunnel.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom right;
+ }
+
+ .fg_singer ul {
+    position:absolute;
+    right:10px;
+ }
+
+ #overlay {
+  position: fixed; /* Sit on top of the page content */
+  display: none; /* Hidden by default */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+  z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
+}
+
+#overlay_text {
+    background-color: rgba(255,255,255,1);
+    color: black;
+    max-width: 600px;
+    min-width: 400px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%,0%);
+    -ms-transform: translate(-50%,0%);
+    padding:50px;
+    padding-bottom:100px;
+    padding-top: 0px;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+#overlay .dots{
+    position:absolute;
+    right:10px;
+}
 
 .heart {
     position: absolute;

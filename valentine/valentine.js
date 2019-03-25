@@ -17,3 +17,11 @@ var love = setInterval(function() {
         }
     });
 }, 500);
+
+function overlayOn() {
+  document.getElementById("overlay").style.display = "block";
+}
+
+function overlayOff() {
+  document.getElementById("overlay").style.display = "none";
+} 
