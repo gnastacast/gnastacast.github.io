@@ -1,0 +1,63 @@
+html,body {
+    height:100%;
+}
+
+.parallax {
+  /* The image used */
+  background-image: url("offret.png");
+
+  /* Full height */
+  height: 100%;
+
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-align: center;
+}
+
+.main {
+  margin:30px auto;
+  max-width:750px;
+}
+
+.title {
+  display: inline-block;
+  background-color:white;
+  padding:30px;
+}
+
+.title h1{
+  font-family: 'Inconsolata', monospace;
+  font-size: 40pt;
+  margin:0px;
+}
+
+@media only screen and (max-width: 1000px) {
+  .parallax {
+    height: 100%;
+  }
+  .title {
+    padding:20px;
+  }
+  .title h1{
+    font-size: 30pt;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .parallax {
+    height: 100%;
+  }
+  .title {
+    padding:10px;
+  }
+  .title h1{
+    font-size: 20pt;
+  }
+}
+
+.space {
+  height: 75%;
+}
