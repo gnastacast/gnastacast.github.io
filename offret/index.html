@@ -14,22 +14,69 @@
 		<div class="space"></div>
 		<div class="title"><h1>Optimizing ‘The Sacrifice’</h1></div>
 	</div>
-	<div class="main">
-		<p>
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ut accumsan elit, at molestie nibh. In ut dui rutrum, hendrerit nisi eu, dapibus nisi. Mauris porttitor sapien nec felis suscipit, sit amet sagittis erat ultricies. Cras pretium lacus vel orci bibendum, aliquet pulvinar sapien fringilla. Maecenas sagittis, augue quis luctus mollis, metus augue commodo libero, id dictum leo felis ut mauris. Aliquam sit amet lobortis lorem, non ullamcorper sem. Donec sit amet sollicitudin ante. Sed congue diam erat. In ligula mauris, cursus et urna nec, sagittis vulputate magna. Sed quis orci ut turpis consequat auctor egestas sagittis leo. Fusce quis nisi eu risus finibus maximus. Morbi quis erat tristique, vulputate odio eu, placerat augue.
+	<div class="text">
+		<p class="abstract">
+			<b><i>Abstract</i>—This work aims to finally fix a glaring issue in Andrei
+			Tarkovsky’s final opus Offret (The Sacrifice) [<a href=#OFFRET>1</a>] namely, the
+			inefficiencies of its final six minute shot.</b>
+		</p>
+
+		<p class="start">
+			THERE are perhaps a handful of directors whose oeuvres are as universally venerated as that of Andrei Tarkovsky. Who among us could find fault in the work of a man Ingmar Bergman called "The greatest, the one who invented a new language, true to the nature of film, as it captures life as a reflection, life as a dream [<a href=#COATES>2</a>]." And yet as one watches <i>Offret</i>, one error looms. This 1986 masterpiece of Swedish cinema is marred by its famous final sequence. In it, the paterfamilias, Alexander, burns the family's home to the ground in an attempt to honor an agreement with God to undo a nuclear apocalypse. In a single six minute long take, the family chases him as their house burns to the ground, splashing through and falling into the mud, occasionally collapsing in despair, and finally pushing him onto an ambulance that rolls away into the swamp. The family then watches as their house collapses onto itself in a glorious blaze, all the grandiose posturing of an aging academic conflagrated by a single act of faith.
 		</p>
 		<p>
-			Praesent a urna interdum nisl gravida consequat. Etiam dapibus in lectus a convallis. Nulla sit amet turpis maximus, suscipit mauris ac, consectetur massa. Mauris quis facilisis justo. Quisque metus lacus, tempor in sapien sit amet, ultrices rhoncus mauris. Sed at ultrices enim, at pharetra ipsum. Nulla eu tortor vitae nisl facilisis ullamcorper. Ut tempor dui at leo elementum, nec ullamcorper dui mollis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed imperdiet lacus eu orci pharetra, quis blandit lacus auctor. Ut diam ex, elementum maximus convallis ut, rhoncus in velit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Etiam magna augue, pellentesque at turpis dictum, pellentesque commodo ipsum. Nam fermentum id nisi eu porttitor. Morbi cursus mauris vitae sapien fringilla consectetur.
+			As one watches this moving scene, one cannot help but think: Couldn't the family have captured and committed its crazed patriarch much more efficiently? The shot itself had to be re-done when a camera jammed during the first attempt, causing the crew to rebuild a perfect replica of the house from scratch to set fire to it a second time. Although nothing can be done at this point about the inefficiencies of the film's production, this paper seeks to optimize the paths the family takes as they rush to confront Alexander such that they may watch their home burn without the additional discomfort of getting their feet wet, as well as complete their task much faster.
 		</p>
+
+		<h2>I. Calculating Optimal Paths</h2>
+
+		<iframe src="https://drive.google.com/file/d/1Xij62RcIII1NZmwDGlAUVv3AQ-zryWHY/preview" width="750" height="449" frameborder="0">
+		</iframe>
+		<p class="caption">Paths calculated using A* planning algorithm [<a href="ASTAR">3</a>] overlayed onto the original footage. The heuristic used was Euclidean distance with cost calculated using [<a href="BRESENHAM">4</a>] with wet areas being high cost and dry areas being low cost. In addition, paths were relaxed as proposed by Thorpe and Matthies[<a href="RELAXATION">5</a>]. </p>
+
+		<table class="text-table">
+			<caption><h1>Table 1</h1><h2>Percentage of path spent in water</h2></caption>
+			<tr><td>Character</td><td>A* </td><td>Relaxed A*</td><td>Path in film</td><td>Straight line to goal</td></tr>
+			<tr><td>Marta</td><td>0%</td><td>1.2%</td><td>12.8%</td><td>8.2%</td></tr>
+			<tr><td>Victor</td><td>0%</td><td>1.3%</td><td>7.7%</td><td>21.8%</td></tr>
+			<tr><td>Julia</td><td>0%</td><td>1.1%</td><td>16.1%</td><td>9.7%</td></tr>
+			<tr><td>Adelaide</td><td>0%</td><td>1.0%</td><td>19.5%</td><td>10.0%</td></tr>
+		</table>
+
+		<table class="text-table">
+			<caption><h1>Table 2</h1><h2>Lengths of Paths</h2></caption>
+			<tr><td>Character</td><td>A* </td><td>Relaxed A*</td><td>Path in film</td><td>Straight line to goal</td></tr>
+			<tr><td>Marta</td><td>76.7 m</td><td>72.8 m</td><td>72.0 m</td><td>70.7 m</td></tr>
+			<tr><td>Victor</td><td>63.3 m</td><td>60.2 m</td><td>61.8 m</td><td>58.0 m</td></tr>
+			<tr><td>Julia</td><td>84.3 m</td><td>80.5 m</td><td>79.6 m</td><td>77.6 m</td></tr>
+			<tr><td>Adelaide</td><td>82.7 m</td><td>78.6 m</td><td>79.3 m</td><td>76.1 m</td></tr>	
+		</table>
+
+		<h2>II. Guaranteed Capture</h2>
+		<iframe src="https://drive.google.com/file/d/17a0WBGv9lT8OjNMTj4I7v6VpGZgIQWKM/preview" width="640" height="562.5" frameborder="0"></iframe>
+		<p class="caption">Here results are shown of a pursuit algorithm that guarantees capture which is an extension of [<a href="VORONOIA">6</a>] and [<a href="VORONOIB">7</a>]. All actors are assumed to run at a human's optimal hunting speed of 3.3m/s [<a href="RUNNING">8</a>]. Over 100 trials, Alexander was caught in an average of 16.3 seconds with a standard deviation of 4.5 seconds. The maximum time to capture was 28.0 seconds. In the film, Alexander runs free for a grand total of 5 minutes and 37 seconds before he is forced into the ambulance</p>
+
+		<h2>III. Conclusion</h2>
 		<p>
-			In et tellus ullamcorper, hendrerit eros a, sollicitudin ligula. Nulla mi dolor, imperdiet sed rhoncus eu, vestibulum a lacus. Cras pretium libero est, nec finibus tortor hendrerit ac. Donec quis ligula augue. Nunc sit amet laoreet dolor. Quisque at ullamcorper nisi, at facilisis mauris. Ut id varius tellus, ut mollis velit. Cras pellentesque aliquet molestie. In quis ultricies velit, eu viverra lacus. Mauris in nisl tellus.
+			The results of this paper confirm our suspicion that the final sequence of Offret contains a grave oversight when it comes to common-sense path planning. Clearly, Tarkovsky and his cast did not do even a cursory literary review. Otherwise, they would certainly have come across A* ([<a href="ASTAR">3</a>] was published more than a decade prior to the release of the movie) and path relaxation ([<a href="RELAXATION">5</a>] was published more than a year before principal shooting began). As our pursuit and evasion results have shown, had the family employed even a simple surrounding technique, they would have caught Alexander an order of magnitude faster. Had the actors and director had the forsight to move in a more coordinated fashion, Tarkovsky may not have had to shoot this sequence twice [<a href="DOCUMENTARY">9</a>], and even if he had, he would certainly have saved some money on film. These unfortunate oversights show yet again that the value of meticulous academic research trumps the brash, emotional decisions of even the greatest artists. As roboticists, scientists, and people of Reason, we continue to wonder: “Will they ever learn?”
 		</p>
+
 		<p>
-			Vivamus tincidunt hendrerit ipsum in vehicula. Aliquam bibendum erat nec luctus faucibus. Morbi hendrerit quis dolor eu pharetra. Morbi blandit urna rutrum turpis vehicula, eget auctor leo vestibulum. Nam semper justo et mauris lacinia condimentum. Integer blandit diam sit amet nunc ullamcorper, nec posuere erat vulputate. Praesent semper turpis in nulla tempus sagittis. Vivamus vehicula risus id dolor viverra imperdiet.
+			The full paper with detailed results can be accessed <a href="https://drive.google.com/open?id=1sDDOF2uo-ctWFsbwYZdQVLxvW8qhvLXb">here</a>
 		</p>
-		<p>
-			Etiam non luctus nisl. Maecenas at quam quam. Cras nec lobortis metus. Integer volutpat erat enim, vestibulum feugiat ligula iaculis at. Nam sed maximus tellus. Sed nibh ante, congue ut nisi a, ullamcorper convallis nibh. In maximus commodo elit. Pellentesque vel orci a diam faucibus fringilla sit amet quis nulla. Donec a lacus et enim iaculis fringilla. Suspendisse felis sapien, vulputate et velit in, feugiat sollicitudin eros. Duis fringilla, lacus nec commodo laoreet, tortor magna efficitur metus, sed aliquam massa orci et libero. Nunc vitae justo faucibus nisl consequat porta. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam erat volutpat. Duis vitae leo vel magna pharetra consectetur. Morbi vel interdum dui. 
-		</p>
+
+		<h2>IV. Works Cited</h2>
+		<ol class="bibliography">
+ 			<li id='OFFRET'> Andrei Tarkovsky. <i>Offret</i>. Svenska Filminstitutet (SFI), 1986</li>
+			<li id='COATES'> Paul Coates. <i>Film at the Intersection of High and Mass Culture</i>. Cambridge University Press. pp. 157–158, 1994.</li>
+			<li id='ASTAR'> Peter E. Hart, Nils J. Nilsson, Bertram Raphael. A Formal Basis for the Heuristic Determination of Minimum Cost Paths. <i>Intelligence/sigart Bulletin - SIGART</i> vol. 37. pp. 28–29, 1972.</li>
+			<li id='BRESENHAM'> Jack Bresenham. Incremental Line Compaction. <i>The Computer Journal</i>. vol. 25, no. 1, pp.116–120, February 1982</li>
+			<li id='RELAXATION'> Charles E. Thorpe, L.H. Matthies. Path relaxation: Path planning for a mobile robot. <i>Proc. AAAI</i>. pp. 318–321, 1984.</li>
+			<li id='VORONOIA'> Haomiao Huang, Wei Zhang, Jerry Ding, Dušan M. Stipanović, Claire J. Tomlin. Guaranteed Decentralized Pursuit-Evasion in the Plane with Multiple Pursuers. <i>Proceedings of the IEEE Conference on Decision and Control</i>. 2011.</li>
+			<li id='VORONOIB'> Zhengyuan Zhou, Wei Zhang, Jerry Ding, Haomiao Huang, Dušan M. Stipanović, Claire J. Tomlin. Cooperative pursuit with Voronoi partitions. <i>Automatica</i> vol. 72, pp. 64–72, 2016.</li>
+			<li id='RUNNING'> Karen L.Steudel-Numbers, Cara M.Wall-Scheffler. Optimal running speed and the evolution of hominin hunting strategies. <i>Journal of Human Evolution</i> vol. 56, no. 4, pp. 355–360, April 2009.</li>
+			<li id='DOCUMENTARY'> Michal Leszczylowski. <i>Regi Andrej Tarkovskij</i>. Svenska Filminstitutet(SFI), 1988</li>
+		</ol>
 	</div>
 </body>
 </html>

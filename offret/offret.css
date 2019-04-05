@@ -1,5 +1,6 @@
 html,body {
     height:100%;
+    min-width:300px;
 }
 
 .parallax {
@@ -11,15 +12,84 @@ html,body {
 
   /* Create the parallax scrolling effect */
   background-attachment: fixed;
-  background-position: center;
+  background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: cover;
   text-align: center;
 }
 
-.main {
+.text {
+  font-family: "Times New Roman", serif;
   margin:30px auto;
   max-width:750px;
+  font-size:1.25em;
+}
+
+.text p,h1,h2,ol{
+  margin-left: 1em;
+  margin-right:1em;
+}
+
+.text a {
+  text-decoration-line: none;
+}
+
+.text h2 {
+  font-size:1em;
+  font-variant: small-caps;
+}
+
+.text table {
+  width:100%;
+  margin:3em 0em;
+}
+
+.text td {
+  min-width:5em;
+  text-align: center;
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+/*.text table > tbody > tr:nth-of-type(1) > td{
+  border: none;
+  column-span:5;
+}*/
+
+.text table > caption > h1{
+  font-size:1em;
+  font-variant: small-caps;
+  font-weight: normal;
+  margin:0;
+}
+
+.text table > caption > h2{
+  font-size:.75em;
+  font-variant: small-caps;
+  font-weight: normal;
+  margin:0;
+  margin-bottom:0.5em;
+}
+
+.text p{
+}
+
+.text iframe {
+  width:100%;
+}
+
+.text .caption {
+  width:90%;
+  text-align:center;
+  font-size:0.75em;
+  padding:0% 5%;
+}
+
+.start::first-letter {
+  float: left;
+  font-size: 2.5em;
+  margin: .08em .1em 0 0;
+  font-weight: bold;
 }
 
 .title {
@@ -32,6 +102,19 @@ html,body {
   font-family: 'Inconsolata', monospace;
   font-size: 40pt;
   margin:0px;
+}
+
+ol {
+    counter-reset: list;
+}
+ol > li {
+    list-style: none;
+    text-indent: -1.5em;
+    margin:1em 0em;
+}
+ol > li:before {
+    content: "[" counter(list) "] ";
+    counter-increment: list;
 }
 
 @media only screen and (max-width: 1000px) {
@@ -55,6 +138,12 @@ html,body {
   }
   .title h1{
     font-size: 20pt;
+  }
+  .text table{
+    font-size:.75em;
+  }
+  .text td{
+    min-width:0em;
   }
 }
 
