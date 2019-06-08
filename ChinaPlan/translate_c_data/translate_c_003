@@ -1,0 +1,1290 @@
+/*操作cookie*/
+(function(factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD
+        define(['jquery'], factory);
+    } else if (typeof exports === 'object') {
+        // CommonJS
+        factory(require('jquery'));
+    } else {
+        // Browser globals
+        factory(jQuery);
+    }
+}(function($) {
+
+    var pluses = /\+/g;
+
+    function encode(s) {
+        return config.raw ? s : encodeURIComponent(s);
+    }
+
+    function decode(s) {
+        return config.raw ? s : decodeURIComponent(s);
+    }
+
+    function stringifyCookieValue(value) {
+        return encode(config.json ? JSON.stringify(value) : String(value));
+    }
+
+    function parseCookieValue(s) {
+        if (s.indexOf('"') === 0) {
+            // This is a quoted cookie as according to RFC2068, unescape...
+            s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+        }
+
+        try {
+            // Replace server-side written pluses with spaces.
+            // If we can't decode the cookie, ignore it, it's unusable.
+            // If we can't parse the cookie, ignore it, it's unusable.
+            s = decodeURIComponent(s.replace(pluses, ' '));
+            return config.json ? JSON.parse(s) : s;
+        } catch (e) {}
+    }
+
+    function read(s, converter) {
+        var value = config.raw ? s : parseCookieValue(s);
+        return $.isFunction(converter) ? converter(value) : value;
+    }
+
+    var config = $.cookie = function(key, value, options) {
+
+        // Write
+        if (value !== undefined && !$.isFunction(value)) {
+            options = $.extend({}, config.defaults, options);
+
+            if (typeof options.expires === 'number') {
+                var days = options.expires,
+                    t = options.expires = new Date();
+                t.setTime(+t + days * 864e+5);
+            }
+
+            return (document.cookie = [
+                encode(key), '=', stringifyCookieValue(value),
+                options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+                options.path ? '; path=' + options.path : '',
+                options.domain ? '; domain=' + options.domain : '',
+                options.secure ? '; secure' : ''
+            ].join(''));
+        }
+
+        // Read
+
+        var result = key ? undefined : {};
+
+        // To prevent the for loop in the first place assign an empty array
+        // in case there are no cookies at all. Also prevents odd result when
+        // calling $.cookie().
+        var cookies = document.cookie ? document.cookie.split('; ') : [];
+
+        for (var i = 0, l = cookies.length; i < l; i++) {
+            var parts = cookies[i].split('=');
+            var name = decode(parts.shift());
+            var cookie = parts.join('=');
+
+            if (key && key === name) {
+                // If second argument (value) is a function it's a converter...
+                result = read(cookie, value);
+                break;
+            }
+
+            // Prevent storing a cookie that we couldn't decode.
+            if (!key && (cookie = read(cookie)) !== undefined) {
+                result[name] = cookie;
+            }
+        }
+
+        return result;
+    };
+
+    config.defaults = {};
+
+    $.removeCookie = function(key, options) {
+        if ($.cookie(key) === undefined) {
+            return false;
+        }
+
+        // Must not alter options, thus extending a fresh object...
+        $.cookie(key, '', $.extend({}, options, {
+            expires: -1
+        }));
+        return !$.cookie(key);
+    };
+
+    //计算用户在站点停留的时间，超过10分钟弹出浮层询问是否登录
+    var calc_time = setInterval(function(){
+        var myTime = new Date();
+        var time = myTime.getTime();
+        if($.cookie('enter_time') == undefined || $.cookie('enter_time') == '')
+        {
+            var expire_date = new Date();
+            expire_date.setTime(expire_date.getTime() + 5*60*10000);
+            $.cookie('enter_time', time, {expires: expire_date});
+        }
+        else if(time - $.cookie('enter_time') > 5*60*1000)
+        {
+            var popup = $('#welcome_popup');
+            popup.show();
+            popup.animate({
+                height: '250px'
+            }, 500);
+            $.cookie('enter_time', null);
+            clearInterval(calc_time);
+        }
+    }, 1000);
+}));
+
+window.onload = initPage;
+
+function initPage()
+{
+    initSideBanner();
+}
+
+function initSideBanner()
+{
+    $('#trainee').css('top', parseInt($(window).height() - 269 - $('.header').height()) - 20);
+    $('#teenager').css('top', parseInt($(window).height() - 408 - $('.header').height()) - 20);
+    $('#trainee').slideDown();
+    $('#teenager').slideDown();
+}
+
+function closeSideBanner(el)
+{
+    $(el).parent().slideUp();
+}
+
+function closePopup(element)
+{
+    var target = $(element).parents('#welcome_popup');
+    target.animate({
+        height: '0'
+    }, 500);
+    setTimeout(function(){
+        target.hide();
+    }, 500);
+}
+
+function submited(_this, odd, url) { //提交
+    if (bole) {  
+        if (odd == 1) { //头部快速查询，跳转带参数
+            //action="<?=  Util::createUrl('content/fruit')?>" 在表单上加这个也可以
+            var parent = $(_this).parent('form'),
+                key = parent.find('input[name=allkey]').val(),
+                type = parent.find('select[name=type]').val();
+            window.open(url + '?type=' + type + '&allkey=' + key);
+
+        } else if (odd == 2) { //查询页面查询，表单提交
+            if($('#allkey').val()==''&&$('#inkey').val()==''){
+                layer.alert('包含全部关键词 和包含任意关键词 至少填写一个', 0)
+                return 
+            }
+            var data='';
+            var data_left=(function(){
+                var all='';
+               $('#all_content').find(':checked').each(function(){
+                    all=='' ? all=$(this).val() : all=all+'|'+$(this).val()
+                    
+               });
+               return all;
+            })();
+            $(_this).css('display','none')
+            $('.loading').css('display','inline-block')
+            $('input[name="all_select"]').is(':checked')||$('.tree').find(':checked').length==0 ? data='&ctg_all=0&scope='+$('#tree_index').val() : data='&ctg_all='+data_left+'&scope='+$('#tree_index').val()
+            var str = $(_this).parents('form').serialize()+data;
+            location.href = 'http://www.clas.ac.cn/content/fruit?'+str
+
+        } else if (odd == 3) {
+             $(_this).css('display','none')
+            $('.loading').css('display','inline-block')
+            var str = $(_this).parent('form').serialize() + '&senior=y'
+            location.href = 'http://www.clas.ac.cn/content/fruit?' + str
+        }
+    }else{
+        return
+    }
+}
+
+function senior(_this, odd, url) {
+    window.open(url + '?senior=y');
+}
+
+function tipsError(value, element) {
+    layer.tips(value, element, {
+        style: ['background-color:#9b1111; color:#fff', '#9b1111'],
+        maxWidth: 185,
+        time: 2,
+    });
+}
+
+
+function arrayMin(arr) { //数组最小值
+    var min = arr[0]
+    for (var i = 1; i < arr.length; i++) {
+        if (arr[i] < min) {
+            min = arr[i]
+        }
+    }
+    return min;
+}
+
+function and(element) { //获取元素文档高度
+    var sum = 0,
+        add;
+    element.each(function() {
+        add = $(this).height();
+        sum = sum + add
+    })
+    return sum;
+}
+
+function autoRoll() { //成员单位自动滚动
+    var $this = $('#roll'),
+        now = $this.scrollTop(),
+        num = $this.children('li'),
+        arr = function() {
+            var arr = [];
+            num.each(function() {
+                if ($(this).position().top > 0) {
+                    arr.push($(this).position().top)
+                }
+            })
+            return arr
+        }(),
+        star = arrayMin(arr),//取大于0的li中的最小值
+        sum = and(num) //文档高度
+    if ($this.height() + now >= sum) { //如果滑到底部
+        $this.animate({
+            scrollTop: 0
+        }, 500)
+
+    } else {
+        $this.animate({
+            scrollTop: now + star
+        }, 100);
+    }
+}
+function autoZt(){//专题研究自动滚动
+    var $this = $('#special .sideMenu'),
+        now = $this.scrollTop(),
+        num = $this.find('h3'),
+        arr = function() {
+            var arr = [];
+            num.each(function() {
+                if ($(this).position().top > 0) {
+                    arr.push($(this));
+                }
+            })
+            return arr
+        }(),
+        star = arr[0].position().top,
+        sum = and(num); //文档高度
+      
+    if ($this.height() + now >= sum) { //如果滑到底部
+        $this.animate({
+            scrollTop: 0
+        }, 500)
+        num.removeClass('on')
+        num.eq(0).addClass('on')
+    } else {
+        $this.animate({
+            scrollTop: now + star
+        }, 100);
+        num.removeClass('on')
+        arr[1].addClass('on')
+    }
+}
+function jxSlide(element, date) {
+    if(element=='#roll'){
+        var si = setInterval(autoRoll, date) //setInterval 定时调用函数
+        $(element).hover(
+            function() {//当鼠标移入时清除定时执行函数
+                clearInterval(si);
+            },
+            function() {//当鼠标移出时恢复定时执行函数
+                si = setInterval(autoRoll, date)
+            })
+    }else{
+        var si = setInterval(autoZt, date) //setInterval 定时调用函数
+        $(element).hover(
+            function() {//当鼠标移入时清除定时执行函数
+                clearInterval(si);
+            },
+            function() {//当鼠标移出时恢复定时执行函数
+                si = setInterval(autoZt, date)
+            })
+    }
+  
+}
+
+function alertPage() {
+    checkuserip();
+    $('#cooperation').removeClass('land')
+    $('#cooperation .forget-form').hide();  
+    $.layer({
+        type: 1,
+        title: '欢迎登录中国智库网',
+        area: ['370px', '230px'],
+        border: [0],
+        shade: [0.2, '#000'],
+        fix: true,
+        page: {
+            html: '<div class="forget-form" style="margin:0 10px;"><div class="control-group"><div class="controls"><span style="color: red" id="drcword"></span><div class="input-icon left"><span id="tishi"></span><label>用户名：</label><input type="text" id="usrname2"  class="m-wrap placeholder-no-fix" placeholder="请填写用户名或您的注册邮箱"></div></div></div><div class="control-group"><div class="controls"><div class="input-icon left"><label>密码：</label><input type="password" id="passw2" class="m-wrap placeholder-no-fix"></div></div></div><div class="control-group"><div class="controls"><div class="input-icon left"><label >验证码：</label><input type="text" style="width:60px;" class="m-wrap" name="code2"> <img onclick="refreshImg(\'#img_rand2\')" src="/user/getverifycode" style="height:28px;cursor:pointer;vertical-align:bottom;" id="img_rand2"> <span class="i-re" onclick="refreshImg(\'#img_rand2\')" title="单击刷新验证码"></span><a  id="retrieve" href="/user/notice?type=forget">忘记密码？</a></div></div></div><div class="form-actions"><button class="btn green" type="" onclick="dengl(2,\'#usrname2\',\'#passw2\',\'code2\')">登录<i class="m-icon-swapright m-icon-white"></i></button> <button class="btn" id="back-btn2" type="button" style="background:#555555;">取消</button></div></div>'
+
+        }
+    })
+    $('#usrname2').focus();
+    refreshImg('#img_rand2')
+}
+
+function checkuserip(){
+    var url = '/content/isdrc';
+    var params = [];
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: url,
+        data: params,
+        lock: true,
+        success: function (data) {
+            if (data['ret'] == 1) {
+                $("#usrname2").val(data.data[0]);
+                $("#passw2").val(data.data[1]);
+                $("#usrname1").val(data.data[0]);
+                $("#passw1").val(data.data[1]);
+                $("#drcword").html(data.data[2]);
+            }
+        },
+        error: function () {
+
+        }
+    });
+}
+
+function out() {
+    var webHost = window.location.host;
+    var dataUrl = "http://" + webHost + "/user/apitc";
+    $.post(dataUrl, function(data) {
+        if (data.ret == 0) {
+            $('.prompt').html('<p><a class="copen" href="javascript:alertPage()">登录</a>|<a class="copen" href="user/register">注册</a></p>')
+        }
+    })
+}
+
+function anchor(type) {
+    $('#indexes a').each(function() {
+        var num = 'index' + $(this).text();
+        if ($('#' + num).length == 0) {
+            $('#indexes a[href=#' + num + ']').parent().addClass('disabled');
+        }
+    })
+    $('#indexes li').each(function() {
+        $(this).on('click', function(event) {
+            var $this = $(this),
+                element = $this.children().attr('href'),
+                parent = $(element).parent();
+
+            if (type == 1) {
+                event.preventDefault(); //阻止默认,锚点跳转
+                $('.col li span').removeClass('on');
+                $(element).addClass('on');
+                if ($this.attr('class') != 'all') {
+                    $('.institution-list li').hide();
+                    parent.show();
+                } else {
+                    $('.institution-list li').show();
+                }
+            } else if (type == 2) {
+                $('.col li span').removeClass('on');
+                $(element).addClass('on');
+            }
+        })
+    })
+}
+
+function changeFont(element) {
+    var cookie = $.cookie('fontSize'),
+        $this = $(element).children('li'); //获取选择字号DOM
+    if (cookie) { //如果cookie值存在 则将字体大小改变为cookie值
+        $('.pub_right').attr('class', 'pub_right font' + cookie);
+    }
+    $this.each(function() {
+        $(this).on('click', function() {
+            var val = $(this).attr('value'); //获取点击对象的value值
+            $('.pub_right').attr('class', 'pub_right font' + val);
+            $.cookie('fontSize', val, {
+                expires: 365
+            }); //添加cookie值
+            $(element).parent().removeClass('on')
+            $(element).hide()
+        })
+    })
+}
+
+function changeBg(element) {
+    var cookie = $.cookie('bgColor'),
+        $this = $(element).children('li'),
+        ele = '.pub_right,.pub_right .artContent a, .pub_right .artContent p, .pub_right .artContent span, .pub_right .artContent strong';
+    if (cookie) {
+        $(ele).css('background-color', cookie)
+        $('table td').css('background-color', cookie)
+    } else {
+        $(ele).css('background-color', '#fafafa')
+        $('table td').css('background-color', '#fafafa')
+    }
+    $this.each(function() {
+        $(this).on('click', function() {
+            var val = $(this).attr('value');
+            $(ele).css('background-color', val)
+            $('table td').css('background-color', val)
+            $.cookie('bgColor', val, {
+                expires: 365
+            });
+            $(element).parent().removeClass('on')
+            $(element).hide()
+        })
+    })
+}
+
+function fixed(element) {
+    //文档滚动的距离
+    var a = $(element);
+    var b = a.offset().top; //元素距离文档的距离
+    var e = a.height(); //元素的高度
+    var f = a.parents('.pub').height();
+    $(document).on('scroll', function() {
+        var c = $(document).scrollTop()
+        var d = a.offset().top
+        if (c > b) { //如大于或等于，则元素处于窗口顶部
+            a.addClass('fixed')
+        } else if (c <= b) {
+            a.removeClass('fixed')
+        }
+    })
+}
+
+function checker(element) { //勾选checked
+    var $this = $(element);
+    var checked = $this.is(":checked")
+    if (checked) {
+        $this.parent().addClass('checked')
+    } else {
+        $this.parent().removeClass('checked')
+    }
+}
+
+
+function getRandom(n) { //产生随机数字
+    return Math.floor(Math.random() * n + 1)
+}
+
+function refreshImg(element) {
+    var $this = $(element)
+    var src = '/user/getverifycode?:sj' + getRandom(9999);
+    $this.attr('src', src);
+}
+
+
+
+function alertSuccess(type, value) {
+    if (type == 1) {
+        var element = $('.forget-form'),
+            scroll = $(document).scrollTop(),
+            top = element.offset().top - scroll + 50 + 'px',
+            width = element.offset().left + 126 + 'px';
+        $.layer({
+            type: 1,
+            title: false,
+            fix: false,
+            area: ['auto', 'auto'],
+            border: [0], //去掉默认边框
+            shade: [0], //去掉遮罩
+            closeBtn: [0, false], //去掉默认关闭按钮
+            offset: [top, width],
+            time: 2,
+            page: {
+                html: '<div class="cue_success">' + value + '</div>'
+            }
+        });
+    } else if (type == 2) {
+        $.layer({
+            type: 1,
+            title: false,
+            area: ['auto', 'auto'],
+            border: [0], //去掉默认边框
+            shade: [0], //去掉遮罩
+            closeBtn: [0, false], //去掉默认关闭按钮
+            time: 2,
+            page: {
+                html: '<div class="cue_success">' + value + '</div>'
+            }
+        });
+
+    }
+}
+
+function alertError(type, value) {
+    if (type == 1) {
+        var element = $('.forget-form'),
+            scroll = $(document).scrollTop(),
+            top = element.offset().top - scroll + 50 + 'px',
+            width = element.offset().left + 126 + 'px';
+
+        $.layer({
+            type: 1,
+            title: false,
+            fix: false,
+            area: ['auto', 'auto'],
+            border: [0], //去掉默认边框
+            shade: [0], //去掉遮罩
+            closeBtn: [0, false], //去掉默认关闭按钮
+            offset: [top, width],
+            time: 2,
+            page: {
+                html: '<div class="cue_error">' + value + '</div>'
+            }
+        });
+    } else if (type == 2) {
+        $.layer({
+            type: 1,
+            title: false,
+            area: ['auto', 'auto'],
+            border: [0], //去掉默认边框
+            shade: [0], //去掉遮罩
+            closeBtn: [0, false], //去掉默认关闭按钮
+            time: 1,
+            page: {
+                html: '<div class="cue_error">' + value + '</div>'
+            }
+        });
+    }
+}
+
+function dialog(value, icon, eq1, eq2) {
+    var width = 0,
+        height = 0;
+    if (arguments.length > 2) {
+        width = eq1
+        height = eq2
+    } else {
+        width = 'auto';
+        height = 'auto';
+    }
+    $.layer({
+        title: '温馨提示',
+        area: [width, height],
+        border: [0],
+        shade: [0.2, '#000'],
+        dialog: {
+            type: icon,
+            msg: value
+        }
+    })
+}
+
+function jyon(element, webCpValue) {
+
+    if(parseInt(webCpValue)==1){
+        return false
+    }
+    $(element).attr({
+        oncontextmenu: 'return false',
+        ondragstart: 'return false',
+        onselectstart: 'return false',
+        oncopy: 'return false',
+        onbeforecopy: 'return false'
+    })
+}
+
+function animate() {
+    $('#gn a').unbind('click');
+    $('#gn a').bind('click', function() {
+        var num = '#gn' + $(this).text();
+        if ($(num).length != 0) {
+            $('.gn').animate({
+                scrollTop: $('.gn').scrollTop() + $(num).position().top
+            }, 500);
+        }
+    })
+    $('#gn a').each(function() {
+        var num = 'gn' + $(this).text();
+        if ($('#' + num).length == 0 || $('#' + num).is(':hidden')) {
+            $('#gn a[name=' + num + ']').addClass('disabled');
+        } else {
+            $('#gn a[name=' + num + ']').removeClass('disabled')
+        }
+
+    })
+}
+var bole = true; //避免反复提交的全局变量
+function dengl(type, eq1, eq2, eq3) {
+    if (!bole) {
+        return false;
+    }
+    if (type == 3) {
+        var _email = $(eq1).val(),
+            reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.(?:com|cn)$/;
+        // reg2= /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
+        if (_email.length == 0) {
+            tipsError('请输入订阅邮箱', eq1)
+            return false;
+        } else if (!reg.test(_email)) {
+            tipsError('请输入正确邮箱格式', eq1)
+            return false;
+        } else {
+            $.ajax({
+                url: '/path/to/file',
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    type: 'value1',
+                    email: _email
+                },
+                beforeSend: function() {
+                    bole = false;
+                },
+                success: function(data) {
+                    if (data['ret'] == 0) {
+                        alertSuccess(2, "提交成功")
+                        setTimeout(function() {
+                            layer.closeAll()
+                            bole = true
+                        }, 2000)
+                    }
+                },
+                error: function() {
+                    alertError(2, '请求出错,请重试')
+                    bole = true
+                }
+            })
+        }
+    }
+    layer.closeTips();
+    var usrname = $(eq1).val(),
+        password = $(eq2).val(),
+        this_ = 'input[name=' + eq3 + ']',
+        val = $(this_).val();
+    if (usrname.length == 0 && password.length == 0) {
+        tipsError('请输入用户名和密码', eq1)
+         $(eq1).focus();
+        return false;
+    } else if (usrname.length == 0) {
+        tipsError('请输入用户名', eq1)
+        $(eq1).focus()
+        return false;
+    } else if (password.length == 0) {
+        tipsError('请输入密码', eq2)
+        $(eq2).focus()
+        return false;
+    }
+    if (val == '') {
+        tipsError('请填写验证码', this_)
+        $(this_).focus()
+        return false
+    } else if (!isNaN(val) && val.length == 4) {
+        var bol2 = false;
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            async: false,
+            url: '/user/CheckVerify',
+            data: {
+                name: 'code',
+                param: val
+            },
+            success: function(data) {
+                if (data.status == 'n') {
+                    tipsError('验证码错误', this_)
+                    bol2 = true;
+                }
+            },
+
+        })
+        if (bol2) {
+            return false;
+        }
+    } else {
+        tipsError('验证码错误', this_)
+        return false
+    }
+    password = $.md5(password);
+    var url = "/user/apidl";
+    var cuurent_url = window.location.href;
+
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: url,
+        data: {
+            usrname: usrname,
+            password: password
+        },
+        beforeSend: function() {
+            bole = false;
+        },
+        lock: true,
+        success: function(data) {
+            refreshImg('#img_rand2')
+            refreshImg('#img_rand1')
+            if (data['ret'] == 0) {
+                alertSuccess(type, "登录成功")
+
+                setTimeout(function() {
+                    if (type == 1) {
+                        $('#cooperation').toggleClass('land')
+                        $('#cooperation .forget-form').toggle();
+                    }
+                    if (type == 2) {
+                        layer.closeAll();
+                        if(cuurent_url.indexOf('content/detail') != -1){
+                            window.location.reload();
+                        }
+                    }
+                    $('.prompt').html('<p><span class="copen">欢迎您! <a href="/user/profile">' + data['data'] + '</a></span>|<a id="de-out" class="copen" href="javascript:out()">退出</a></p>')
+                    bole = true;
+                }, 2000);
+
+            } else if (data['ret'] == 1000) {
+                alertError(type, data['msg'] + '!')
+                setTimeout(location.href = '/user/notice?type=active', 3000);
+                setTimeout(function() {
+                    bole = true;
+                }, 2000)
+                return false;
+            } else {
+                alertError(type, data['msg'] + '!')
+                setTimeout(function() {
+                    bole = true;
+                }, 2000)
+                return false;
+            }
+
+        },
+        error: function() {
+            alertError(type, '请求出错,请重试')
+        }
+    });
+}
+ (function($) {
+        $.getUrlParam = function(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+            var r = window.location.search.substr(1).match(reg); ////匹配目标参数
+            if (r != null)
+                return unescape(r[2]);
+            return null;
+        }
+    })(jQuery);
+$(function() {
+    function listOn() { //切换侧边栏高亮显示
+        var id = '#list' + $.getUrlParam('id');
+        var li = $(id).parent().parent('li');
+        if (li.attr('class') == 'nLi') {
+            li.addClass('or');
+        }
+        $(id).addClass('or');
+    }
+    listOn()
+
+    function sublistOn() { //二级单位，地方实践侧边栏高亮显示
+        var id = '#sublist' + $.getUrlParam('subid');
+        var li = $(id).parent().parent('li');
+        if (li.attr('class') == 'nLi') {
+            li.addClass('or');
+        }
+        $(id).addClass('or');
+    }
+    sublistOn()
+
+    function ada(element, width) { //智库微信自适应
+        var $show = $(element + ' .show');
+        var $additional = $(element + ' .additional');
+        if ($(window).width() >= width) {
+            $additional.css({
+                right: '-145px',
+                top: '220px'
+            })
+            $additional.show()
+            $show.hide()
+        } else {
+            $show.css({
+                right: function() {
+                    var num = ($('.container_mian').width() - $(window).width() + 8) / 2;
+                    if (num >= 0) {
+                        return 0
+                    } else if (num <= -45) {
+                        return '-45px';
+                    } else {
+                        return num + 'px'
+                    }
+
+                }
+            })
+            $additional.hide();
+            $show.show();
+        };
+    }
+    animate()
+    ada('#home', 1530);
+    ada('#substation', 1322);
+    $(window).resize(function() {
+            ada('#home', 1530);
+            ada('#substation', 1322);
+        })
+        /*
+         $('.slideBox .bd li').imagesLoaded().always( function( instance ){
+         $('.slideBox .bd li h2').each(function(){
+         var height=$(this).prev().children().height()
+         var num=(320-height)/2;
+         $(this).css('bottom',function(){
+         return num+'px';
+         })
+         })
+         })
+         */
+
+    goTop();
+
+    function goTop() {
+        $(window).scroll(function() {
+            var scrollValue = $(window).scrollTop();
+            scrollValue > 200 ? $('#goTop').fadeIn() : $('#goTop').fadeOut();
+            /*console.log($('#goTop').offset().top);
+            console.log($('.pub_right').height()+" "+$('.pub_right').offset().top)*/
+            /*if($('#goTop').offset().top + $('#goTop').height() > $('.pub_right').offset().top)
+            {
+                $('#goTop').addClass('goTop-fixed');
+            }
+            else
+            {
+                $('#goTop').removeClass('goTop-fixed');   
+            }*/
+        });
+        $('#goTop').click(function() {
+            $("html,body").animate({
+                scrollTop: 0
+            }, 200);
+        });
+    }
+    jQuery('#nav').slide({
+        type: 'menu', // 效果类型，针对菜单/导航而引入的参数（默认slide）
+        titCell: '.subnav', //鼠标触发对象
+        targetCell: '.menu', //titCell里面包含的要显示/消失的对象
+        effect: 'fade', //targetCell下拉效果
+        delayTime: 0, //效果时间
+        triggerTime: 150, //鼠标延迟触发时间（默认150）
+        defaultPlay: false,
+        returnDefault: true //
+            // returnDefault:true //鼠标移走后返回默认状态（默认false）
+    });
+    jQuery('.left-nav').slide({
+        type: 'menu', // 效果类型，针对菜单/导航而引入的参数（默认slide）
+        titCell: '.nLi', //鼠标触发对象
+        targetCell: '.sub', //titCell里面包含的要显示/消失的对象
+        effect: 'fade', //targetCell下拉效果
+        delayTime: 0, //效果时间
+        triggerTime: 0, //鼠标延迟触发时间（默认150）
+        defaultPlay: false,
+        returnDefault: true //
+            // returnDefault:true //鼠标移走后返回默认状态（默认false）
+    });
+    jQuery('.slideBox').slide({
+        mainCell: '.bd ul',
+        autoPlay: true,
+        effect: 'leftLoop', //向左无限循环
+        interTime: 5000, //运行间隔
+        startFun: function(i, c) {
+            var num = $('.slideBox .bd li').eq(i).children('h2').css('bottom')
+                // alert(num)
+                // $('.slideBox .hd').css('bottom',num)
+        }
+    })
+    jQuery(".slideTxtBox").slide({
+        triggerTime: 300, //鼠标延迟触发时间（默认150）
+    });
+    jQuery(".slideTxtBox.switch").slide({
+        triggerTime: 300, //鼠标延迟触发时间（默认150）
+        interTime: 5000,
+        autoPlay: true
+    });
+
+    jQuery(".container_bottom").slide({
+        mainCell: "#publication ul",
+        autoPage: true,
+        effect: "left",
+        autoPlay: true,
+        vis: 7,
+        trigger: "click",
+        scroll: 1,
+        defaultIndex: 0, //默认从第几个开始
+    });
+    // jQuery("#s_acc").slide({
+    //     titCell:"h3", //鼠标触发对象
+    //     targetCell:"p", //与titCell一一对应，第n个titCell控制第n个targetCell的显示隐藏
+    //     effect:"slideDown", //targetCell下拉效果
+    //     delayTime:300 , //效果时间
+    //     triggerTime:150, //鼠标延迟触发时间（默认150）
+    //     defaultPlay:true,//默认是否执行效果（默认true）
+    //     returnDefault:false //鼠标从.sideMen移走后返回默认状态（默认false）
+    // });
+    // jQuery('#selection').slide({
+    //     type: 'menu', // 效果类型，针对菜单/导航而引入的参数（默认slide）
+    //     titCell: '.nLi', //鼠标触发对象
+    //     targetCell: '.sub', //titCell里面包含的要显示/消失的对象
+    //     effect: 'fade', //targetCell下拉效果
+    //     delayTime: 0, //效果时间
+    //     triggerTime: 0, //鼠标延迟触发时间（默认150）
+    //     defaultPlay: false,
+    //     returnDefault: false //
+    //         // returnDefault:true //鼠标移走后返回默认状态（默认false）
+    // });
+    jQuery(".sideMenu").slide({
+        titCell: "h3", //鼠标触发对象
+        targetCell: "p", //与titCell一一对应，第n个titCell控制第n个targetCell的显示隐藏
+        effect: "slideDown", //targetCell下拉效果
+        delayTime: 100, //效果时间
+        triggerTime: 500, //鼠标延迟触发时间（默认150）
+        defaultPlay: true, //默认是否执行效果（默认true）
+        returnDefault: false, //鼠标从.sideMen移走后返回默认状态（默认false）
+    });
+    var iTime=''; //setTimeout的返回ID
+    $('#s_acc .briefly').eq(0).show()
+    $('#s_acc h3').each(function(){
+        $(this).on('mouseover',function(){
+            if(iTime!=''){
+                clearTimeout(iTime) //清楚未执行的setTimeout
+            }
+            var $this=$(this)
+            iTime=setTimeout(function(){
+                $('#s_acc .briefly').hide()
+                $this.next('.briefly').show();
+            },300)
+           
+        })
+    })
+    $('.show').bind('click', function() {
+        $('.show').hide();
+        if ($(window).width() < 1530) { //1530智库微信完全显示出来需要的宽度
+
+            $('.additional').css({
+                right: function() {
+                    var num = ($('.container_mian').width() - $(window).width() + 8) / 2;
+                    if (num >= 0) {
+                        return 0;
+                    } else {
+                        return num + 'px';
+                    }
+
+                },
+                top: '220px'
+            })
+        } else {
+            $('.additional').css('right', '-145px')
+        }
+        $('.additional').show();
+    })
+    $('.close').bind('click', function() {
+        var $show = $(' .show');
+        var $additional = $(' .additional');
+        $show.css({
+            right: function() {
+                var num = ($('.container_mian').width() - $(window).width() + 8) / 2;
+                if (num >= 0) {
+                    return 0
+                } else if (num <= -45) {
+                    return '-45px';
+                } else {
+                    return num + 'px'
+                }
+
+            }
+        })
+        $additional.hide();
+        $show.show();
+    })
+
+    $('#gj a').bind('click', function() {
+        var num = '#gj' + $(this).text();
+        if ($(num).length != 0) {
+            $('.gj').animate({
+                scrollTop: $('.gj').scrollTop() + $(num).position().top
+            }, 500);
+        }
+    })
+    var obl = true
+    $('#mail').on('click', function() {
+            if (obl) {
+                if ($.cookie('sname') == undefined) {
+                    dialog('请您先登录，如果没有账号请先注册', 0)
+                } else {
+                    var sname = $.cookie('sname'),
+                        userid = $.cookie('userid');
+                    $.ajax({
+                        url: gAppBase + '/user/ApiSubscribe',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {
+                            sname: sname,
+                            userid: userid
+                        },
+                        beforeSend: function() {
+                            obl = false;
+                        },
+                        success: function(data) {
+                            if (data.ret == 0) {
+                                if (data.data.subEmail == 1) {
+                                    dialog('已订阅成功', 1, '200px', '130px')
+                                } else if (data.data.subEmail == 0) {
+                                    dialog('取消成功', 1, '200px', '130px')
+                                }
+                            } else if (data.ret == 1000) {
+                                dialog('请不要频繁操作，1小时后才可点击取消或订阅', 0)
+                            } else if (data.ret == -1000) {
+                                dialog('请您先登录，如果没有账号请先注册中国智库账号', 0)
+                            } else if (data.ret == -2000) {
+                                dialog('用户不存在', 0)
+                            } else if (data.ret == -3000) {
+                                dialog('您的邮箱未激活', 0)
+                            } else if (data.ret == -4000) {
+                                dialog('系统错误，请重试！', 3, '200px', '130px')
+                            } else if (data.ret == -5000) {
+                                dialog('请在<a style="color:#1974a1;font-weight:bold" href=' + gAppBase + '"/user/profile">个人资料</a>中添加邮箱!', 2)
+                            }
+                            obl = true;
+                        }
+                    })
+
+                    /*            $.layer({
+                                    type: 1,
+                                    title: '订阅邮件',
+                                    area: ['370px', '140px'],
+                                    border: [0],
+                                    shade: [0.2, '#000'],
+                                    fix: true,
+                                    page: {
+                                        html: '<div class="forget-form" style="margin:0 10px;"><div class="control-group"><div class="controls"><div class="input-icon left"><span id="tishi"></span><label>邮箱：</label><input type="text" id="usrname3"  class="m-wrap placeholder-no-fix" placeholder="请输入订阅邮箱"></div></div></div><div class="form-actions"><button class="btn green pull-right" type="" onclick="dengl(3,\'#usrname3\',\'#passw2\',\'code2\')">确定<i class="m-icon-swapright m-icon-white"></i></button> <button class="btn" id="back-btn2" type="button" style="background:#555555;">取消</button></div></div>'
+                                    }
+                                });*/
+                }
+
+            }
+        })
+        //判断是否禁用字母索引
+    $('#gn a').each(function() {
+        var num = 'gn' + $(this).text();
+        if ($('#' + num).length == 0) {
+            $('#gn a[name=' + num + ']').addClass('disabled');
+        }
+    })
+    $('#gj a').each(function() {
+        var num = 'gj' + $(this).text();
+        if ($('#' + num).length == 0) {
+            $('#gj a[name=' + num + ']').addClass('disabled');
+        }
+    })
+
+
+    $('#enter,#back-btn').on('click', function() {
+        if ($.cookie('sname') == null) {
+            checkuserip();
+            $('#cooperation').toggleClass('land')
+            $('#cooperation .forget-form').toggle();
+            $('#usrname1').val(''); //清除填写的值
+            $('#passw1').val('');
+            $('input[name=code1]').val('');
+            $('#usrname1').focus();
+            refreshImg('#img_rand1'); //刷新验证码
+            layer.closeAll();
+        } else {
+            tipsError('已经登录了！', '#enter')
+        }
+    })
+    $(document).on('click', '#back-btn2', function() {
+        layer.closeAll()
+    })
+    $('#message form').submit(function(e) {
+        e.preventDefault();
+        var element = $(this).children('textarea'),
+            val = element.val();
+        if (val != '') {
+            $.post('content/addsuggest', {
+                content: val
+            }, function(data) {
+                if (data.ret == 0) {
+                    alert('谢谢您，我们已收到您的建议');
+                } else {
+                    tipsError(data.msg, element);
+                }
+            })
+        } else {
+            tipsError('输入内容不能为空', element)
+        }
+    })
+    $('.de-classify a').each(function() { //专家排序
+        $(this).on('click', function() { //点击6大分类执行
+            $('.de-classify a').removeClass('colorA4');
+            $(this).addClass('colorA4')
+            var type = $(this).attr('name'),
+                element = $('.gn a[name=' + type + ']');
+            $('.gn li').each(function() {
+                var num = $(this).find('a[name=' + type + ']').length
+                if (!num) {
+                    $(this).hide();
+                } else {
+                    $(this).show();
+                }
+            })
+            $('.gn a').hide();
+            element.show();
+            animate()
+        })
+    })
+    $('#gn .all').on('click', function() {
+            $('.de-classify a').removeClass('colorA4');
+            $('.gn li').show();
+            $('.gn a').css('display', 'block');
+            animate()
+        })
+    $(document).keyup(function(event){
+      if(event.keyCode ==13){
+        // $("#submit").trigger("click");
+            //$('.btn.green').trigger('click')
+      }
+    });
+    $('#ftselect h3').on('click',function(){
+        if($(this).is('on')){
+            return
+        }else{
+            $(this).parent().addClass('on')
+            $(this).next().show()
+        }
+    })
+    $('#bgselect h3').on('click',function(){
+        if($(this).is('on')){
+            return
+        }else{
+            $(this).parent().addClass('on')
+            $(this).next().show()
+        }
+    })
+    $('#tuwen_sec select').on('change',function(){
+        var val=$(this).val();
+        if(val==''){
+           $('#art_new_a ul li').show()
+           return
+        }
+        $('#art_new_a ul li').hide()
+        $('[name='+val+']').show()
+    })
+    function allChecked (){
+        var a=$('#all_content input:checkbox').length,
+            b=$('#all_content input:checked').length;
+        if(a==b){
+            $('input[name="all_select"]').prop('checked',true)
+        }else {
+            $('input[name="all_select"]').prop('checked',false)
+        }
+    }
+    $('.tree_li .select').each(function(){
+        var $this=$(this),
+            $parent=$this.parent()
+        $this.on('click',function(){
+            if($this.is('.select')){
+                $parent.toggleClass('on')
+                if($parent.is('#all_select')){
+                   if($parent.is('.on')){
+                        $('#all_content').css('display','block')
+                   }else{
+                        $('#all_content').css('display','none')
+                   }
+                }
+            }
+        })
+    }) 
+    $('#tree_index').on('change',function(){
+        var name=$('#tree_index option:selected').attr('name');
+        switch(name){
+            case 'all':$('.tree_li').find('input[type="checkbox"]').prop('checked',true);allChecked()
+            break;
+            case 'master':$('.tree_li').find('input[type="checkbox"]').prop('checked',true);$('#sub_select').find('input[type="checkbox"]').prop('checked',false);allChecked()
+            break;
+            case 'sub':$('.tree_li').find('input[type="checkbox"]').prop('checked',false);$('#sub_select').find('input[type="checkbox"]').prop('checked',true);allChecked()
+        }
+    })
+    $('#tree_index').trigger('change')
+    $('#all_select input[name="all_select"]').on('click',function(){//点击所有
+        if($(this).is(':checked')){
+            $('#all_content input:checkbox').prop('checked',true);
+        }else{
+            $('#all_content input:checkbox').prop('checked',false);    
+        }
+    }) 
+    $('#all_content input[type="checkbox"]').on('click',function(event){
+        event.stopPropagation();
+        var $this=$(this);
+        if($this.parents('.content').length){//点击二级子类
+                var $parents=$this.parents('.content'),
+                    $inputIndex=$this.parents('.tree_li').find('.select input'),
+                    numberY=$parents.find('input:checked').length,
+                    numberN=$parents.find('input').length;
+                    // alert(numberN-numberY==0)
+                numberN-numberY==0 ? $inputIndex.prop('checked',true) : $inputIndex.prop('checked',false)
+        }else if($this.parent('.select').length) {//点击一级子类
+            var $content=$this.parent('.select').next();
+            $this.is(':checked') ? $content.find('input').prop('checked',true) : $content.find('input').prop('checked',false)
+        }      
+        allChecked()
+    })
+    if(window.location.href.indexOf('scope')!=-1){
+        var scope=$.getUrlParam('scope');
+        $('#tree_index option[value='+scope+']').attr("selected","selected")
+    }
+    if(window.location.href.indexOf('fruit')!=-1){
+        var data=$.getUrlParam('ctg_all')
+         if(data!=null&&data!='0'){
+            var all=data.split('|');
+            var allInput=$('.tree').find('input[type="checkbox"]');
+            allInput.prop('checked',false)
+            for (var i = 0; i < all.length; i++) {
+                $('.tree input[value='+all[i]+']').prop('checked',true)
+            };
+         }
+    }
+    if(window.location.href.indexOf('?')!=-1){
+            function GetRequest() {
+   
+              var url = location.href; //获取url中"?"符后的字串
+               url=url.replace(/\?/g,'/').replace(/=/g,'/').replace(/&/g,'/')
+               return url
+            }
+            var beforeUrl=location.href,
+                detailId=GetRequest();
+            history.replaceState( null, null, detailId)
+            var url='http://tajs.qq.com/stats?sId=40402741';
+            $.getScript(url)
+            setTimeout(function(){
+                history.replaceState(null,null,beforeUrl)
+            },1000)
+    }else{
+         var url='http://tajs.qq.com/stats?sId=40402741';
+            $.getScript(url) 
+    }
+})
+
+$(document).scroll(function(){
+    if($(document).scrollTop() >= $('[data-scroll="header_top"]').height())
+    {
+        $('[data-fixed="header_bottom"]').addClass('element-fixed');
+    }
+    else
+    {
+        $('[data-fixed="header_bottom"]').removeClass('element-fixed');
+    }
+    $('#trainee').css('top', $(window).height() - 269*2 + $(document).scrollTop());
+    $('#teenager').css('top', $(window).height() - 320*2 + $(document).scrollTop());
+    if($(document).scrollTop() > $('[data-scroll="header_top"]').height() + $('.container').height() - $(window).height())  //滚动到最底
+    {
+       $('#trainee').css('top', $('[data-scroll="header_top"]').height() + $('.container').height() - $('#trainee img').height()*2 + 82); 
+       $('#teenager').css('top', $('[data-scroll="header_top"]').height() + $('.container').height() - $('#teenager img').height()*2 + 225); 
+    }
+
+
+});
