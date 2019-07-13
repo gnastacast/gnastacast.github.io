@@ -1,0 +1,35 @@
+@font-face {
+  font-family: 'ArialRoundedMT';
+  src: url('ArialRoundedMT.eot');
+  src: url('ArialRoundedMT.svg#ArialRoundedMT') format('svg'),
+       url('ArialRoundedMT.ttf') format('truetype'),
+       url('ArialRoundedMT.woff') format('woff'),
+       url('ArialRoundedMT.eot?#iefix') format('embedded-opentype'),
+       url('ArialRoundedMT.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ArialRoundedMTBold';
+  src: url('ArialRoundedMTBold.eot');
+  src: url('ArialRoundedMTBold.svg#ArialRoundedMTBold') format('svg'),
+       url('ArialRoundedMTBold.ttf') format('truetype'),
+       url('ArialRoundedMTBold.woff') format('woff'),
+       url('ArialRoundedMTBold.eot?#iefix') format('embedded-opentype'),
+       url('ArialRoundedMTBold.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ArialRoundedMTLight';
+  src: url('ArialRoundedMTLight.eot');
+  src: url('ArialRoundedMTLight.svg#ArialRoundedMT-Light') format('svg'),
+       url('ArialRoundedMTLight.ttf') format('truetype'),
+       url('ArialRoundedMTLight.woff') format('woff'),
+       url('ArialRoundedMTLight.eot?#iefix') format('embedded-opentype'),
+       url('ArialRoundedMTLight.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
