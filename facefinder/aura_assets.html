@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <style type="text/css">
+
+    :root {
+      --aura-pink:   #93298e;
+      --aura-purple: #642e92;
+      --aura-blue:   #1072ba;
+      --aura-grey:   #1e1e1e;
+      --aura-green:  #d2d75a;
+      --aura-yellow: #fec65f;
+      --aura-red:    #e46560;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #ffffff;
+      font-family: 'ArialRoundedMT', sans-serif;
+      color:var(--aura-grey);
+    }
+
+    .green {
+      color:white;
+      background-color: var(--aura-green);
+    }
+
+    .yellow {
+      color:white;
+      background-color: var(--aura-yellow);
+    }
+
+    .red {
+      color:white;
+      background-color: var(--aura-red);
+    }
+
+    .grey {
+      color:white;
+      background-color: var(--aura-grey);
+    }
+
+    .pink {
+      color:white;
+      background-color: var(--aura-pink);
+    }
+
+    .purple {
+      color:white;
+      background-color: var(--aura-purple);
+    }
+
+    .blue {
+      color:white;
+      background-color: var(--aura-blue);
+    }
+
+    button::-moz-focus-inner {
+      border: 0;
+    }
+
+    button {
+      padding: 0;
+      border: none;
+      font: inherit;
+      color: inherit;
+      background-color: transparent;
+      border: none;
+      font-family: inherit;
+      font-size: 16pt;
+      position: relative;
+    }
+
+    button:disabled {
+      pointer-events: none;
+    }
+
+    button:active > div{
+      width: 95px;
+      height:45px;
+      position:relative;
+      /*left:2.5px;*/
+      padding:2.5px;
+      margin:2.5px;*/
+    }
+
+    button:disabled > div {
+      border: 3px solid #1e1e1e;
+      background-color: inherit;
+      padding: 2px;
+    }
+
+    button > img{
+      filter: invert(100%);
+      pointer-events: none;
+      width: 30%;
+      height: auto;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    button:disabled > img {
+      filter:invert(0%);
+    }
+
+    button > svg{
+      filter: invert(100%);
+      pointer-events: none;
+      width: 30%;
+      height: auto;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    button:disabled > svg {
+      filter:invert(0%);
+    }
+
+    button:disabled > div {
+      background:transparent;
+    }
+
+    button > div{
+      border: none;
+      background-color: #1e1e1e;
+      padding:15px;
+      border-radius: 100px;
+      box-sizing: border-box;
+      width: 100px;
+      height:50px;
+      padding: 5px;
+    }
+
+    button > div > p {
+      transform: translate(50%, -50%);
+      position: absolute;
+      left: 0;
+    }
+
+    button:disabled > div > p {
+      color:black;
+    }
+
+    button.pink {
+      background-color:transparent;
+    }
+
+    button.purple {
+      background-color:transparent;
+    }
+
+    button.blue {
+      background-color:transparent;
+    }
+
+    button.pink:enabled > div {
+      color:white;
+      background-color: var(--aura-pink);
+    }
+
+    button.purple:enabled > div {
+      color:white;
+      background-color: var(--aura-purple);
+    }
+
+    button.blue:enabled > div {
+      color:white;
+      background-color: var(--aura-blue);
+    }
+
+    button.pink:disabled {
+      filter: invert(20%) sepia(94%) saturate(1849%) hue-rotate(282deg) brightness(88%) contrast(91%); 
+    }
+
+    button.purple:disabled {
+      filter: invert(21%) sepia(29%) saturate(4270%) hue-rotate(254deg) brightness(92%) contrast(93%);
+    }
+
+    button.blue:disabled {
+      filter: invert(27%) sepia(36%) saturate(4033%) hue-rotate(187deg) brightness(101%) contrast(87%); 
+    }
+
+    .circle {
+      border-radius: 1000px;
+      width:50px;
+      height:50px;
+      display:inline-block;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div id=wrapper style="max-width:1000px; margin:auto;">
+    <div class='grey'>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 768 768" height="40%" width="40%" class="center" style='display:inline-block;'>
+        <style>.a{stop-color:#1072ba;}.b{stop-color:#642e92;stop-opacity:1;}.c{stop-color:#93298e;}</style>
+        <defs>
+          <clipPath id="clippath_anim">
+            <path d="m113.4 38.4c23.8 22.2 25 57.1 2.8 80.8-22.2 23.8-59.5 25-83.2 2.8C9.2 99.8 7.9 64.9 30.1 41.1 52.3 17.4 89.6 16.2 113.4 38.4ZM12.3 35.3C7 46.2 6 57.2 4.9 69.1 4.2 77.4 3.1 85.2 1.5 93.4 0.1 100.9-1 108.9 1.5 116.3c3.7 11.1 13.4 21.7 25.3 23.7 7.8 1.4 15.2 4 22.6 6.5 6.4 2.1 12.2 6.2 18.6 8.4 7.2 2.4 13.3 1.7 20.3-1.1 14.8-6 27.8-16.6 36.7-30 6-9.1 10.1-20.4 12.7-30.9 2-8 2.9-17 0.5-25-0.5-1.7-1.1-3.3-1.8-4.9C127 39.5 111.6 15.1 87.2 4.3 68.4-4 46.8 0.3 30.8 12.6 23 18.6 16.7 26.4 12.3 35.3">
+              <animate  dur="10s" repeatCount="indefinite" attributeName="d" id="path_anim"
+                values=""/>
+            </path>
+          </clipPath>
+          <linearGradient gradientTransform="matrix(136.373,-49.4422,49.4422,136.373,-2.88337,104.3)" y2="0" x2="1.17487" y1="0" x1="-0.103708" gradientUnits="userSpaceOnUse" id="linear0">
+            <stop id="stop-0" class="a" offset="-2" />
+            <stop id="stop-1" class="b" offset="-1.61" />
+            <stop id="stop-2" class="c" offset="-0.98" />
+            <stop id="stop-3" class="b" offset="-0.39" />
+            <stop id="stop-4" class="a" offset="0" />
+            <stop id="stop-5" class="b" offset="0.61" />
+            <stop id="stop-6" class="c" offset="0.98" />
+          </linearGradient>
+        </defs>
+        <g transform="translate(-10.815422 614.04147)matrix(4.567124 0 0 4.567124 75.986409 -587.17343)">
+          <path d="m56.1 64.9c-4.2 4.3-6.3 9.4-6.3 15.4 0 6.1 2.1 11.2 6.3 15.5 4.3 4.2 9.4 6.3 15.5 6.3 6.1 0 11.2-2.1 15.4-6.3 4.3-4.3 6.4-9.4 6.4-15.5 0-6-2.1-11.2-6.4-15.4-4.3-4.3-9.4-6.4-15.4-6.4-6.1 0-11.2 2.1-15.5 6.4zm42.3-11.4c7.4 7.4 11.1 16.4 11.1 26.8v30c0 2.2-0.8 4.1-2.4 5.6-1.6 1.6-3.4 2.4-5.6 2.4h-0.2c-2.2 0-4-0.8-5.6-2.4-1.6-1.5-2.4-3.4-2.4-5.6-5 5.3-12.3 8-21.8 8-10.5 0-19.4-3.7-26.8-11.1-7.4-7.4-11.1-16.4-11.1-26.8 0-10.5 3.7-19.4 11.1-26.8 7.4-7.4 16.4-11.1 26.8-11.1 10.5 0 19.4 3.7 26.8 11.1" fill="white"/>
+          <g clip-path="url(#clippath_anim)">
+            <path d="M-50.1 18.2 16.3 201.4 190.7 138.2 124.3-45Zm0 0" fill="url(#linear0)"/>
+          </g>
+          <path stroke="white" fill="transparent" id="svg_8">
+            <animate  dur="10s" repeatCount="indefinite" attributeName="d" values="" id="path_anim"/>
+
+          </path>
+        </g>
+      </svg>
+
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 768 768" height="40%" width="40%" class="center" style='display:inline-block;'>
+        <style>.a{stop-color:#1072ba;}.b{stop-color:#642e92;stop-opacity:1;}.c{stop-color:#93298e;}</style>
+        <defs>
+          <clipPath id="clippath">
+            <path d="m113.4 38.4c23.8 22.2 25 57.1 2.8 80.8-22.2 23.8-59.5 25-83.2 2.8C9.2 99.8 7.9 64.9 30.1 41.1 52.3 17.4 89.6 16.2 113.4 38.4ZM12.3 35.3C7 46.2 6 57.2 4.9 69.1 4.2 77.4 3.1 85.2 1.5 93.4 0.1 100.9-1 108.9 1.5 116.3c3.7 11.1 13.4 21.7 25.3 23.7 7.8 1.4 15.2 4 22.6 6.5 6.4 2.1 12.2 6.2 18.6 8.4 7.2 2.4 13.3 1.7 20.3-1.1 14.8-6 27.8-16.6 36.7-30 6-9.1 10.1-20.4 12.7-30.9 2-8 2.9-17 0.5-25-0.5-1.7-1.1-3.3-1.8-4.9C127 39.5 111.6 15.1 87.2 4.3 68.4-4 46.8 0.3 30.8 12.6 23 18.6 16.7 26.4 12.3 35.3"/>
+          </clipPath>
+          <linearGradient gradientTransform="matrix(136.373,-49.4422,49.4422,136.373,-2.88337,104.3)" y2="0" x2="1.17487" y1="0" x1="-0.103708" gradientUnits="userSpaceOnUse" id="linear0">
+            <stop id="stop-0" class="a" offset="-2" />
+            <stop id="stop-1" class="b" offset="-1.61" />
+            <stop id="stop-2" class="c" offset="-0.98" />
+            <stop id="stop-3" class="b" offset="-0.39" />
+            <stop id="stop-4" class="a" offset="0" />
+            <stop id="stop-5" class="b" offset="0.61" />
+            <stop id="stop-6" class="c" offset="0.98" />
+          </linearGradient>
+        </defs>
+        <g transform="translate(-10.815422 614.04147)matrix(4.567124 0 0 4.567124 75.986409 -587.17343)">
+          <path d="m56.1 64.9c-4.2 4.3-6.3 9.4-6.3 15.4 0 6.1 2.1 11.2 6.3 15.5 4.3 4.2 9.4 6.3 15.5 6.3 6.1 0 11.2-2.1 15.4-6.3 4.3-4.3 6.4-9.4 6.4-15.5 0-6-2.1-11.2-6.4-15.4-4.3-4.3-9.4-6.4-15.4-6.4-6.1 0-11.2 2.1-15.5 6.4zm42.3-11.4c7.4 7.4 11.1 16.4 11.1 26.8v30c0 2.2-0.8 4.1-2.4 5.6-1.6 1.6-3.4 2.4-5.6 2.4h-0.2c-2.2 0-4-0.8-5.6-2.4-1.6-1.5-2.4-3.4-2.4-5.6-5 5.3-12.3 8-21.8 8-10.5 0-19.4-3.7-26.8-11.1-7.4-7.4-11.1-16.4-11.1-26.8 0-10.5 3.7-19.4 11.1-26.8 7.4-7.4 16.4-11.1 26.8-11.1 10.5 0 19.4 3.7 26.8 11.1" fill="white"/>
+          <g clip-path="url(#clippath)">
+            <path d="M-50.1 18.2 16.3 201.4 190.7 138.2 124.3-45Zm0 0" fill="url(#linear0)"/>
+          </g>
+        </g>
+      </svg>
+
+    </div>
+    <div class='grey' style="padding:100px">
+      <h1>Title</h1>
+      <p>
+        Quod molestias ratione nisi dolorem deserunt aut velit repudiandae. Quaerat dignissimos sit officia aut. Placeat odit eos esse beatae id voluptatibus recusandae. Velit odit dolor est nulla omnis voluptatibus quo est.
+
+        Aperiam eligendi a enim quaerat voluptatem. Quae non corrupti et. Dolorem sequi corporis nam ut aut aliquid necessitatibus.
+
+        Vitae voluptates illum dolore ut dolorum. Earum minus aperiam quas assumenda autem provident. Sapiente et aliquam qui quae exercitationem similique veniam.
+
+        Quod corporis similique omnis blanditiis eum voluptatibus. Odio vel natus perferendis officiis veritatis qui. Iste nihil qui provident sunt sunt rerum nostrum. Reiciendis vero sunt voluptate quia. Eveniet omnis sequi eos.
+
+        Vitae expedita quae autem fugit laboriosam iste velit. Impedit inventore velit porro nemo fugiat eos. Voluptas quia in nesciunt doloribus explicabo ad beatae natus. Sit quo magni maxime sed.
+      </p>
+
+    </div>
+
+
+    <div id='buttons' style="margin:100px">
+      <button id="capture" type="button" enabled class='blue'>
+        <div ><p>Hello</p></div>
+        
+        <!-- <img src="{{ url_for('static', filename='aura-assets-v0.1.0/svg-icons/icn-camera.svg') }}"/> -->
+      </button>
+      <button id="faceSearch" type="button" disabled class='purple'>
+        <div><p> </p></div>
+        <svg version="1.1" id="Layer1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+       viewBox="-287 379.7 36.3 35.5" style="enable-background:new -287 379.7 36.3 35.5;" xml:space="preserve">
+        <style type="text/css">
+          .st0{fill:none;stroke:#000000;stroke-width:2.42;stroke-linecap:round;stroke-linejoin:round;}
+        </style>
+        <title>icn-camera</title>
+        <g id="Layer_2">
+          <g id="Layer_1-2">
+            <path class="st0" d="M-268.9,392.6c3.3,0,6.1,2.7,6.1,6c0,3.3-2.7,6.1-6,6.1s-6.1-2.7-6.1-6c0,0,0,0,0,0
+              C-274.9,395.4-272.2,392.7-268.9,392.6z M-282.3,389h4.9l3.6-4.8h9.7l3.6,4.8h4.7c2.1,0,3.8,1.7,3.8,3.8l0,0v14.1
+              c0,2.2-1.7,3.9-3.9,3.9h-25.7c-2.3,0-4.2-1.9-4.2-4.2v-14C-285.8,390.6-284.2,389-282.3,389z"/>
+          </g>
+        </g>
+        </svg>
+      </button>
+      <button id="reset" type="button" class='pink'>
+        <div><p></p></div>
+        <!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+           viewBox="-288 379.6 33.2 34.3" style="enable-background:new -288 379.6 33.2 34.3;" xml:space="preserve">
+        <style type="text/css">
+          .st0{fill:none;stroke:#000000;stroke-width:2.37;stroke-linecap:round;stroke-linejoin:round;}
+        </style>
+        <title>icn-retry</title>
+        <g id="Layer_2">
+          <g id="Layer_1-2">
+            <path class="st0" d="M-268.1,392.2l5.9-0.8l0.8-5.9 M-260.5,397.2c0,5-4.2,10.9-10.9,10.9s-10.9-5.9-10.9-10.9
+              c0-5,4.2-10.9,10.9-10.9c3.7,0.1,7.1,2,9.2,5"/>
+          </g>
+        </g>
+        </svg>
+      </button>
+    </div>
+
+    <div id='dots' style="margin:100px">
+      <div class="blue circle"></div>
+      <div class="purple circle"></div>
+      <div class="pink circle"></div>
+      <div class="red circle"></div>
+      <div class="yellow circle"></div>
+      <div class="green circle"></div>
+    </div>
+
+    <div id='text' style="margin:100px">
+      <h1>Title</h1>
+      <p>
+        Quod molestias ratione nisi dolorem deserunt aut velit repudiandae. Quaerat dignissimos sit officia aut. Placeat odit eos esse beatae id voluptatibus recusandae. Velit odit dolor est nulla omnis voluptatibus quo est.
+
+        Aperiam eligendi a enim quaerat voluptatem. Quae non corrupti et. Dolorem sequi corporis nam ut aut aliquid necessitatibus.
+
+        Vitae voluptates illum dolore ut dolorum. Earum minus aperiam quas assumenda autem provident. Sapiente et aliquam qui quae exercitationem similique veniam.
+
+        Quod corporis similique omnis blanditiis eum voluptatibus. Odio vel natus perferendis officiis veritatis qui. Iste nihil qui provident sunt sunt rerum nostrum. Reiciendis vero sunt voluptate quia. Eveniet omnis sequi eos.
+
+        Vitae expedita quae autem fugit laboriosam iste velit. Impedit inventore velit porro nemo fugiat eos. Voluptas quia in nesciunt doloribus explicabo ad beatae natus. Sit quo magni maxime sed.
+      </p>
+    </div>
+  </div>
+  <!-- SCRIPTS TO ANIMATE WOBBLE -->
+  <script type="text/javascript">
+        function make_svg_wobble(n_points, center_x, center_y, radius=1, noise=0, time=0) {
+          var svg_string = "M 113.4 38.4 c  23.8 22.2    25 57.1 2.8 80.8 -22.2 23.8 -59.5   25  -83.2  2.8 C 9.2 99.8 7.9 64.9 30.1 41.1 52.3 17.4 89.6 16.2 113.4 38.4 Z";
+          var step = 1 / n_points * Math.PI * 2;
+          var handle_len = radius / n_points * 0.552 * 4;
+          var last_x = 0;
+          var last_y = 0;
+          for(var i=0; i < n_points + 1; i++){
+            var offset = Math.cos(i * step * 3 + 0 + time**1*Math.PI*4) * noise / 2 + 
+                         Math.sin(i * step * 5 + 2 + time**1*Math.PI*2) * noise / 2 - 
+                         Math.sin(i * step * 2 + 1 + time**2*Math.PI*2) * noise / 3;
+            var x  = -Math.cos(i * step) * (radius + offset) + center_x;
+            var y  =  Math.sin(i * step) * (radius + offset) + center_y;
+            var x1 =  Math.sin((i-1) * step) * handle_len + last_x;
+            var y1 =  Math.cos((i-1) * step) * handle_len + last_y; 
+            var x2 = -Math.sin(i * step) * handle_len + x;
+            var y2 = -Math.cos(i * step) * handle_len + y;
+            var last_x  = x;
+            var last_y  = y;
+            if(i==0) {
+              svg_string +=   'M ' + x + ' ' + y + ' L';
+            } else {
+              // svg_string += ', C ' + x1 + ' ' + y1 + ', ' + x2 + ' ' + y2 + ', ' + x + ' ' + y;
+              svg_string += ' ' + x + ' ' + y;
+            }
+          }
+          return svg_string + 'Z;';
+        }
+
+        function make_wobble_anim(n_points, center_x, center_y, radius=1, noise=0, steps=50) {
+          var anim = ""
+          for(var i = 0; i < steps - 1; i++) {
+            anim += make_svg_wobble(n_points, center_x, center_y, radius, noise, i/steps) + '\n'; 
+          }
+          anim += make_svg_wobble(n_points, center_x, center_y, radius, noise, 1); 
+          return anim
+        }
+
+        document.getElementById('path_anim').setAttribute('values', make_wobble_anim(80,73,80,70,5,20));
+  </script>
+</body>
+</html>
