@@ -23,9 +23,14 @@
 	</style>
 </head>
 <body>
-<video width="100%" loop="true" autoplay="true" controls>
-  <source src="jesus_dragons.mp4" type="video/mp4">
+<video id="vid" width="100%" loop="true">
+  <source src="jesus_dragons.mp4" type="video/mp4"  onclick="">
 </video>
+<div style="    margin-top: -60%;
+    z-index: 100;
+    position: absolute;">
+<img src="video_thumb.png" width=100% onclick="document.getElementById('vid').play(); this.style.display = 'none';">
+</div>
 <div id="container">
 	<p>And there appeared another wonder in heaven; and behold a great red dragon, having seven heads and ten horns, and seven crowns upon his heads.  And his tail drew the third part of the stars of heaven, and did cast them to the earth: and the dragon stood before the woman which was ready to be delivered, for to devour her child as soon as it was born. And she brought forth a man child, who was to rule all nations with a rod of iron: and her child was caught up unto God, and to his throne.</p>
 </div>
