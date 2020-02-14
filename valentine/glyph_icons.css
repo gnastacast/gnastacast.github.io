@@ -9,16 +9,16 @@
  */
 
 
-article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display:block;}
+/*article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display:block;}
 audio,canvas,video{display:inline-block;}
 audio:not([controls]){display:none;height:0;}
-[hidden]{display:none;}
-html{font-family:sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
-body{margin:0;}
+[hidden]{display:none;}*/
+/*html{font-family:sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}*/
+/*body{margin:0;}
 a:focus{outline:thin dotted;}
-a:active,a:hover{outline:0;}
-h1{font-size:2em;margin:0.67em 0;}
-abbr[title]{border-bottom:1px dotted;}
+a:active,a:hover{outline:0;}*/
+/*h1{font-size:2em;margin:0.67em 0;}*/
+/*abbr[title]{border-bottom:1px dotted;}
 b,strong{font-weight:bold;}
 dfn{font-style:italic;}
 hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0;}
@@ -47,9 +47,9 @@ button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0;}
 textarea{overflow:auto;vertical-align:top;}
 table{border-collapse:collapse;border-spacing:0;}
 *,*:before,*:after{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
-html{font-size:62.5%;-webkit-tap-highlight-color:rgba(0, 0, 0, 0);}
-body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:1.428571429;color:#333333;background-color:#ffffff;}
-input,button,select,textarea{font-family:inherit;font-size:inherit;line-height:inherit;}
+html{-webkit-tap-highlight-color:rgba(0, 0, 0, 0);}*/
+/*body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:1.428571429;color:#333333;background-color:#ffffff;}*/
+/*input,button,select,textarea{font-family:inherit;font-size:inherit;line-height:inherit;}
 button,input,select[multiple],textarea{background-image:none;}
 a{color:#428bca;text-decoration:none;}a:hover,a:focus{color:#2a6496;text-decoration:underline;}
 a:focus{outline:thin dotted #333;outline:5px auto -webkit-focus-ring-color;outline-offset:-2px;}
@@ -60,6 +60,7 @@ img{vertical-align:middle;}
 .img-circle{border-radius:50%;}
 hr{margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #eeeeee;}
 .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);border:0;}
+*/
 @font-face{font-family:'Glyphicons Halflings';
 		   src: url('fonts/glyphicons-halflings-regular.eot');
 		   src:	url('fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
@@ -266,3 +267,7 @@ hr{margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #eeeeee;}
 .glyphicon-bookmark:before{content:"\1f516";}
 .glyphicon-fire:before{content:"\1f525";}
 .glyphicon-wrench:before{content:"\1f527";}
+.glyphicon-none{
+  font-family: sans-serif;
+  font-weight: bold;
+}

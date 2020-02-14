@@ -3,7 +3,7 @@ html,body {
 }
 
 .bg_heart {
-    position: relative;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -51,6 +51,7 @@ html,body {
     color: black;
     max-width: 600px;
     min-width: 400px;
+    width:80vw;
     position: absolute;
     left: 50%;
     transform: translate(-50%,0%);
@@ -111,4 +112,10 @@ html,body {
 }
 @keyframes love {
   0%{top:110%}
+}
+
+@media (min-width: 400px) {
+  html{
+    font-size:150%;
+  }
 }

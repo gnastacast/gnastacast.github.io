@@ -4,7 +4,7 @@
 ul.dots * {
   /* disable border-box from bootstrap */
   box-sizing: content-box;
-  list-style-type: none;  
+  list-style-type: none;
 }
 ul.dots a {
   text-decoration: none;
@@ -15,6 +15,12 @@ ul.dots a:hover {
   text-decoration: none;
   font-size: 20px;
   color: #bdc3c7;
+}
+ul.dots a.active span{
+  filter: invert(100%) grayscale() contrast(50%);
+  -webkit-box-shadow: 1px 1px 5px #FFF3;
+  -moz-box-shadow: 1px 1px 5px #FFF3;
+  box-shadow: 1px 1px 5px #FFF;  
 }
 ul.dots li {
   display: box;
@@ -31,9 +37,9 @@ ul.dots li span {
   -moz-border-radius: 30px;
   border-radius: 30px; 
   background-color: #FFF;
-  -webkit-box-shadow: 1px 1px 5px #808080;
-  -moz-box-shadow: 1px 1px 5px #808080;
-  box-shadow: 1px 1px 5px #808080;  
+  -webkit-box-shadow: 1px 1px 5px #0003;
+  -moz-box-shadow: 1px 1px 5px #0003;
+  box-shadow: 1px 1px 5px #0003;  
   padding: 10px;
   width: 30px;
   height: 30px;

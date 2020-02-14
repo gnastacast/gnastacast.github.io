@@ -1,16 +1,16 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans|Oswald);
 
-#amazingaudioplayer-1 {
+.amazingaudioplayer {
 	box-sizing: content-box;
 }
 
-#amazingaudioplayer-1 div {
+.amazingaudioplayer div {
 	-webkit-box-sizing: content-box;
 	-moz-box-sizing: content-box;
 	box-sizing: content-box;   
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-image {
+.amazingaudioplayer .amazingaudioplayer-image {
 	display: block;
 	position: relative;
 	float: left;
@@ -24,10 +24,10 @@
     	border-radius: 4px;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-image-clear {
+.amazingaudioplayer .amazingaudioplayer-image-clear {
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-text {
+.amazingaudioplayer .amazingaudioplayer-text {
 	display: block;
 	position: relative;
 	overflow: hidden;
@@ -35,12 +35,12 @@
 	height: 100px;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-text-clear {
+.amazingaudioplayer .amazingaudioplayer-text-clear {
 	clear: both;
 	height: 8px;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-title {
+.amazingaudioplayer .amazingaudioplayer-title {
 	display: block;
 	color: #333;
 	font-family: "Oswald",Arial,sans-serif;
@@ -48,10 +48,10 @@
 	font-weight: bold;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-title-clear {
+.amazingaudioplayer .amazingaudioplayer-title-clear {
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-info {
+.amazingaudioplayer .amazingaudioplayer-info {
 	display: block;
 	display: block;
 	color: #333;
@@ -60,10 +60,10 @@
 	font-style: italic;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-info-clear {
+.amazingaudioplayer .amazingaudioplayer-info-clear {
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-bar {
+.amazingaudioplayer .amazingaudioplayer-bar {
 	background-color: #f6f6f6;
 	margin: 4px;
 	border: 1px solid #cbcbcb;
@@ -79,14 +79,14 @@
 	border-radius: 2px;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-bar-buttons-clear {
+.amazingaudioplayer .amazingaudioplayer-bar-buttons-clear {
 	clear: both;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-bar-clear {
+.amazingaudioplayer .amazingaudioplayer-bar-clear {
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-bar-title {
+.amazingaudioplayer .amazingaudioplayer-bar-title {
 	position: relative;
 	float: left;
 	color: #444444;
@@ -96,51 +96,51 @@
 	margin: 0 8px;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-playpause {
+.amazingaudioplayer .amazingaudioplayer-playpause {
 	position: relative;
 	float: left;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-play {
+.amazingaudioplayer .amazingaudioplayer-play {
 	position: relative;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-pause {
+.amazingaudioplayer .amazingaudioplayer-pause {
 	position: relative;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-stop {
-	position: relative;
-	float: left;
-}
-
-#amazingaudioplayer-1 .amazingaudioplayer-prev {
+.amazingaudioplayer .amazingaudioplayer-stop {
 	position: relative;
 	float: left;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-next {
+.amazingaudioplayer .amazingaudioplayer-prev {
 	position: relative;
 	float: left;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-loop {
+.amazingaudioplayer .amazingaudioplayer-next {
+	position: relative;
+	float: left;
+}
+
+.amazingaudioplayer .amazingaudioplayer-loop {
 	position: relative;
 	float: left;
 	margin: 0 2px;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-progress {
+.amazingaudioplayer .amazingaudioplayer-progress {
 	position: relative;
 	background-color: #706d6d;
 	margin: 8px 4px;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-progress-loaded {
+.amazingaudioplayer .amazingaudioplayer-progress-loaded {
 	background-color: #999;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-progress-played {
+.amazingaudioplayer .amazingaudioplayer-progress-played {
 	background-color: #73b3c3;
 	background-image: -ms-linear-gradient(top, #90d9e4 0%, #368fae 100%);
 	background-image: -moz-linear-gradient(top, #90d9e4 0%, #368fae 100%);
@@ -150,7 +150,7 @@
 	background-image: linear-gradient(to bottom, #90d9e4 0%, #368fae 100%);
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-time {
+.amazingaudioplayer .amazingaudioplayer-time {
 	position: relative;
 	float: right;
 	color: #555555;
@@ -161,12 +161,12 @@
 	margin: 0 4px;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-volume {
+.amazingaudioplayer .amazingaudioplayer-volume {
 	position: relative;
 	float: right;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-volume-bar {
+.amazingaudioplayer .amazingaudioplayer-volume-bar {
 	margin-bottom: 2px;
 	background-color: #e1e1e1;
 	background-image: -ms-linear-gradient(top, #f6f6f6 0%, #e1e1e1 100%);
@@ -180,20 +180,20 @@
 	border-radius: 2px;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-volume-bar-adjust {
+.amazingaudioplayer .amazingaudioplayer-volume-bar-adjust {
 	background-color: #555;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-volume-bar-adjust-active {
+.amazingaudioplayer .amazingaudioplayer-volume-bar-adjust-active {
 	background-color: #4ba4bd;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-tracklist {
+.amazingaudioplayer .amazingaudioplayer-tracklist {
 	display: block;
 	position: relative;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-tracklist-container {
+.amazingaudioplayer .amazingaudioplayer-tracklist-container {
 	display: block;
 	position: relative;
 	-webkit-border-radius: 2px;
@@ -211,79 +211,82 @@
 	background-image: linear-gradient(to bottom, #f6f6f6 0%, #e1e1e1 100%);
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-tracks-wrapper {
+.amazingaudioplayer .amazingaudioplayer-tracks-wrapper {
 	position: relative;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-tracks {
+.amazingaudioplayer .amazingaudioplayer-tracks {
 	position: relative;
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-track-item {
+.amazingaudioplayer .amazingaudioplayer-track-item {
 	position: relative;
 	cursor: pointer;
 	color: #666;
 	font-family: 'Open Sans', Arial, sans-serif;
-	font-size: 12px;
-	line-height: 22px;
+	font-size: 0.8em;
+	line-height: 1.2em;
 	margin: 0;
 	padding: 0;
 	text-align: left;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-track-item-active {
+.amazingaudioplayer .amazingaudioplayer-track-item-active {
 	cursor: pointer;
 	color: #222;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-track-item a {
+.amazingaudioplayer .amazingaudioplayer-track-item a {
 	color: #666;
     text-decoration: none;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-track-item-active a {
+.amazingaudioplayer .amazingaudioplayer-track-item-active a {
 	color: #222;
     text-decoration: none;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-track-item-duration {
+.amazingaudioplayer .amazingaudioplayer-track-item-duration {
 	position: absolute;
 	top: 0;
 	right: 0;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-tracklist-arrow-prev {
+.amazingaudioplayer .amazingaudioplayer-tracklist-arrow-prev {
 	position: absolute;
 	bottom: 2px;
 	left: 50%;
 	margin-left: -64px;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-tracklist-arrow-next {
+.amazingaudioplayer .amazingaudioplayer-tracklist-arrow-next {
 	position: absolute;
 	bottom: 2px;
 	left: 50%;
 	margin-left: 16px;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-tracklist-clear {
+.amazingaudioplayer .amazingaudioplayer-tracklist-clear {
 	clear: both;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-item-id {
+.amazingaudioplayer .amazingaudioplayer-item-id {
 	float: left;
-	width: 18px;
+	width: 1.8em;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-item-info {
+.amazingaudioplayer .amazingaudioplayer-item-info {
 	float: right;
-	width: 36px;
+	width: 3em;
 }
 
-#amazingaudioplayer-1 .amazingaudioplayer-item-title {
+.amazingaudioplayer .amazingaudioplayer-item-title {
 	overflow: hidden;
-}
-
+	height:1.2em;
+}
+
+
+
