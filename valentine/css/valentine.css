@@ -9,9 +9,8 @@ html,body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background-image: url('st-valentine.jpg');
+    background-image: url('../images/st-valentine.jpg');
     background-size: contain;
-
  }
 
  .fg_singer {
@@ -21,7 +20,7 @@ html,body {
     height:100%;
     width:100%;
     max-width: 500px;
-    background-image: url('tunnel.png');
+    background-image: url('../images/tunnel.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: bottom right;
@@ -32,7 +31,7 @@ html,body {
     right:10px;
  }
 
- #overlay {
+ #overlay_container {
   position: fixed; /* Sit on top of the page content */
   display: none; /* Hidden by default */
   width: 100%; /* Full width (cover the whole page) */
@@ -46,24 +45,29 @@ html,body {
   cursor: pointer; /* Add a pointer on hover */
 }
 
-#overlay_text {
-    background-color: rgba(255,255,255,1);
-    color: black;
-    max-width: 600px;
-    min-width: 400px;
-    width:80vw;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%,0%);
-    -ms-transform: translate(-50%,0%);
-    padding:50px;
-    padding-bottom:100px;
-    padding-top: 0px;
-    height: 100%;
-    overflow-y: scroll;
+.overlay {
+  background-color: rgba(255,255,255,1);
+  color: black;
+  max-width: 600px;
+  min-width: 400px;
+  width:80vw;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%,0%);
+  -ms-transform: translate(-50%,0%);
+  padding:50px;
+  padding-bottom:100px;
+  padding-top: 0px;
+  height: 100%;
+  overflow-y: scroll;
+  display:none;
 }
 
-#overlay .dots{
+.overlay.active {
+  display:block;
+}
+
+#overlay_container .dots{
     position:absolute;
     right:10px;
 }

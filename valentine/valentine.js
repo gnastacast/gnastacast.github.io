@@ -19,11 +19,11 @@ var love = setInterval(function() {
 }, 500);
 
 function overlayOn() {
-  document.getElementById("overlay").style.display = "block";
+  document.getElementById("overlay_container").style.display = "block";
 }
 
 function overlayOff() {
-  document.getElementById("overlay").style.display = "none";
+  document.getElementById("overlay_container").style.display = "none";
 }
 
 function gotoMessage(self) {
