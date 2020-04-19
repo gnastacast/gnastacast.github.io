@@ -18,21 +18,6 @@ var love = setInterval(function() {
     });
 }, 500);
 
-function check_url(url) {
-  var request;
-  if(window.XMLHttpRequest)
-      request = new XMLHttpRequest();
-  else
-      request = new ActiveXObject("Microsoft.XMLHTTP");
-  request.open('GET', url, false);
-  request.send(); // there will be a 'pause' here until the response to come.
-  // the object request will be actually modified
-  if (request.status === 404) {
-      return false;
-  }
-  return true;
-}
-
 function decrypt(event) {
   event.preventDefault();
   link = "https://drive.google.com/uc?export=view&id="
@@ -53,17 +38,11 @@ function decrypt(event) {
                // "U2FsdGVkX1+KyvSQ5E+poUve7f2BUtvTHiXTAIAeIQvX2NinekF7PgGDzYyVyG75z1GKu4CU6frIA5S2S8o+9g==",
                "U2FsdGVkX19zMuY7KBvTflMSReer3F603qOFfP1dnI+BQpUaSz4aa/aJ4ttgbelXId0bOgwJ4qFJl8H9mwlBgQ==",
                "U2FsdGVkX1//wo9JNS1fxcaCXlkZWny6C5ik9nyRPsbLsREsd1CfV9mzTpm48GAVjySkb3QJhLuTpmRzTj0jIg=="]
-               
+
   var overlay = document.getElementById("encrypted_overlay");
   for (var i=0; i<encrypted.length; i++)
   {
     var decrypted = hex2a(CryptoJS.AES.decrypt(encrypted[i], document.getElementById("pwd").value).toString());
-    if(i ==0) {
-      if(!check_url(link + decrypted)) {
-        document.getElementById("pwd").value = "";
-        return 0;
-      }
-    }
     var images = overlay.getElementsByTagName("img");
     if(images.length <= i)
     {
