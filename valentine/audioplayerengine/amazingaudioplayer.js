@@ -1,6 +1,6 @@
 /** Amazing Audio Player - HTML5 Audio Player for Your Website
  * Copyright 2013 Magic Hills Pty Ltd All Rights Reserved
- * Website: http://amazingaudioplayer.com
+ * Website: https://amazingaudioplayer.com
  * Version 3.4 
  */
 var AmazingAudioPlatforms={flashInstalled:function(){var flashInstalled=false;try{if(new ActiveXObject("ShockwaveFlash.ShockwaveFlash"))flashInstalled=true}catch(e){if(navigator.mimeTypes["application/x-shockwave-flash"])flashInstalled=true}return flashInstalled},html5VideoSupported:function(){return!!document.createElement("video").canPlayType},isChrome:function(){return navigator.userAgent.match(/Chrome/i)!=null},isFirefox:function(){return navigator.userAgent.match(/Firefox/i)!=null},isOpera:function(){return navigator.userAgent.match(/Opera/i)!=

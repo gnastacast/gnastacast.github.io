@@ -191,13 +191,13 @@ function submited(_this, odd, url) { //提交
             $('.loading').css('display','inline-block')
             $('input[name="all_select"]').is(':checked')||$('.tree').find(':checked').length==0 ? data='&ctg_all=0&scope='+$('#tree_index').val() : data='&ctg_all='+data_left+'&scope='+$('#tree_index').val()
             var str = $(_this).parents('form').serialize()+data;
-            location.href = 'http://www.clas.ac.cn/content/fruit?'+str
+            location.href = 'https://www.clas.ac.cn/content/fruit?'+str
 
         } else if (odd == 3) {
              $(_this).css('display','none')
             $('.loading').css('display','inline-block')
             var str = $(_this).parent('form').serialize() + '&senior=y'
-            location.href = 'http://www.clas.ac.cn/content/fruit?' + str
+            location.href = 'https://www.clas.ac.cn/content/fruit?' + str
         }
     }else{
         return
@@ -362,7 +362,7 @@ function checkuserip(){
 
 function out() {
     var webHost = window.location.host;
-    var dataUrl = "http://" + webHost + "/user/apitc";
+    var dataUrl = "https://" + webHost + "/user/apitc";
     $.post(dataUrl, function(data) {
         if (data.ret == 0) {
             $('.prompt').html('<p><a class="copen" href="javascript:alertPage()">登录</a>|<a class="copen" href="user/register">注册</a></p>')
@@ -1258,13 +1258,13 @@ $(function() {
             var beforeUrl=location.href,
                 detailId=GetRequest();
             history.replaceState( null, null, detailId)
-            var url='http://tajs.qq.com/stats?sId=40402741';
+            var url='https://tajs.qq.com/stats?sId=40402741';
             $.getScript(url)
             setTimeout(function(){
                 history.replaceState(null,null,beforeUrl)
             },1000)
     }else{
-         var url='http://tajs.qq.com/stats?sId=40402741';
+         var url='https://tajs.qq.com/stats?sId=40402741';
             $.getScript(url) 
     }
 })

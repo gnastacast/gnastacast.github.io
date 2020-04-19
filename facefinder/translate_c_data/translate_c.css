@@ -34,10 +34,10 @@ input::-ms-clear {display: none}
 .header_top .prompt .copen {margin: 0 5px; font-weight: bold}
 .header_top .prompt em {}
 .header_top .prompt #out {padding-left: 10px; margin-left: 5px}
-.header_top .show {position: absolute; top: 220px; right: -45px; display: none; text-align: center; width: 41px; font-family: "微软雅黑"; z-index: 200; background: url(http://clas.cas.cn/images/img_weixin.png) repeat-x center center; cursor: pointer}
+.header_top .show {position: absolute; top: 220px; right: -45px; display: none; text-align: center; width: 41px; font-family: "微软雅黑"; z-index: 200; background: url(https://clas.cas.cn/images/img_weixin.png) repeat-x center center; cursor: pointer}
 .header_top .show img {margin-top: 5px}
 .header_top .show p {width: 15px; margin: 5px auto 10px; color: #ffffff; font-size: 15px}
-.header_top .show em {display: block; background: url(http://clas.cas.cn/images/img_zhuangshi.jpg) no-repeat; height: 30px; width: 41px}
+.header_top .show em {display: block; background: url(https://clas.cas.cn/images/img_zhuangshi.jpg) no-repeat; height: 30px; width: 41px}
 #table-ul {font-family: "Microsoft Yahei","微软雅黑",Tahoma,Arial,Helvetica,STHeiti; text-align: left; width: 80%; border-collapse: collapse; border-spacing: 0; font-size: 12px; font-size: 0; border-top-style: none; margin: 0 auto 50px}
 #table-ul a:hover {color: #1974a1}
 #table-ul li {font-size: 13px; line-height: 1.32857; padding: 0.8% 0; padding-left: 4%; display: inline-block; vertical-align: top; background: #eeeeee; margin: 10px 0}
@@ -50,7 +50,7 @@ input::-ms-clear {display: none}
 #substation .header_top {position: relative; width: 1020px; height: 175px; margin: 0 auto}
 * {font-family: arial}
 #navigation {text-align: center; color: #ffffff; font-size: 14px}
-#navigation #nav {width: 1228px; text-align: center; height: 48px; margin-top: 0; margin-right: auto; margin-bottom: 0; margin-left: auto; padding-left: 0px; color: #ffffff; font-size: 14px; background-image: url(http://clas.cas.cn/images/url.jpg); background-repeat: no-repeat; background-position: right; background-color: #348976}
+#navigation #nav {width: 1228px; text-align: center; height: 48px; margin-top: 0; margin-right: auto; margin-bottom: 0; margin-left: auto; padding-left: 0px; color: #ffffff; font-size: 14px; background-image: url(https://clas.cas.cn/images/url.jpg); background-repeat: no-repeat; background-position: right; background-color: #348976}
 #navigation #menu {text-align: center; z-index: 9999; background-color: #40bbb5}
 #navigation #menu li {list-style: none}
 #navigation #menu ul {padding: 0; list-style-type: none; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 17px; color: #ffffff}
@@ -63,10 +63,10 @@ input::-ms-clear {display: none}
 #navigation #menu ul li ul li:hover {background-color: #3f9fb1}
 #navigation #menu ul li ul .top {height: 10px; background-color: #003366}
 #navigation #menu ul li ul .top:hover {height: 10px}
-#navigation #menu ul li ul .btm {background: url(http://clas.cas.cn/images/images/nav-btm.png) center bottom no-repeat; height: 18px}
-#navigation #menu ul li ul .btm:hover {background: url(http://clas.cas.cn/images/images/nav-btm.png) center bottom no-repeat; height: 18px}
+#navigation #menu ul li ul .btm {background: url(https://clas.cas.cn/images/images/nav-btm.png) center bottom no-repeat; height: 18px}
+#navigation #menu ul li ul .btm:hover {background: url(https://clas.cas.cn/images/images/nav-btm.png) center bottom no-repeat; height: 18px}
 #navigation #menu ul li ul li a {display: block; color: #ffffff; text-decoration: none; padding: 7px 5px 7px 15px; margin: 0; font-size: 12px; background-color: #66ffff}
-#navigation #menu ul li ul li a:hover {background: url(http://clas.cas.cn/images/images/nav-line.gif) center bottom no-repeat; color: #ffffff}
+#navigation #menu ul li ul li a:hover {background: url(https://clas.cas.cn/images/images/nav-line.gif) center bottom no-repeat; color: #ffffff}
 #navigation #banner {width: 1024px; margin: 0 auto}
 #navigation #menu ul li ul table {font-size: 12px; color: #ffffff; margin-top: 10px}
 #navigation #menu ul li ul table a {color: #ffffff}
@@ -80,30 +80,30 @@ input::-ms-clear {display: none}
 #navigation #menu ul li ul table .block {padding: 8px 10px}
 #navigation #menu ul li ul table .lnk01 a {padding: 5px 10px; display: block; float: left}
 #navigation #menu ul li ul table .lnk01 a img {margin-right: 5px}
-#navigation #menu ul li ul table .lnk02 a {width: 130px; height: 26px; line-height: 26px; display: block; float: left; margin: 0 6px 10px 8px; color: #333333; text-indent: 20px; text-align: left; background-color: #b7dbd1; background-image: url(http://clas.cas.cn/images/images/arr04.gif); background-repeat: no-repeat; background-position: 10px center}
+#navigation #menu ul li ul table .lnk02 a {width: 130px; height: 26px; line-height: 26px; display: block; float: left; margin: 0 6px 10px 8px; color: #333333; text-indent: 20px; text-align: left; background-color: #b7dbd1; background-image: url(https://clas.cas.cn/images/images/arr04.gif); background-repeat: no-repeat; background-position: 10px center}
 #navigation #menu ul li ul table .lnk02 a:hover {background-color: #c0c0c0; background-repeat: no-repeat; background-position: 10px center}
 #navigation #menu ul li ul table .w {padding-top: 16px; width: 300px}
 #navigation #menu ul li ul table .w a {width: 230px; margin-left: 15px}
 #navigation #menu ul li ul table .partyblock {padding: 15px 0 0 10px}
 #navigation #menu ul li ul table .partyblock img {margin: 0 10px}
-#header {background-image: url(http://clas.cas.cn/images/6.jpg); background-repeat: no-repeat; background-position: center top; min-width: 1228px; width: 100%; margin-top: 0; margin-right: auto; margin-bottom: 0; margin-left: auto}
+#header {background-image: url(https://clas.cas.cn/images/6.jpg); background-repeat: no-repeat; background-position: center top; min-width: 1228px; width: 100%; margin-top: 0; margin-right: auto; margin-bottom: 0; margin-left: auto}
 #header_top .logo {position: absolute; left: 0; bottom: 0; text-align: left}
 #header_top .logo img {width: 85%}
 .header_top .webName {position: absolute; right: 0; top: 58px; font-size: 18px; color: #290d06; letter-spacing: 3px; font-family: "微软雅黑","Microsoft Yahei"; font-weight: bold}
 .header_top .search {padding-top: 1px; position: absolute; bottom: 15px; right: 0}
-.header_top .search .beautify {display: inline-block; width: 197px; height: 27px; vertical-align: top; padding-left: 30px; background: url(http://clas.cas.cn/images/icon_form.png) no-repeat 0px -1px}
+.header_top .search .beautify {display: inline-block; width: 197px; height: 27px; vertical-align: top; padding-left: 30px; background: url(https://clas.cas.cn/images/icon_form.png) no-repeat 0px -1px}
 .search select {border: 1px solid #333333; border-radius: 4px; color: #555555; line-height: 30px; font-size: 14px; height: 27px !important; font-weight: normal; filter: none !important; background-image: none !important; cursor: pointer}
 .header_top .search .beautify input {width: 188px; height: 18px; margin: 4px 0; border-style: none; font-size: 14px}
-.search .submit {display: inline-block; width: 53px; height: 27px; vertical-align: top; color: #ffffff; font-size: 14px; line-height: 25px; background: url(http://clas.cas.cn/images/icon_form.png) no-repeat -259px -1px; text-align: center}
-.search .senior {display: inline-block; width: 83px; height: 27px; margin-left: 5px; vertical-align: top; color: #ffffff; font-size: 14px; line-height: 25px; text-align: center; background: url(http://clas.cas.cn/images/icon_form.png) no-repeat -346px -1px}
-.header_top .additional {position: absolute; top: 220px; right: -145px; width: 135px; background: url(http://clas.cas.cn/images/img_weixin.png) repeat-x; text-align: center; z-index: 100}
+.search .submit {display: inline-block; width: 53px; height: 27px; vertical-align: top; color: #ffffff; font-size: 14px; line-height: 25px; background: url(https://clas.cas.cn/images/icon_form.png) no-repeat -259px -1px; text-align: center}
+.search .senior {display: inline-block; width: 83px; height: 27px; margin-left: 5px; vertical-align: top; color: #ffffff; font-size: 14px; line-height: 25px; text-align: center; background: url(https://clas.cas.cn/images/icon_form.png) no-repeat -346px -1px}
+.header_top .additional {position: absolute; top: 220px; right: -145px; width: 135px; background: url(https://clas.cas.cn/images/img_weixin.png) repeat-x; text-align: center; z-index: 100}
 #home .header_top .additional {display: none}
-.header_top .additional .close {font-size: 12px; width: 13px; height: 12px; float: right; margin: 4px 2px 0 0; cursor: pointer; background: url(http://clas.cas.cn/images/not.png) no-repeat}
-.header_top .additional .zs {width: 135px; height: 40px; background: url(http://clas.cas.cn/images/img_zhuangshi.jpg) no-repeat}
+.header_top .additional .close {font-size: 12px; width: 13px; height: 12px; float: right; margin: 4px 2px 0 0; cursor: pointer; background: url(https://clas.cas.cn/images/not.png) no-repeat}
+.header_top .additional .zs {width: 135px; height: 40px; background: url(https://clas.cas.cn/images/img_zhuangshi.jpg) no-repeat}
 .header_top .additional img {margin-bottom: 7px}
-.header_top .additional #weibo, .header_top .additional #mail, .header_top .additional #contact {background: url(http://clas.cas.cn/images/img_additional_qt.png) repeat-x}
-.header_top .additional #weibo a, .header_top .additional #mail a, .header_top .additional #contact a {display: block; height: 47px; padding-left: 30px; color: #ffffff; line-height: 47px; font-size: 16px; background: url(http://clas.cas.cn/images/icon_additional.png) no-repeat}
-.header_top .additional #weixin {height: 47px; padding-left: 50px; margin-top: 5px; color: #ffffff; line-height: 47px; font-size: 16px; background: url(http://clas.cas.cn/images/icon_weixin.png) no-repeat 10px 10px}
+.header_top .additional #weibo, .header_top .additional #mail, .header_top .additional #contact {background: url(https://clas.cas.cn/images/img_additional_qt.png) repeat-x}
+.header_top .additional #weibo a, .header_top .additional #mail a, .header_top .additional #contact a {display: block; height: 47px; padding-left: 30px; color: #ffffff; line-height: 47px; font-size: 16px; background: url(https://clas.cas.cn/images/icon_additional.png) no-repeat}
+.header_top .additional #weixin {height: 47px; padding-left: 50px; margin-top: 5px; color: #ffffff; line-height: 47px; font-size: 16px; background: url(https://clas.cas.cn/images/icon_weixin.png) no-repeat 10px 10px}
 .header_top .additional #weibo a {background-position: 10px 10px}
 .header_top .additional #mail a {background-position: 10px -44px}
 .header_top .additional #contact a {background-position: 10px -106px}
@@ -125,27 +125,27 @@ input::-ms-clear {display: none}
 .header_bottom .nav .menu a {display: block; height: 35px; line-height: 35px; border-bottom: 1px solid #790c0d; font-size: 15px}
 .header_bottom .nav .menu a:hover {color: #f5a739}
 .header_bottom .nav .on h3 a {color: #f5a739}
-.container {background: url(http://clas.cas.cn/images/3.jpg) repeat-y center top}
-.container_inner {text-align: center; background: url(http://clas.cas.cn/images/2.jpg) no-repeat center top}
+.container {background: url(https://clas.cas.cn/images/3.jpg) repeat-y center top}
+.container_inner {text-align: center; background: url(https://clas.cas.cn/images/2.jpg) no-repeat center top}
 .disabled {color: #cecac5}
 .disabled:hover {color: #cecac5 !important; text-decoration: none !important}
 #home .container {min-width: 1228px}
 #home .container_mian {vertical-align: top; text-align: left; position: relative; display: inline-block; width: 1228px; min-height: 650px; margin-top: 0px; background-color: #ffffff}
-#home .tips {display: block; width: 32px; padding-left: 8px; text-align: center; color: #9b1111; background: url(http://clas.cas.cn/images/icon_triangle.png) no-repeat 0 4px; font-size: 12px}
+#home .tips {display: block; width: 32px; padding-left: 8px; text-align: center; color: #9b1111; background: url(https://clas.cas.cn/images/icon_triangle.png) no-repeat 0 4px; font-size: 12px}
 #home .list_briefly li, #home .list_briefly h3 {white-space: nowrap; text-overflow: ellipsis; overflow: hidden; line-height: 28px; font-size: 14px; cursor: pointer; list-style-type: none}
 #home .with {color: #8e0004}
 #home .module {width: 372px; position: relative; margin-top: 25px; border: 1px solid #f5e3e0; background-color: #fbfbfa}
 #home .module .tips {position: absolute; right: 13px; top: -9px; background-color: #ffffff}
 #home .module .title_img {position: absolute; top: -15px; left: 0px; width: 372px}
-#home .tabs {background: url(http://clas.cas.cn/images/icon_line.jpg) repeat-x 0 75px}
+#home .tabs {background: url(https://clas.cas.cn/images/icon_line.jpg) repeat-x 0 75px}
 #home .tabs .slideTxtBox {margin: 30px auto 0; font-size: 14px; text-align: left}
 #home .tabs .slideTxtBox .hd {position: relative; height: 22px; line-height: 22px}
 #home .tabs .slideTxtBox .hd ul {position: absolute; height: 22px}
 #home .tabs .slideTxtBox .hd ul li {position: relative; font-size: 14px; float: left; height: 22px; padding: 0 5px; text-align: center; font-weight: 600; cursor: pointer}
 #home .tabs .slideTxtBox .hd ul #home .tabs .slideTxtBox .hd ul li.on a {color: #ffffff}
-#home .tabs .slideTxtBox .hd ul li.on {height: 22px; color: #ffffff; background: url(http://clas.cas.cn/images/icon_tipsbt.png) no-repeat center center}
+#home .tabs .slideTxtBox .hd ul li.on {height: 22px; color: #ffffff; background: url(https://clas.cas.cn/images/icon_tipsbt.png) no-repeat center center}
 #home .tabs .slideTxtBox .hd ul li.on a {color: #ffffff}
-#home .tabs .slideTxtBox .hd ul li.on em {position: absolute; width: 20px; height: 13px; background: url(http://clas.cas.cn/images/icon_pointer.png) no-repeat #fbfbfa}
+#home .tabs .slideTxtBox .hd ul li.on em {position: absolute; width: 20px; height: 13px; background: url(https://clas.cas.cn/images/icon_pointer.png) no-repeat #fbfbfa}
 #home .tabs .bd {height: 417px; overflow: hidden}
 .forget-form {min-width: 310px; padding: 15px 20px 15px; text-align: center}
 .forget-form .left {text-align: left}
@@ -165,7 +165,7 @@ input::-ms-clear {display: none}
 #Validform_msg {display: none}
 #home #register .controls .checkbox {display: inline-block; margin: 1px 5px 0 0 !important; padding: 0 !important; min-height: 20px; padding-left: 20px; width: 20px; vertical-align: middle}
 #home #register .controls .checker {position: relative; height: 19px; width: 19px; margin-right: 2px !important; margin-top: -2px !important}
-#home #register .controls .checker .check-span {background-image: url(http://clas.cas.cn/images/sprite.png); background-repeat: no-repeat; height: 19px; width: 19px; background-position: 0 -260px; display: inline-block; text-align: center}
+#home #register .controls .checker .check-span {background-image: url(https://clas.cas.cn/images/sprite.png); background-repeat: no-repeat; height: 19px; width: 19px; background-position: 0 -260px; display: inline-block; text-align: center}
 #home #register .checker .check-span.checked {background-position: -76px -260px}
 .uneditable-input.focus, textarea.m-wrap:focus, select.m-wrap:focus, input.m-wrap[type="text"]:focus, input.m-wrap[type="password"]:focus, input.m-wrap[type="datetime"]:focus, input.m-wrap[type="datetime-local"]:focus, input.m-wrap[type="date"]:focus, input.m-wrap[type="month"]:focus, input.m-wrap[type="time"]:focus, input.m-wrap[type="week"]:focus, input.m-wrap[type="number"]:focus, input.m-wrap[type="email"]:focus, input.m-wrap[type="url"]:focus, input.m-wrap[type="search"]:focus, input.m-wrap[type="tel"]:focus, input.m-wrap[type="color"]:focus, .m-uneditable-input:focus {border-color: #999999 !important; box-shadow: none; outline: 0 none !important}
 .Validform_checktip {color: #999999; font-size: 12px; height: 20px; line-height: 20px; margin-left: 8px; overflow: hidden}
@@ -175,7 +175,7 @@ input::-ms-clear {display: none}
 #home #register .controls .checker input {border: medium none; display: inline-block; opacity: 0; height: 19px; width: 19px}
 #home #register .control-label {float: left; padding-top: 5px; text-align: right; width: 120px}
 #home #register .control-label i {color: #ff0000; padding-right: 4px; font-style: normal; font-weight: normal}
-.controls .i-re {display: inline-block; background: url(http://clas.cas.cn/images/i-re.png) no-repeat; background-size: 16px 17px; width: 24px; height: 21px; cursor: pointer}
+.controls .i-re {display: inline-block; background: url(https://clas.cas.cn/images/i-re.png) no-repeat; background-size: 16px 17px; width: 24px; height: 21px; cursor: pointer}
 #home #register label {width: 100px; text-align: right}
 .forget-form .btn {-moz-border-bottom-colors: none; -moz-border-left-colors: none; -moz-border-right-colors: none; -moz-border-top-colors: none; background-color: #8a000f; border-width: 0; border-radius: 4px; box-shadow: none; cursor: pointer; padding: 4px 8px; color: #ffffff; margin: 0 10px; font-size: 13px}
 #home .container_right #cooperation {background-color: #fbfbfa}
@@ -193,8 +193,8 @@ input::-ms-clear {display: none}
 #home .container_left .hot .slideBox {position: relative; float: left; margin: 10px 0; overflow: hidden; width: 408px; height: 320px; font-size: 0}
 #home .container_left .hot .slideBox .hd {position: absolute; right: 10px; bottom: 12.5px; overflow: hidden; height: 13px; z-index: 1}
 #home.container_left .hot .slideBox .hd ul {float: left; overflow: hidden; zoom: 1}
-#home .container_left .hot .slideBox .hd ul li {float: left; width: 13px; height: 12px; margin-right: 5px; text-align: center; background-image: url(http://clas.cas.cn/images/icon_circle.png); background-repeat: no-repeat; cursor: pointer}
-#home .container_left .hot .slideBox .hd ul li.on {background-image: url(http://clas.cas.cn/images/icon_circle_red.png)}
+#home .container_left .hot .slideBox .hd ul li {float: left; width: 13px; height: 12px; margin-right: 5px; text-align: center; background-image: url(https://clas.cas.cn/images/icon_circle.png); background-repeat: no-repeat; cursor: pointer}
+#home .container_left .hot .slideBox .hd ul li.on {background-image: url(https://clas.cas.cn/images/icon_circle_red.png)}
 #home .container_left .hot .slideBox .bd {height: 100%}
 #home .container_left .hot .slideBox .bd ul {height: 320px; text-align: center}
 #home .container_left .hot .slideBox .bd li {zoom: 1; line-height: 320px}
@@ -228,10 +228,10 @@ input::-ms-clear {display: none}
 .list_experts .exp_bg2 {position: absolute; left: 10px; bottom: -2px; width: 824px}
 .list_experts .list_li_header {border-bottom: 1px solid #9b0000}
 .list_experts .list_ul {margin-top: 25px; border-top-style: none}
-#list_abroad {position: relative; width: 824px; padding: 10px 10px 0; background: url(http://clas.cas.cn/images/img_abroad.jpg) no-repeat 10px 30px; background-size: 824px 169px}
+#list_abroad {position: relative; width: 824px; padding: 10px 10px 0; background: url(https://clas.cas.cn/images/img_abroad.jpg) no-repeat 10px 30px; background-size: 824px 169px}
 #list_abroad .with {color: #1b3a61}
 #list_abroad .tips {background-position: 0 -25px}
-#list_abroad .list_ul {margin-top: 25px; background: url(http://clas.cas.cn/images/img_abroadbt.jpg) repeat-x left bottom; border: 1px solid #e3e7e8; border-top-style: none}
+#list_abroad .list_ul {margin-top: 25px; background: url(https://clas.cas.cn/images/img_abroadbt.jpg) repeat-x left bottom; border: 1px solid #e3e7e8; border-top-style: none}
 #list_abroad .exp_bg {position: absolute; left: 10px; top: 13px; width: 824px}
 #list_abroad .exp_bg2 {position: absolute; left: 10px; bottom: -1px; width: 824px}
 #list_abroad .list_li_header {border-bottom: 1px solid #043e5b}
@@ -279,12 +279,12 @@ input::-ms-clear {display: none}
 #home .container_right #special {height: 313px}
 #home .container_right #special .sideMenu {text-align: left; height: 240px; overflow: auto; margin-top: 10px; margin-right: auto; margin-bottom: 10px; margin-left: auto; padding-top: 0; padding-right: 30px; padding-bottom: 0; padding-left: 30px}
 #home .container_right #special .sideMenu h3 {height: 32px; line-height: 32px; font-size: 14px; color: #9b1111; cursor: pointer; font: 14px/32px "Microsoft YaHei"}
-#home .container_right #special .sideMenu h3 em {float: left; display: block; margin-right: 25px; width: 12px; height: 32px; margin-left: -6px; background: url(http://clas.cas.cn/images/icon_accordion.png) -18px center no-repeat; cursor: pointer}
+#home .container_right #special .sideMenu h3 em {float: left; display: block; margin-right: 25px; width: 12px; height: 32px; margin-left: -6px; background: url(https://clas.cas.cn/images/icon_accordion.png) -18px center no-repeat; cursor: pointer}
 #home .container_right #special .sideMenu h3.on em {background-position: 0 center}
 #home .container_right #special .sideMenu p {line-height: 25px; padding-left: 36px; color: #999999; display: none}
 #home .container_right #experts {background-color: #fbfbfa; height: 515px; margin-top: 23px}
 #home .container_right #experts .slideTxtBox .hd ul li {width: 110px}
-#home .container_right #experts .slideTxtBox .hd ul li.on {background: url(http://clas.cas.cn/images/icon_tipsbt_xl.png) no-repeat center center}
+#home .container_right #experts .slideTxtBox .hd ul li.on {background: url(https://clas.cas.cn/images/icon_tipsbt_xl.png) no-repeat center center}
 #home .container_right #experts .slideTxtBox .hd ul li.on em {left: 48px; top: 33px}
 #home .container_right #experts .bd {font-family: "微软雅黑","Microsoft Yahei"; margin-top: 35px}
 #experts .bd .gj li a {float: none !important; margin-left: 0}
@@ -305,23 +305,23 @@ input::-ms-clear {display: none}
 #home .container_bottom .tips {position: absolute; right: 16px; top: 14px; background-color: #ffffff}
 #home .container_bottom .title_img {position: absolute; top: 7px; left: 0; width: 385px}
 #home .container_bottom .prev, #home .container_bottom .next {position: absolute; display: block; width: 25px; height: 234px; overflow: hidden; cursor: pointer}
-#home .container_bottom .prev {top: 42px; right: 0px; background: url(http://clas.cas.cn/images/icon.arrowright.jpg) no-repeat 0 95px #cecac5}
-#home .container_bottom .next {top: 42px; left: 0px; background: url(http://clas.cas.cn/images/icon_arrowleft.jpg) no-repeat 0 90px #cecac5}
+#home .container_bottom .prev {top: 42px; right: 0px; background: url(https://clas.cas.cn/images/icon.arrowright.jpg) no-repeat 0 95px #cecac5}
+#home .container_bottom .next {top: 42px; left: 0px; background: url(https://clas.cas.cn/images/icon_arrowleft.jpg) no-repeat 0 90px #cecac5}
 #home .container_bottom #publication {overflow: hidden; width: 300px; padding-top: 16px; padding-right: 35px; padding-bottom: 16px; padding-left: 35px; background-color: #ffffff}
 #home .container_bottom #publication ul {overflow: hidden; zoom: 1}
 #home .container_bottom #publication ul li {margin: 0 8px; float: left; display: inline; overflow: hidden; text-align: center}
 #home .container_bottom #publication ul li a {text-align: center}
 #home .container_bottom #publication ul li a img {width: 140px; height: 228px; display: block; padding: 2px; border: 1px solid #d3d0cb}
 #home .container_bottom #publication ul li a:hover img {border-color: #af0000}
-#home .container_footer {padding-top: 15px; font-size: 12px; margin-right: auto; margin-bottom: 0; margin-left: auto; background-image: url(http://clas.cas.cn/images/8.jpg); background-color: #ffffff; background-repeat: repeat-x}
-#home .container_footer #pioneer {margin: 15px; width: 771px; float: left; background-image: url(http://clas.cas.cn/images/icon_line.jpg); background-repeat: repeat-x; background-position: 0 45px}
+#home .container_footer {padding-top: 15px; font-size: 12px; margin-right: auto; margin-bottom: 0; margin-left: auto; background-image: url(https://clas.cas.cn/images/8.jpg); background-color: #ffffff; background-repeat: repeat-x}
+#home .container_footer #pioneer {margin: 15px; width: 771px; float: left; background-image: url(https://clas.cas.cn/images/icon_line.jpg); background-repeat: repeat-x; background-position: 0 45px}
 #home .container_footer #pioneer .slideTxtBox {margin-top: 15px}
 #home .container_footer #pioneer .slideTxtBox .hd {padding: 0 10px}
 #home .container_footer #pioneer .slideTxtBox .hd ul li {width: 77px}
-#home .container_footer #pioneer .slideTxtBox .hd ul li.on {background: url(http://clas.cas.cn/images/icon_tipsbt.png) no-repeat center center}
+#home .container_footer #pioneer .slideTxtBox .hd ul li.on {background: url(https://clas.cas.cn/images/icon_tipsbt.png) no-repeat center center}
 #home .container_footer #pioneer .slideTxtBox .hd ul li.on em {left: 33px; top: 33px}
 #home .container_footer #pioneer .slideTxtBox .hd ul .last_li {width: 110px}
-#home .container_footer #pioneer .slideTxtBox .hd ul .last_li.on {background: url(http://clas.cas.cn/images/icon_tipsbt_xl.png) no-repeat center center}
+#home .container_footer #pioneer .slideTxtBox .hd ul .last_li.on {background: url(https://clas.cas.cn/images/icon_tipsbt_xl.png) no-repeat center center}
 #home .container_footer #pioneer .slideTxtBox .hd ul .last_li.on em {left: 48px}
 #home .container_footer #pioneer .bd {height: 210px; margin-top: 25px; background-color: #fbfbfa; border: 1px solid #e0ded9}
 #home .container_footer #pioneer .bd a:hover {color: #1974a1}
@@ -335,8 +335,8 @@ input::-ms-clear {display: none}
 #substation .container_mian {text-align: left; position: relative; display: inline-block; width: 1020px; min-height: 650px; margin-top: 10px; background: #ffffff}
 #substation .container_mian a:hover {color: #1974a1}
 #substation .with {color: #9b1111}
-#substation .tips {position: absolute; right: 20px; top: -10px; display: block; width: 32px; padding: 0 0px 0 12px; color: #9b1111; font-size: 12px; text-align: center; background: url(http://clas.cas.cn/images/icon_triangle.png) no-repeat 4px 4px #ffffff}
-#substation .container_left {position: relative; width: 676px; padding: 0 10px 4px; float: left; background: url(http://clas.cas.cn/images/de-bg.jpg) no-repeat left top}
+#substation .tips {position: absolute; right: 20px; top: -10px; display: block; width: 32px; padding: 0 0px 0 12px; color: #9b1111; font-size: 12px; text-align: center; background: url(https://clas.cas.cn/images/icon_triangle.png) no-repeat 4px 4px #ffffff}
+#substation .container_left {position: relative; width: 676px; padding: 0 10px 4px; float: left; background: url(https://clas.cas.cn/images/de-bg.jpg) no-repeat left top}
 #substation .container_left .hotspot {position: relative; height: 222px; padding: 40px 15px 0 15px}
 #substation .container_left .hotspot .tips-s {position: absolute; right: 25px; bottom: 0; font-size: 12px; color: #9b1111}
 #substation .container_left .hotspot .tips-s:hover {color: #1974a1}
@@ -351,14 +351,14 @@ input::-ms-clear {display: none}
 #substation .container_left .list_left .list_left_li {position: relative; height: 245px; border: 1px solid #d6a0a0; padding-left: 270px; font-size: 0; margin-bottom: 20px}
 #substation .container_left .list_left .list_left_li .icon_zgf {position: absolute; bottom: -1px; right: -3px}
 #substation .container_left .list_left .list_left_li .m-title {position: absolute; top: -16px; left: 22px; background: #ffffff; padding: 0 8px; font-weight: bold}
-#substation .container_left .list_left .list_left_li #de-bg {background: url(http://clas.cas.cn/images/de-bg2.jpg) no-repeat}
+#substation .container_left .list_left .list_left_li #de-bg {background: url(https://clas.cas.cn/images/de-bg2.jpg) no-repeat}
 #substation .container_left .list_left .list_left_li h4 {font-size: 14px; color: #9b1111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-bottom: 10px}
 #substation .container_left .list_left .list_left_li h4 a {color: #9b1111}
 #substation .container_left .list_left .list_left_li h4 a:hover {color: #1947a1}
 #substation .container_left .list_left .list_left_li .description {font-size: 13px; padding: 10px 0 8px; margin-left: 20px; color: #717171; border-top: 1px dashed #cccccc}
 #substation .container_left .list_left .list_left_li #substation .container_left .list_left .list_left_li h4 a {color: #9b1111}
 #substation .container_left .list_left .list_left_li .maps {position: absolute; width: 250px; height: 200px; top: 22px; left: 20px; line-height: 200px; font-size: 0; text-align: center; border: 1px solid #dddddd}
-#substation .container_left .list_left .list_left_li h2 {position: absolute; left: 0; bottom: 0; width: 215px; height: 30px; padding: 0 10px 0 25px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; line-height: 30px; color: #ffffff; text-align: left; background: url(http://clas.cas.cn/images/img_focusbg.png) repeat-x}
+#substation .container_left .list_left .list_left_li h2 {position: absolute; left: 0; bottom: 0; width: 215px; height: 30px; padding: 0 10px 0 25px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; line-height: 30px; color: #ffffff; text-align: left; background: url(https://clas.cas.cn/images/img_focusbg.png) repeat-x}
 #substation .container_left .list_left .list_left_li ul {height: 200px; overflow: hidden; padding: 0 35px 0 25px; margin-top: 23px}
 #substation .container_left .list_left .list_left_li ul h3 {margin-bottom: 5px; font-size: 18px; color: #8e0004}
 #substation .container_left .list_left .list_left_li ul li {height: 29px; width: 355px; line-height: 29px; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap}
@@ -367,7 +367,7 @@ input::-ms-clear {display: none}
 #substation .container_right {float: right; padding-top: 10px; width: 315px; padding-right: 8px}
 #substation .focus_img {position: relative; width: 310px; height: 240px; line-height: 240px; text-align: center; font-size: 0; border: 1px solid #dddddd}
 #substation .focus_img img {max-width: 310px; max-height: 240px; vertical-align: middle}
-#substation .focus_img h3 {position: absolute; left: 0; bottom: 0; width: 275px; height: 30px; padding: 0 10px 0 25px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; line-height: 30px; color: #ffffff; text-align: left; background: url(http://clas.cas.cn/images/img_focusbg.png) repeat-x}
+#substation .focus_img h3 {position: absolute; left: 0; bottom: 0; width: 275px; height: 30px; padding: 0 10px 0 25px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; line-height: 30px; color: #ffffff; text-align: left; background: url(https://clas.cas.cn/images/img_focusbg.png) repeat-x}
 #substation .list_right {text-align: left; margin-top: 30px; letter-spacing: 0.6px}
 #substation .list_right li {position: relative; width: 310px; border: 1px solid #d6a0a0; margin-bottom: 30px}
 #substation .list_right li .content {clear: both; margin-top: 20px; padding: 0 0 15px}
@@ -382,13 +382,13 @@ input::-ms-clear {display: none}
 #substation .list_right #set {height: 140px}
 #substation .list_right #sub_contact {height: 150px; margin-bottom: 0}
 .relates_left h2 {background-color: #dcdcdc; font-size: 17px; line-height: 25px}
-.relates_left h2 p {padding-left: 30px; display: inline; background: url(http://clas.cas.cn/images/icon_tub.png) no-repeat}
+.relates_left h2 p {padding-left: 30px; display: inline; background: url(https://clas.cas.cn/images/icon_tub.png) no-repeat}
 .relates_left h2 span {color: #9b1111}
 .relates_left .nav {position: relative; line-height: 22px; margin-top: 15px; padding: 20px 0 25px; z-index: 1; background-color: #f1f1f1}
 .relates_left .nav .nLi {position: relative; margin-bottom: 25px}
 .relates_left .nav .nLi h3 a {display: block; padding: 0 20px; font-size: 15px}
 .expert_right {position: relative; float: right; width: 715px; font-size: 12px}
-.expert_right .artLocation {background: url(http://clas.cas.cn/images/icon_li.png) no-repeat 9px 3px; padding-left: 30px; font-size: 15px; line-height: 25px; background-color: #f1f1f1}
+.expert_right .artLocation {background: url(https://clas.cas.cn/images/icon_li.png) no-repeat 9px 3px; padding-left: 30px; font-size: 15px; line-height: 25px; background-color: #f1f1f1}
 .pub {margin: 4.5% 5%}
 .pub_left {position: relative; font-family: "Microsoft Yahei","微软雅黑",Tahoma,Arial,Helvetica,STHeiti; float: left; width: 23%; text-align: center}
 .pub_left h1 {background-color: #dcdcdc; font-size: 18px; line-height: 30px}
@@ -412,13 +412,13 @@ input::-ms-clear {display: none}
 .pub_right .pub_content a:link {color: #1974a1}
 .pub_right .pub_content a:visited {color: #551a8b}
 .pub_right .pub_content a:hover {color: #1974a1; text-decoration: underline}
-.pub_right .location {background: url(http://clas.cas.cn/images/icon_li.png) no-repeat scroll 9px 3px #f1f1f1; font-size: 15px; line-height: 30px; padding-left: 30px}
+.pub_right .location {background: url(https://clas.cas.cn/images/icon_li.png) no-repeat scroll 9px 3px #f1f1f1; font-size: 15px; line-height: 30px; padding-left: 30px}
 .pub_right .pub_content {margin-top: 28px; font-size: 14px}
 .pub_right2 {float: right; width: 100%}
 .pub_right2 .pub_content a:link {color: #1974a1}
 .pub_right2 .pub_content a:visited {color: #551a8b}
 .pub_right2 .pub_content a:hover {color: #1974a1; text-decoration: underline}
-.pub_right2 .location {background: url(http://clas.cas.cn/images/icon_li.png) no-repeat scroll 9px 3px #f1f1f1; font-size: 15px; line-height: 30px; padding-left: 30px}
+.pub_right2 .location {background: url(https://clas.cas.cn/images/icon_li.png) no-repeat scroll 9px 3px #f1f1f1; font-size: 15px; line-height: 30px; padding-left: 30px}
 .pub_right2 .pub_content {margin-top: 28px; font-size: 14px}
 #expert .pub_left {position: relative}
 #expert .pub_left .name {padding: 15px; color: #991112; font-size: 13px}
@@ -500,8 +500,8 @@ input::-ms-clear {display: none}
 #art .artInfo .author {text-align: center}
 #art .artInfo .author .be-str {text-align: center}
 #art .font-change {position: absolute; right: 0; top: 15px; color: #666666; line-height: 24px; vertical-align: middle}
-#art .font-change .font-down {display: inline-block; background: url(http://clas.cas.cn/images/font-change.jpg) no-repeat; background-position: -1px -61px; height: 24px; width: 24px; vertical-align: middle}
-#art .font-change .font-up {display: inline-block; background: url(http://clas.cas.cn/images/font-change.jpg) no-repeat; background-position: -1px -7px; height: 24px; width: 24px; vertical-align: middle}
+#art .font-change .font-down {display: inline-block; background: url(https://clas.cas.cn/images/font-change.jpg) no-repeat; background-position: -1px -61px; height: 24px; width: 24px; vertical-align: middle}
+#art .font-change .font-up {display: inline-block; background: url(https://clas.cas.cn/images/font-change.jpg) no-repeat; background-position: -1px -7px; height: 24px; width: 24px; vertical-align: middle}
 #art .artSum {border: 1px dotted #cccccc; padding: 15px; margin: 25px 0; font-size: 14px; line-height: 23px; text-align: left; text-indent: 28px}
 #art .artContent {text-align: left; font-size: 16px; overflow: hidden; background-color: #ffffff; color: #333333; text-align: justify}
 #art .artContent a, #art .artContent p, #art .artContent span, #art .artContent strong {font-family: "宋体" !important; font-size: 14px !important; text-align: justify}
@@ -570,7 +570,7 @@ input::-ms-clear {display: none}
 .topic #bodytext dd ul li {padding-left: 2em; text-indent: 1.5em}
 #home .footer {min-width: 1228px; text-align: center}
 #substation .footer {min-width: 1228px}
-.footer {position: relative; text-align: center; height: 291px; overflow: hidden; background-image: url(http://clas.cas.cn/images/4.jpg); background-position: center center}
+.footer {position: relative; text-align: center; height: 291px; overflow: hidden; background-image: url(https://clas.cas.cn/images/4.jpg); background-position: center center}
 .footer #ftbg {position: absolute; left: 50%; margin-left: -960px; top: 0}
 .footer .footer_inner {margin-top: 80px; text-align: center; display: inline-block; position: absolute; top: 0; left: 50%; margin-left: -346.5px}
 .footer .footer_inner p {line-height: 26px; height: 26px; color: #313131; text-align: center}
@@ -580,7 +580,7 @@ input::-ms-clear {display: none}
 .footer .footer_inner .logo_tengx img {vertical-align: middle}
 #enter a {cursor: pointer}
 #enter a:hover {color: #1974a1}
-#goTop {position: fixed; right: 5%; bottom: 60px; display: none; width: 40px; height: 40px; background: url(http://clas.cas.cn/images/retop.png) no-repeat; background-size: 40px 40px; cursor: pointer}
+#goTop {position: fixed; right: 5%; bottom: 60px; display: none; width: 40px; height: 40px; background: url(https://clas.cas.cn/images/retop.png) no-repeat; background-size: 40px 40px; cursor: pointer}
 .goTop-fixed {position: absolute !important; left: 72% !important; bottom: 0 !important}
 #home #goTop {margin-left: 570px}
 #substation #goTop {margin-left: 465px}
@@ -636,7 +636,7 @@ input:-ms-input-placeholder {color: #cecac5}
 .box-bd .r-txt {color: #666666; float: left; margin-top: 10px}
 .box-bd .r-txt .tit {color: #333333; font-family: "微软雅黑","黑体"; font-size: 16px; font-weight: 700; margin-bottom: 5px}
 .box-bd .lay-btn {height: 30px; text-align: center}
-.i-success {background: url(http://clas.cas.cn/images/i-suc.png) no-repeat; float: left; margin-bottom: 12px; margin-right: 20px; background-size: 50px 50px; display: block; height: 50px; width: 50px}
+.i-success {background: url(https://clas.cas.cn/images/i-suc.png) no-repeat; float: left; margin-bottom: 12px; margin-right: 20px; background-size: 50px 50px; display: block; height: 50px; width: 50px}
 .reg-succ .greet {color: #86c218; font-size: 18px; font-weight: 700; line-height: 30px}
 .reg-succ .lay-btn {height: 30px; padding-bottom: 10px; text-align: center}
 #dialog_active {color: #ffffff; height: 30px; line-height: 30px; width: 150px; display: inline-block; border-radius: 4px; background-color: #9b1111}
@@ -657,7 +657,7 @@ input:-ms-input-placeholder {color: #cecac5}
 #all_select, .tree .tree_li {margin-bottom: 8px}
 #all_select h3, .tree .tree_li h3 {display: inline-block; cursor: pointer; font-size: 15px; margin-bottom: 8px; padding-left: 25px}
 .tree #all_content {padding-left: 2em}
-.tree .tree_li .select {background: url(http://clas.cas.cn/images/tree.png) no-repeat}
+.tree .tree_li .select {background: url(https://clas.cas.cn/images/tree.png) no-repeat}
 .tree .tree_li.on .select {background-position: 0 -32px}
 .tree .tree_li .content {display: none; color: #999999}
 .tree .tree_li.on .content {font-size: 13px; display: block}
@@ -671,7 +671,7 @@ html[dir="rtl"] .select2-container .select2-choice {padding: 0 8px 0 0}
 .select2-container.select2-allowclear .select2-choice .select2-chosen {margin-right: 42px}
 .select2-container .select2-choice > .select2-chosen {margin-right: 26px; display: block; overflow: hidden; font-size: 13px; white-space: nowrap; text-overflow: ellipsis; float: none; width: auto}
 html[dir="rtl"] .select2-container .select2-choice > .select2-chosen {margin-left: 26px; margin-right: 0}
-.select2-container .select2-choice abbr {display: none; width: 12px; height: 12px; position: absolute; right: 24px; top: 8px; font-size: 1px; text-decoration: none; border: 0; background: url(http://clas.cas.cn/images/select2.png) right top no-repeat; cursor: pointer; outline: 0}
+.select2-container .select2-choice abbr {display: none; width: 12px; height: 12px; position: absolute; right: 24px; top: 8px; font-size: 1px; text-decoration: none; border: 0; background: url(https://clas.cas.cn/images/select2.png) right top no-repeat; cursor: pointer; outline: 0}
 .select2-container.select2-allowclear .select2-choice abbr {display: inline-block}
 .select2-container .select2-choice abbr:hover {background-position: right -11px; cursor: pointer}
 .select2-drop-mask {border: 0; margin: 0; padding: 0; position: fixed; left: 0; top: 0; min-height: 100%; min-width: 100%; height: auto; width: auto; opacity: 0; z-index: 9998; background-color: #ffffff}
@@ -683,13 +683,13 @@ html[dir="rtl"] .select2-container .select2-choice > .select2-chosen {margin-lef
 .select2-drop-auto-width .select2-search {padding-top: 4px}
 .select2-container .select2-choice .select2-arrow {display: inline-block; width: 18px; height: 100%; position: absolute; right: 0; top: 0; border-left: 1px solid #e5e5e5; background-clip: padding-box; background: #cccccc}
 html[dir="rtl"] .select2-container .select2-choice .select2-arrow {left: 0; right: auto; border-left: none; border-right: 1px solid #aaaaaa; border-radius: 4px 0 0 4px}
-.select2-container .select2-choice .select2-arrow b {display: block; width: 100%; height: 100%; background: url(http://clas.cas.cn/images/select2.png) no-repeat 0 1px}
+.select2-container .select2-choice .select2-arrow b {display: block; width: 100%; height: 100%; background: url(https://clas.cas.cn/images/select2.png) no-repeat 0 1px}
 html[dir="rtl"] .select2-container .select2-choice .select2-arrow b {background-position: 2px 1px}
 .select2-search {display: inline-block; width: 100%; min-height: 26px; margin: 0; padding-left: 4px; padding-right: 4px; position: relative; z-index: 10000; white-space: nowrap}
-.select2-search input {width: 100%; height: auto !important; min-height: 26px; padding: 4px 20px 4px 5px; margin: 0; outline: 0; font-family: sans-serif; font-size: 1em; border: 1px solid #aaaaaa; border-radius: 0; -webkit-box-shadow: none; box-shadow: none; background: #ffffff url(http://clas.cas.cn/images/select2.png) no-repeat 100% -22px}
-html[dir="rtl"] .select2-search input {padding: 4px 5px 4px 20px; background: #ffffff url(http://clas.cas.cn/images/select2.png) no-repeat -37px -22px}
+.select2-search input {width: 100%; height: auto !important; min-height: 26px; padding: 4px 20px 4px 5px; margin: 0; outline: 0; font-family: sans-serif; font-size: 1em; border: 1px solid #aaaaaa; border-radius: 0; -webkit-box-shadow: none; box-shadow: none; background: #ffffff url(https://clas.cas.cn/images/select2.png) no-repeat 100% -22px}
+html[dir="rtl"] .select2-search input {padding: 4px 5px 4px 20px; background: #ffffff url(https://clas.cas.cn/images/select2.png) no-repeat -37px -22px}
 .select2-drop.select2-drop-above .select2-search input {margin-top: 4px}
-.select2-search input.select2-active {background: #ffffff url(http://clas.cas.cn/images/select2-spinner.gif) no-repeat 100%}
+.select2-search input.select2-active {background: #ffffff url(https://clas.cas.cn/images/select2-spinner.gif) no-repeat 100%}
 .select2-container-active .select2-choice, .select2-container-active .select2-choices {border: 1px solid #999999; outline: none; -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); box-shadow: 0 0 5px rgba(0, 0, 0, 0.3)}
 .select2-dropdown-open .select2-choice {border-bottom-color: transparent; -webkit-box-shadow: 0 1px 0 #ffffff inset; box-shadow: 0 1px 0 #ffffff inset; border-bottom-left-radius: 0; border-bottom-right-radius: 0; background-color: #eeeeee}
 .select2-dropdown-open.select2-drop-above .select2-choice, .select2-dropdown-open.select2-drop-above .select2-choices {border: 1px solid #5897fb; border-top-color: transparent}
@@ -719,7 +719,7 @@ html[dir="rtl"] .select2-results {padding: 0 4px 0 0; margin: 4px 0 4px 4px}
 .select2-results .select2-disabled.select2-highlighted {color: #666666; background: #f4f4f4; display: list-item; cursor: default}
 .select2-results .select2-disabled {background: #f4f4f4; display: list-item; cursor: default}
 .select2-results .select2-selected {display: none}
-.select2-more-results.select2-active {background: #f4f4f4 url(http://clas.cas.cn/images/select2-spinner.gif) no-repeat 100%}
+.select2-more-results.select2-active {background: #f4f4f4 url(https://clas.cas.cn/images/select2-spinner.gif) no-repeat 100%}
 .select2-results .select2-ajax-error {}
 .select2-more-results {background: #f4f4f4; display: list-item}
 .select2-container.select2-container-disabled .select2-choice {background-color: #f4f4f4; background-image: none; border: 1px solid #dddddd; cursor: default}
@@ -734,13 +734,13 @@ html[dir="rtl"] .select2-container-multi .select2-choices {padding: 0 0 0 5px}
 html[dir="rtl"] .select2-container-multi .select2-choices li {float: right}
 .select2-container-multi .select2-choices .select2-search-field {margin: 0; padding: 0; white-space: nowrap}
 .select2-container-multi .select2-choices .select2-search-field input {padding: 5px; margin: 1px 0; font-family: sans-serif; font-size: 100%; color: #666666; outline: 0; border: 0; -webkit-box-shadow: none; box-shadow: none; background: transparent !important}
-.select2-container-multi .select2-choices .select2-search-field input.select2-active {background: #ffffff url(http://clas.cas.cn/images/select2-spinner.gif) no-repeat 100% !important}
+.select2-container-multi .select2-choices .select2-search-field input.select2-active {background: #ffffff url(https://clas.cas.cn/images/select2-spinner.gif) no-repeat 100% !important}
 .select2-default {color: #999999 !important}
 .select2-container-multi .select2-choices .select2-search-choice {padding: 3px 5px 3px 18px; margin: 3px 0 3px 5px; position: relative; line-height: 13px; color: #333333; cursor: default; border: 1px solid #aaaaaa; border-radius: 3px; -webkit-box-shadow: 0 0 2px #ffffff inset , 0 1px 0 rgba(0, 0, 0, 0.05); box-shadow: 0 0 2px #ffffff inset , 0 1px 0 rgba(0, 0, 0, 0.05); background-clip: padding-box; -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; background-color: #e4e4e4}
 html[dir="rtl"] .select2-container-multi .select2-choices .select2-search-choice {margin: 3px 5px 3px 0; padding: 3px 18px 3px 5px}
 .select2-container-multi .select2-choices .select2-search-choice .select2-chosen {cursor: default}
 .select2-container-multi .select2-choices .select2-search-choice-focus {background: #d4d4d4}
-.select2-search-choice-close {display: block; width: 12px; height: 13px; position: absolute; right: 3px; top: 4px; font-size: 1px; outline: none; background: url(http://clas.cas.cn/images/select2.png) right top no-repeat}
+.select2-search-choice-close {display: block; width: 12px; height: 13px; position: absolute; right: 3px; top: 4px; font-size: 1px; outline: none; background: url(https://clas.cas.cn/images/select2.png) right top no-repeat}
 html[dir="rtl"] .select2-search-choice-close {right: auto; left: 3px}
 .select2-container-multi .select2-search-choice-close {left: 3px}
 html[dir="rtl"] .select2-container-multi .select2-search-choice-close {left: auto; right: 2px}
@@ -753,7 +753,7 @@ html[dir="rtl"] .select2-container-multi .select2-search-choice-close {left: aut
 .select2-offscreen, .select2-offscreen:focus {clip: rect(0 0 0 0) !important; width: 1px !important; height: 1px !important; border: 0 !important; margin: 0 !important; padding: 0 !important; overflow: hidden !important; position: absolute !important; outline: 0 !important; left: 0px !important; top: 0px !important}
 .select2-display-none {display: none}
 .select2-measure-scrollbar {position: absolute; top: -10000px; left: -10000px; width: 100px; height: 100px; overflow: scroll}
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 2dppx) { .select2-search input, .select2-search-choice-close, .select2-container .select2-choice abbr, .select2-container .select2-choice .select2-arrow b {background-image: url(http://clas.cas.cn/images/select2x2.png) !important; background-repeat: no-repeat !important; background-size: 60px 40px !important} }
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 2dppx) { .select2-search input, .select2-search-choice-close, .select2-container .select2-choice abbr, .select2-container .select2-choice .select2-arrow b {background-image: url(https://clas.cas.cn/images/select2x2.png) !important; background-repeat: no-repeat !important; background-size: 60px 40px !important} }
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 2dppx) { .select2-search input {background-position: 100% -21px !important} }
 .bjfy {font-size: 15px; font-family: "楷体"; text-align: left; margin-top: 16px}
 .element-fixed {position: fixed; top: 0; width: 100%; z-index: 200}
