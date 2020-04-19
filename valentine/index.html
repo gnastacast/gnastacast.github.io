@@ -2,7 +2,8 @@
 <html lang="en" >
 
 <head>
-	<meta charset="UTF-8">
+	<meta charset="UTF-8" content="noindex">
+	<meta name="googlebot" content="noindex">
 	<title>Micaela's Valentine</title>
  	<link rel="stylesheet" href="css/normalize.css">
 	<link rel="stylesheet" href="css/valentine.css">
@@ -20,7 +21,7 @@
         <ul class="dots">
             <li>
               <a href="#" onclick="return overlayOn()">
-              <span class="glyphicon glyphicon-envelope"><mark class="big swing">1</mark></span>
+              <span class="glyphicon glyphicon-envelope"><mark id="notification" class="big swing">2</mark></span>
               </a>  
             </li>
         </ul>
@@ -195,8 +196,14 @@
         <p> Love, </p>
         <p style="margin-left:20pt"> Nico </p>
     </div>
-    <div class="overlay">
-        <img src=""/>
+    <div class="overlay" id="encrypted_overlay">
+    	<form  id="form1" onsubmit="return decrypt(event)">
+    		<br/>
+    		<p>Password:</p>
+			<input type="text" id="pwd" name="pwd">
+			<button type="submit" form="form1" value="Submit">Submit</button>
+    	</form>
+    	<br/>
     </div>
     <ul class="dots" style="padding:0px">
         <li>
@@ -209,9 +216,15 @@
           <span class="glyphicon glyphicon-none">1</span>
           </a>  
         </li>
+        <li >
+          <a class="active" href="#" onclick="return gotoMessage(this)">
+          <span class="glyphicon glyphicon-none">2</span>
+          </a>  
+        </li>
     </ul>
 </div>
-
+<script  src="encryption/core-min.js"></script>
+<script  src="encryption/aes.js"></script>
 <script  src="valentine.js"></script>
 
 </body>

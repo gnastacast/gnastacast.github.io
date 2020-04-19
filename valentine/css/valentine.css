@@ -67,6 +67,11 @@ html,body {
   display:block;
 }
 
+.overlay img{
+  width:120%;
+  margin: 0 -10%;
+}
+
 #overlay_container .dots{
     position:absolute;
     right:10px;
