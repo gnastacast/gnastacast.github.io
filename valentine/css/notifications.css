@@ -17,10 +17,8 @@ ul.dots a:hover {
   color: #bdc3c7;
 }
 ul.dots a.active span{
-  filter: invert(100%) grayscale() contrast(50%);
-  -webkit-box-shadow: 1px 1px 5px #FFF3;
-  -moz-box-shadow: 1px 1px 5px #FFF3;
-  box-shadow: 1px 1px 5px #FFF;  
+  background-color: #FF6B6B;
+  color:white;
 }
 ul.dots li {
   display: box;

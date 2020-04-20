@@ -148,7 +148,7 @@
 </div>
 
 <div id="overlay_container">
-    <div class="overlay active">
+    <div class="overlay">
         <p>
             March 2019,
         </p>
@@ -196,7 +196,7 @@
         <p> Love, </p>
         <p style="margin-left:20pt"> Nico </p>
     </div>
-    <div class="overlay" id="encrypted_overlay">
+    <div class="overlay active" id="encrypted_overlay">
     	<form  id="form1" onsubmit="return decrypt(event)">
     		<br/>
     		<p>Password:</p>
@@ -207,12 +207,12 @@
     </div>
     <ul class="dots" style="padding:0px">
         <li>
-          <a href="#" onclick="return overlayOff()">
+          <a href="#" onclick="return overlayOff(this)">
           <span class="glyphicon glyphicon-remove"></span>
           </a>  
         </li>
         <li >
-          <a class="active" href="#" onclick="return gotoMessage(this)">
+          <a href="#" onclick="return gotoMessage(this)">
           <span class="glyphicon glyphicon-none">1</span>
           </a>  
         </li>

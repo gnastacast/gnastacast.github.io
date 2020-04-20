@@ -42,7 +42,7 @@ html,body {
   bottom: 0;
   background-color: rgba(0,0,0,0.5); /* Black background with opacity */
   z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
-  cursor: pointer; /* Add a pointer on hover */
+  /*cursor: pointer;*/ /* Add a pointer on hover */
 }
 
 .overlay {
@@ -67,7 +67,7 @@ html,body {
   display:block;
 }
 
-.overlay img{
+.overlay img {
   width:120%;
   margin: 0 -10%;
 }
@@ -75,6 +75,22 @@ html,body {
 #overlay_container .dots{
     position:absolute;
     right:10px;
+}
+
+.overlay form {
+   font-family: sans-serif;
+}
+
+.overlay form button{
+  background-color: #FF6B6B;
+  border: none;
+  margin: none;
+  padding: 0 20px;
+  height: 1.5rem;
+  border-radius: 20px;
+  color: white;
+  font-weight: bold;
+  margin-left: 20px;
 }
 
 .heart {

@@ -18,6 +18,10 @@ var love = setInterval(function() {
     });
 }, 500);
 
+function encrypt(text, pwd) {
+  return CryptoJS.AES.encrypt(text, pwd).toString();
+}
+
 function decrypt(event) {
   event.preventDefault();
   link = "https://drive.google.com/uc?export=view&id="
@@ -75,6 +79,8 @@ function overlayOff() {
   document.getElementById("overlay_container").style.display = "none";
   document.getElementById('notification').style.display = "block";
 }
+
+document.getElementById("overlay_container").addEventListener("click", function(event){if (event.srcElement.id == "overlay_container") overlayOff();});
 
 function gotoMessage(self) {
   var children = self.parentElement.parentElement.children;
