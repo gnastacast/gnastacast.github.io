@@ -125,16 +125,17 @@ ul {
 }
 	
 #content .friends ul{
-	column-count:2;
-	text-align: center;
-	max-width:648px;
+	max-width:1000px;
 }
 
 #content .bio p, #content .friends p{
 	font-size: 120%;
 	/*display:inline block;*/
-	line-height: 200%;
 	color:#ccc;
+}
+
+#content .friends p {
+	margin-bottom:2rem;
 }
 
 @media (min-width: 648px) {
@@ -144,6 +145,9 @@ ul {
 
 	#content .bio p, #content .friends p{
 		font-size: 200%;
+	}
+	#content .friends ul{
+		column-count:2;	
 	}
 }
 @media (min-width: 1200px) {
