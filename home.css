@@ -1,137 +1,166 @@
-html {
-       /*overflow-y: scroll;*/
+
+
+/* Base Styles
+-------------------------------------------------*/
+/* NOTE
+html is set to 62.5% so that all the REM measurements throughout Skeleton 
+are based on 10px sizing. So basically 1.5rem = 15px :) */
+html { 
+  font-size: 62.5%;
+} 
+body {
+  font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
+  line-height: 1.6;
+  font-weight: 400;
+  font-family: 'Merriweather', serif;
+  color: #ccc;
+  background:#222;
 }
-body
-{
-	
-	background:#a2a2a2;
-	font-family: League Gothic;
-	font-size:16pt;
+
+
+/* Typography
+-------------------------------------------------*/
+h1, h2, h3, h4, h5, h6 { 
+  margin-top: 0;
+  margin-bottom: 2rem;
+  font-weight: 300; }
+h1 {
+	font-size: 12vw; line-height: 1.1; font-family: 'Oswald', sans-serif;
+	margin-bottom: 0rem;
 }
-h1,h2,p,a,ul
-	{
-		text-decoration:none;
-		margin:0px;
-		padding:0px;
-		color:#fff;
-		font-family: League Gothic;
-		-webkit-transition:color 0.2s; /* Safari */
-		-webkit-transition:color 0.2s;
-		-ms-transition:color 0.2s;
-		-0-transition:color 0.2s;
-		transition:color 0.2s;
-		text-rendering: optimizeLegibility;
-		font-feature-settings: "kern";
-		-webkit-font-feature-settings: "kern";
-		-moz-font-feature-settings: "kern";
-		-moz-font-feature-settings: "kern=1";
-	}
-h1
-	{
-		line-height:80pt;
-		font-size: 80pt;
-	}
-p
-	{
-		font-size:16pt;
-	}
-a
-	{
-		color:#f7cd88;
-	}
-h2
-	{
-		font-size:32pt;
-	}
-/*
-#page-wrap, #page-wrap * {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+h2 {
+	font-size: 6.0vw; line-height: 1.25; font-family: 'Oswald', sans-serif;
 }
-*/
-#page-wrap {
-	-webkit-transform:translateX(-100%);
-	transform:translateX(-100%);
+
+p {
+	font-size: 1.5rem;
+}
+
+h1,h2,label,ul,a, p {
+	text-decoration:none;
 	margin:0px;
 	padding:0px;
-	position:relative;
-	/*left:0px;*/
-	top:0px;
-    background:#a2a2a2;
-	-webkit-transition: all 1s;
-	-moz-transition: all 1s;
-	-ms-transition: all 1s;
-	-o-transition: all 1s;
-	transition: all 1s;
+	color:white;
+	transition:color 0.2s;
+	-webkit-transition:color 0.2s;/* Safari */
+	-ms-transition:color 0.2s;
+	-0-transition:color 0.2s;
+	/* transition:color 0.2s; */
 }
 
-#padded_left {
+#main {
+	padding: 1.5% 2%;
 	z-index:-1;
-	position: absolute;
-	margin-left:10%;
-	top: 0;
-}
-
-#main{
-
-	z-index:2;
-	margin-left:30%;
-	margin-right:10%;
 	text-align: left;
-	text-align: justify;
-	width:60%;
-	-webkit-transition:all 1.0s ease-in-out;
-	-moz-transition:all 1.0s ease-in-out;
-	-o-transition:all 1.0s ease-in-out;
-	transition:all 1.0s ease-in-out;
+	display:inline-block;
+	min-width:95%;
 }
 
 
-
-#main span {
+#menu span {
   display: inline-block;
   position: relative;
   width: 100%;
   height: 0;
 }
 
-#main a:hover
-	{
-		color:#fff;
+ul {
+	list-style-type: none;
+}
+
+.hidden {
+	display: none;
+}
+
+#menu li {
+	display: inline-block;
+	margin-right: 4vw;
+	margin-bottom: 5vw;
+	/*padding-right:2rem;*/
+}
+
+#menu label, #menu a{
+	cursor: pointer;
+}
+
+#main #menu .label{
+  color:#f7cd88;
+}
+
+#projects:checked~#main #menu .projects,
+#bio:checked~#main      #menu .bio,
+#cv:checked~#main       #menu .cv,
+#friends:checked~#main  #menu .friends {
+  color: #ccc;
+}
+
+#main #menu .label:hover{
+  color:#fff;
+}
+
+
+#projects:checked~#main #content .projects,
+#bio:checked~#main      #content .bio,
+#cv:checked~#main       #content .cv,
+#friends:checked~#main  #content .friends {
+  display: block;
+}
+
+#menu a:hover,
+#menu a:active {
+	color: #fff;
+	z-index: 10;
+}
+
+#content .projects img{
+	width: 100%;
+	margin: 2rem 0;
+	z-index: -100;
+}
+
+#content .projects ul{
+	display:grid;
+	column-gap: 2%;
+	row-gap: 2%;
+}
+	
+#content .friends ul{
+	column-count:2;
+	text-align: center;
+	max-width:648px;
+}
+
+#content .bio p, #content .friends p{
+	font-size: 120%;
+	/*display:inline block;*/
+	line-height: 200%;
+	color:#ccc;
+}
+
+@media (min-width: 648px) {
+	#content .projects ul{
+		grid-template-columns: 49% auto;
 	}
 
-@media (max-width: 800px) {
-		aside, section { width: auto; float: none; }
+	#content .bio p, #content .friends p{
+		font-size: 200%;
 	}
-@media (min-width: 1000px) {
-		body
-		{
-			font-size: 2vw;
-		}
-		h1
-		{
-			line-height:10vw;
-			font-size: 11vw;
-		}
-		p
-		{
-			font-size: 2vw;
-		}
-		h2
-		{
-			font-size: 4vw;
-			line-height:5vw;
-		}
-		#padded_left
-		{
-			z-index: -10;
-		}
-		#main
-		{
-			margin-left:auto;
-			margin-right:auto;
-			z-index: 10;
-			width:31vw;
-		}
+}
+@media (min-width: 1200px) {
+	#content .projects ul{
+		grid-template-columns: 32% 32% auto;
 	}
+	#content .projects p {
+		font-size: 2rem;
+	}
+
+	#content .bio p, #content .friends p{
+		font-size: 200%;
+	}
+}
+@media (min-width: 1500px) {
+	h1 {
+		font-size: 18rem;
+		margin-bottom:0rem;
+	}
+}
