@@ -12,7 +12,6 @@
     <link rel="stylesheet" type="text/css" href="audioplayerengine/initaudioplayer-1.css">
     <link rel="stylesheet" type="text/css" href="css/notifications.css">
     <script src="audioplayerengine/initaudioplayer-1.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 </head>
 
 <body>
@@ -22,7 +21,7 @@
         <ul class="dots">
             <li>
               <a href="#" onclick="return overlayOn()">
-              <span class="glyphicon glyphicon-envelope"><mark id="notification" class="big swing">2</mark></span>
+              <span class="glyphicon glyphicon-envelope"><mark id="notification" class="big swing">3</mark></span>
               </a>  
             </li>
         </ul>
@@ -197,14 +196,86 @@
         <p> Love, </p>
         <p style="margin-left:20pt"> Nico </p>
     </div>
-    <div class="overlay active" id="encrypted_overlay">
-    	<form  id="form1" onsubmit="return decrypt(event)">
-    		<br/>
-    		<p>Password:</p>
-			<input type="password" id="pwd" name="pwd">
-			<button type="submit" form="form1" value="Submit">Submit</button>
-    	</form>
-    	<br/>
+    <div class="overlay" id="encrypted_overlay">
+        <form  id="form1" onsubmit="return decrypt(event)">
+            <br/>
+            <p>Password:</p>
+            <input type="password" id="pwd" name="pwd">
+            <button type="submit" form="form1" value="Submit">Submit</button>
+        </form>
+        <br/>
+    </div>
+    <div class="overlay active">
+        <p>
+            September, 2020
+        </p>
+            <p>
+                Happy three years of love, laughter, and mutual support,
+            </p>
+            <p>
+                I love you. This year I love your back in the summer sun, working from home elbow to elbow, finding a comfortable place in a hammock and never wanting to move, a bed full of rope, the little herb garden on your windowsill, sunrise by the water. We are currently in a global pandemic. We have to wear masks everywhere and grocery stores are scary. We've had to quarantine away from each other, navigated polyamory in a plague, and had a few scares. We've also been lucky enough to not have lost anyone, to have our health, and to have our jobs. I feel especially lucky to have you in these crazy times. To be able to fill those days that feel too empty with love and small adventures. To ease the days which feel to full with a cup of tea and a sympathetic ear.
+            </p>
+            <p>
+                This year hasn't been an easy one, but it's also been really good. It's hard to remember that it's been seven months of quarantine. A year ago I was going to my last appointment for my broken wrist. A few months later we were driving a car in the hills of Spain. And this month we were giggling on a hill in the graveyard. For completeness, here is a list of things we did this year.
+            </p>
+            <ul>
+                <li>We whooped and hollered at the Final of the World Championship of Soda.</li>
+                <li>I officiated a wedding.</li>
+                <li>You got a girlfriend.</li>
+                <li>You got an expedited passport.</li>
+                <li>You missed your bus in London.</li>
+                <li>We spent a cozy Christmas in a beautiful cottage.</li>
+                <li>You met my English family.</li>
+                <li>We spent a misty day in the moors.</li>
+                <li>We ate fancy food and had quinoa creme brulee.</li>
+                <li>We ate scones on a muddy walk</li>
+                <li>We had a man who owned a bookstore on a boat serenade us with a poem.</li>
+                <li>We sat and watched children play on a giant Gilligan</li>
+                <li>We relaxed on a Spanish beach and talked about sexuality</li>
+                <li>We biked through the sunset</li>
+                <li>I cooked you a fish from a market</li>
+                <li>We rented a car and drove through beautiful mountains.</li>
+                <li>We ate patatas bravas at a cyclist bar.</li>
+                <li>We ate at an Ecuadorian restaurant and shared stories with the lovely owner.</li>
+                <li>We stopped at a bookstore on the way to the airport.</li>
+                <li>We got therapists</li>
+                <li>You saw a play that I made art for and I did a Q&A</li>
+                <li>You spent a Valentine's day with two partners</li>
+                <li>Your first poem was published</li>
+                <li>We painted a diorama for our friends.</li>
+                <li>We got good at tying each other up.</li>
+                <li>We made a Google calendar for our relationship</li>
+                <li>You celebrated a six month anniversary with someone who isn't me.</li>
+                <li>We participated in protests, marched in solidarity, and supported our friends.</li>
+                <li>We ate lots of trout.</li>
+                <li>We snuck out in the early morning to watch the sun rise on the Allegheny</li>
+                <li>We streamed a fantastic production of Midsummer and I found out you played a wall.</li>
+                <li>We made it through a really difficult conversation.</li>
+                <li>We biked through the pouring rain and drank coffee on my porch</li>
+                <li>We rented a cabin with our friends and cuddled in a hammock in the moonlight.</li>
+                <li>We made mushroom tea and laughed at clouds till we cried.</li>
+            </ul>
+            <p>
+                It's been strange being cooped up in Pittsburgh, but this kind of sheltering in place has also made us overcome things in our relationship which made it stronger, focus on our community here in Pittsburgh, and learn a lot about what it takes to for us to be happy. Here's a quote from a book I liked.
+            </p>
+            <p style="opacity: 65%;"><i>
+                "For all my convictions, I still have to wrestle with the fear -- in myself, in my children, and in some of my neighbors -- that our place is too remote from the action. This fear drives many people to pack their bags and move on to some resort or burg they have seen on television, leaving behind what they learn to think of as the boondocks. I deal with my own unease by asking just what action I am remote from -- a stock market? A debating chamber? A drive-in mortuary? The action that matters, the work of nature and community, goes on everywhere."
+            </i></p>
+            <p style="font-weight: bold; opacity: 65%;"><i>
+                Staying Put: Making a Home in a Restless World
+            </i></p>
+            <p>
+                At a time when the future is so uncertain, I'm sure of you. I'm looking forward to the coming years of growth, passion, and mutual admiration. You mean the world to me.
+            </p>
+            <p>
+                I love you Micaela Corn
+            </p>
+            <p>
+                Yours,
+            </p>
+            <p>
+                Nico
+            </p>        </p>
     </div>
     <ul class="dots" style="padding:0px">
         <li>
@@ -218,8 +289,13 @@
           </a>  
         </li>
         <li >
-          <a class="active" href="#" onclick="return gotoMessage(this)">
+          <a href="#" onclick="return gotoMessage(this)">
           <span class="glyphicon glyphicon-none">2</span>
+          </a>  
+        </li>
+        <li >
+          <a class="active" href="#" onclick="return gotoMessage(this)">
+          <span class="glyphicon glyphicon-none">3</span>
           </a>  
         </li>
     </ul>
