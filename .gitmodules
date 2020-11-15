@@ -1,3 +1,6 @@
 [submodule "saints"]
 	path = saints
 	url = https://github.com/gnastacast/saints.git
+[submodule "manipulation/jsm/cannon-es"]
+	path = manipulation/jsm/cannon-es
+	url = https://github.com/gnastacast/cannon-es.git

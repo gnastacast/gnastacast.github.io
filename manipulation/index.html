@@ -15,8 +15,9 @@
 
     <body>
         <!-- Worker script, will be run in separate thread -->
-        <script id="worker1" type="javascript/worker">
+        <script id="worker1" type="module">
             var world;
+            var hammer;
             self.onmessage = function(e) {
 
                 if (e.data.cannonUrl && !world) {
@@ -26,29 +27,81 @@
                     // Init physics
                     world = new CANNON.World();
                     world.broadphase = new CANNON.NaiveBroadphase();
-                    world.gravity.set(0,-6,0);
+                    world.gravity.set(0,0,-6);
                     world.solver.tolerance = 0.000001;
                     world.solver.iterations = 2000;
+                    world.defaultContactMaterial.contactEquationStiffness = 1e10;
+                    world.defaultContactMaterial.contactEquationRelaxation = 10;
 
                     // Ground plane
                     var plane = new CANNON.Plane();
                     var groundBody = new CANNON.Body({ mass: 0 });
                     groundBody.addShape(plane);
-                    groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
-                    groundBody.position.set(0,-.5,0);
+                    // groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
+                    groundBody.position.set(0,0,-.2);
                     world.addBody(groundBody);
 
-                    //// Create N cubes
-                    //var shape = new CANNON.Box(new CANNON.Vec3(0.05,0.05,0.05));
-                    //for(var i=0; i!==e.data.N; i++){
-                    //    var body = new CANNON.Body({ mass: .1 });
-                    //    body.addShape(shape);
-                    //    body.position.set(Math.random()*.1-0.05,0.25*(i+1)+0.05,Math.random()*.1-0.05);
-                    //    world.addBody(body);
-                    //}
+                    // // Create N cubes
+                    // var shape = new CANNON.Box(new CANNON.Vec3(0.05,0.05,0.05));
+                    // for(var i=0; i!==e.data.N; i++){
+                    //     var body = new CANNON.Body({ mass: .1 });
+                    //     body.addShape(shape);
+                    //     body.position.set(Math.random()*.1-0.05,0.25*(i+1)+0.05,Math.random()*.1-0.05);
+                    //     world.addBody(body);
+                    // }
 
                     // Create hammer
-                    var hammerShape = new CANNON.Box(new CANNON.Vec3(0.5,0.5,0.5))
+                    hammer = new CANNON.Body({ mass: .1});
+                    for(var i=0; i<e.data.hammerMesh.length; i++) {
+                        var verts=[], faces=[], norms=[];
+                        // Get vertices
+                        var vertices = e.data.hammerMesh[i].vertices.array.values();
+                        var normals = e.data.hammerMesh[i].normals.array.values();
+                        var count = 0;
+                        var face = [0,0,0];
+                        for (var j=0; j<e.data.hammerMesh[i].vertices.count; j+=1) {
+                            if (count % 3 == 0 && count !=0){
+                                var idx = verts.length-1;
+                                var testNorm = verts[idx-1].vsub(verts[idx-2]).cross(verts[idx].vsub(verts[idx-2]));
+                                var n = norms[idx-2].dot(testNorm)
+                                if(false){//n < 0){
+                                    faces.push(face[0], face[2], face[1])
+                                }
+                                else {
+                                    faces.push(face);
+                                }
+                                console.log(idx,n);
+                            }
+                            verts.push(new CANNON.Vec3(vertices.next().value,
+                                                       vertices.next().value,
+                                                       vertices.next().value));
+                            norms.push(new CANNON.Vec3(normals.next().value,
+                                                       normals.next().value,
+                                                       normals.next().value));
+                            face[count%3] = j%3;
+                            count ++;
+                        }
+                        console.log("N faces", faces.length)
+                        console.log(faces, verts);
+                        // for(var j=0; j<e.data.hammerMesh[i].vertices.count; j+=3){
+                        //     verts.push(new CANNON.Vec3(e.data.hammerMesh[i].vertices[j+0],
+                        //                                e.data.hammerMesh[i].vertices[j+1],
+                        //                                e.data.hammerMesh[i].vertices[j+2]))
+                        // }
+                        // // Get faces
+                        // for(var j=0; j<e.data.hammerMesh[i].faces.length; j+=3){
+                        //     faces.push([e.data.hammerMesh[i].faces[j].a,
+                        //                 e.data.hammerMesh[i].faces[j].b,
+                        //                 e.data.hammerMesh[i].faces[j].c]);
+                        // }
+                        // Construct polyhedron
+                        // console.log(i)
+                        var hammerPart = new CANNON.ConvexPolyhedron(verts,faces);
+                        hammer.addShape(hammerPart)
+                    }
+                    hammer.position.set(0,0,0.1)
+                    world.addBody(hammer);
+                    console.log(e.data.hammerMesh);
                 }
 
                 // Step the world
@@ -70,88 +123,52 @@
                     quaternions[4*i + 3] = q.w;
                 }
 
+                var hammerPosition = e.data.hammerPosition;
+                var hammerQuaternion = e.data.hammerQuaternion;
+                hammerPosition[0] = hammer.position.x
+                hammerPosition[1] = hammer.position.y
+                hammerPosition[2] = hammer.position.z
+                hammerQuaternion[0] = hammer.quaternion.x
+                hammerQuaternion[1] = hammer.quaternion.y
+                hammerQuaternion[2] = hammer.quaternion.z
+                hammerQuaternion[3] = hammer.quaternion.w
+
                 // Send data back to the main thread
                 self.postMessage({
                     positions:positions,
-                    quaternions:quaternions
+                    quaternions:quaternions,
+                    hammerPosition: hammerPosition,
+                    hammerQuaternion: hammerQuaternion,
                 }, [positions.buffer,
-                    quaternions.buffer]);
+                    quaternions.buffer,
+                    hammerPosition.buffer,
+                    hammerQuaternion.buffer,]);
             };
         </script>
 
-        <script type="text/javascript">
+        <script type="module">
+            import * as THREE from './jsm/THREE/three.module.js';
+
+            import Stats from './jsm/THREE/libs/stats.module.js';
+
+            import { OrbitControls } from './jsm/THREE/controls/OrbitControls.js';
+            import { FBXLoader } from './jsm/THREE/loaders/FBXLoader.js';
+            import { HDRCubeTextureLoader } from './jsm/THREE/loaders/HDRCubeTextureLoader.js';
 
             var meshes = [];
-            // Parameters
-            var dt = 1/60, N=10;
-
-            // Data arrays. Contains all our kinematic data we need for rendering.
-            var positions = new Float32Array(N*3);
-            var quaternions = new Float32Array(N*4);
-
-            // Create a blob for the inline worker code
-            var blob = new Blob([document.querySelector('#worker1').textContent],{type:'text/javascript'});
-
-            // Create worker
-            var worker = new Worker(window.URL.createObjectURL(blob));
-            worker.postMessage = worker.webkitPostMessage || worker.postMessage;
-
-            var sendTime; // Time when we sent last message
-            worker.onmessage = function(e) {
-
-                // Get fresh data from the worker
-                positions = e.data.positions;
-                quaternions = e.data.quaternions;
-
-                // Update rendering meshes
-                for(var i=0; i!==meshes.length; i++){
-                    meshes[i].position.set( positions[3*i+0],
-                                            positions[3*i+1],
-                                            positions[3*i+2] );
-                    meshes[i].quaternion.set(quaternions[4*i+0],
-                                             quaternions[4*i+1],
-                                             quaternions[4*i+2],
-                                             quaternions[4*i+3]);
-                }
-
-                // If the worker was faster than the time step (dt seconds), we want to delay the next timestep
-                var delay = dt * 1000 - (Date.now()-sendTime);
-                if(delay < 0){
-                    delay = 0;
-                }
-                setTimeout(sendDataToWorker,delay);
-            }
-
-            function sendDataToWorker(){
-                sendTime = Date.now();
-                worker.postMessage({
-                    N : N,
-                    dt : dt,
-                    cannonUrl : document.location.href.replace(/\/[^/]*$/,"/") + "./js/cannon.js",
-                    positions : positions,
-                    quaternions : quaternions
-                },[positions.buffer, quaternions.buffer]);
-            }
-
-        </script>
-        <script type="module">
-
-            import * as THREE from './jsm/three.module.js';
-
-            import Stats from './jsm/libs/stats.module.js';
-
-            import { OrbitControls } from './jsm/controls/OrbitControls.js';
-            import { FBXLoader } from './jsm/loaders/FBXLoader.js';
-            import { HDRCubeTextureLoader } from './jsm/loaders/HDRCubeTextureLoader.js';
-
             var container, stats, controls;
             var camera, scene, renderer, light;
 
             var clock = new THREE.Clock();
 
             var mixer;
-
+            var manager = new THREE.LoadingManager();
+            var doneLoading = false;
             var hammerMesh;
+            var hammerObject;
+            var hammerCollision;
+
+            var N = 10;
 
             init();
             animate();
@@ -162,7 +179,8 @@
                 document.body.appendChild( container );
 
                 camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
-                camera.position.set( 0, 0.2, .7 );
+                camera.position.set( 0, .7, 0.2 );
+                camera.up.set(0,0,1)
                 camera.near = 0.001;
                 camera.far = 5;
                 camera.updateProjectionMatrix();
@@ -170,7 +188,7 @@
                 scene = new THREE.Scene();
 
                 light = new THREE.DirectionalLight( 0xffffff );
-                light.position.set( 0, 1.5, 0);
+                light.position.set( 0, 0, 1.5);
                 light.castShadow = true;
                 light.shadow.camera.top = 1.5;
                 light.shadow.camera.bottom = -1.5;
@@ -184,7 +202,6 @@
 
                 //ground
                 var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 2000, 2000 ), new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: false } ) );
-                mesh.rotation.x = - Math.PI / 2;
                 mesh.material = new THREE.ShadowMaterial();
                 mesh.material.opacity = 0.2;
                 mesh.receiveShadow = true;
@@ -192,7 +209,7 @@
                 mesh.position.y = -1;
                 meshes.push(mesh);
 
-                // // cubes
+                // cubes
                 // var cubeGeo = new THREE.BoxGeometry( .1, .1, .1);
                 // var cubeMaterial = new THREE.MeshStandardMaterial( { color: 0x888888 } );
                 // for(var i=0; i<N; i++){
@@ -208,11 +225,12 @@
                 // scene.add( grid );
 
                 // model
-                var manager = new THREE.LoadingManager();
                 manager.onLoad = function ( ) {
                     console.log( 'Loading complete!');
                     // Start the worker!
                     sendDataToWorker();
+                    hammerCollision.parent = hammerObject;
+                    doneLoading = true;
                 };
                 var loader = new FBXLoader(manager);
                 var texLoader = new THREE.TextureLoader(manager);
@@ -228,7 +246,7 @@
                             pmremGenerator.dispose();
                             // scene.background = hdrCubeRenderTarget.texture;
                             scene.environment = hdrCubeRenderTarget.texture;
-                        });
+                } );
 
                 loader.load( 'models/hand.fbx', function ( object ) {
 
@@ -265,8 +283,6 @@
 
                     console.log(object)
 
-                    object.rotation.y = Math.PI;
-
                     scene.add( object );
 
                 } );
@@ -298,16 +314,50 @@
 
                     } );
 
-                    object.rotation.y = Math.PI/4;
-                    object.rotation.x = -Math.PI/6;
-                    object.rotation.z = Math.PI/4;
+                    // object.rotation.y = Math.PI/4;
+                    // object.rotation.x = -Math.PI/6;
+                    // object.rotation.z = Math.PI/4;
 
-                    object.position.y = -0.1;
-                    object.position.x = -0.1;
+                    // object.position.y = -0.1;
+                    // object.position.x = -0.1;
 
                     scene.add( object );
 
-                    hammerMesh = object;
+                    hammerObject = object;
+                    // hammerMesh = new THREE.Geometry().fromBufferGeometry(object.children[0].geometry);
+
+                } );
+
+                loader.load( 'models/hammer_collision.fbx', function ( object ) {
+
+                    object.traverse( function ( child ) {
+                        if ( child.isMesh ) {
+                            child.material.wireframe = true;
+                            // var geom = new THREE.Geometry().fromBufferGeometry(child.geometry) 
+                            // var tempNorm = new THREE.Vector3();
+                            // for (const face in geom.faces) {
+                            //     console.log(face);
+                            //     tempNorm.copy(object.geometry.vertices[face.a]);
+                            //     // tempNorm.cross(object.geometry.vertices[face.b])
+                            //     console.log(tempNorm);
+                            // }
+                        }
+                        
+                    } );
+
+                    // object.rotation.y = Math.PI/4;
+                    // object.rotation.x = -Math.PI/6;
+                    // object.rotation.z = Math.PI/4;
+
+                    // object.position.y = -0.1;
+                    // object.position.x = -0.1;
+                    scene.add( object );
+                    hammerCollision = object;
+                    hammerMesh = []
+                    for(var i=0; i!==object.children.length; i++){
+                        hammerMesh.push({vertices: object.children[i].geometry.attributes.position,
+                                         normals: object.children[i].geometry.attributes.normal});
+                    }
 
                 } );
 
@@ -345,9 +395,7 @@
             }
 
             //
-
             function animate() {
-
                 requestAnimationFrame( animate );
 
                 var delta = clock.getDelta();
@@ -357,13 +405,77 @@
                 renderer.render( scene, camera );
 
                 stats.update();
-                console.log(clock);
-                hammerMesh.rotation.y = clock.elapsedTime;
-                hammerMesh.rotation.x = clock.elapsedTime;
+                if(!doneLoading)
+                    return;
+                // hammerObject.quaternion.set(quaternions[4*i+0],
+                //                             quaternions[4*i+1],
+                //                             quaternions[4*i+2],
+                //                             quaternions[4*i+3]);
             }
 
-            
+            // Parameters
+            var dt = 1/60, N=10;
 
+            // Data arrays. Contains all our kinematic data we need for rendering.
+            var positions = new Float32Array(N*3);
+            var quaternions = new Float32Array(N*4);
+            var hammerPosition = new Float32Array(3);
+            var hammerQuaternion = new Float32Array(4);
+
+            // Create a blob for the inline worker code
+            var blob = new Blob([document.querySelector('#worker1').textContent],{type:'text/javascript'});
+
+            // Create worker
+            var worker = new Worker(window.URL.createObjectURL(blob));
+            worker.postMessage = worker.webkitPostMessage || worker.postMessage;
+
+            var sendTime; // Time when we sent last message
+            worker.onmessage = function(e) {
+
+                // Get fresh data from the worker
+                positions = e.data.positions;
+                quaternions = e.data.quaternions;
+
+                // Update rendering meshes
+                for(var i=0; i!==meshes.length; i++){
+                    meshes[i].position.set( positions[3*i+0],
+                                            positions[3*i+1],
+                                            positions[3*i+2] );
+                    meshes[i].quaternion.set(quaternions[4*i+0],
+                                             quaternions[4*i+1],
+                                             quaternions[4*i+2],
+                                             quaternions[4*i+3]);
+                }
+
+
+                hammerObject.position.set(e.data.hammerPosition[0],
+                                          e.data.hammerPosition[1],
+                                          e.data.hammerPosition[2]);
+                hammerObject.quaternion.set(e.data.hammerQuaternion[0],
+                                            e.data.hammerQuaternion[1],
+                                            e.data.hammerQuaternion[2],
+                                            e.data.hammerQuaternion[3]);
+
+                // If the worker was faster than the time step (dt seconds), we want to delay the next timestep
+                var delay = dt * 1000 - (Date.now()-sendTime);
+                if(delay < 0){
+                    delay = 0;
+                }
+                setTimeout(sendDataToWorker,delay);
+            }
+            function sendDataToWorker(){
+                sendTime = Date.now();
+                worker.postMessage({
+                    N : N,
+                    dt : dt,
+                    cannonUrl : document.location.href.replace(/\/[^/]*$/,"/") + "./js/cannon.js",
+                    positions : positions,
+                    quaternions : quaternions,
+                    hammerMesh : hammerMesh,
+                    hammerPosition: hammerPosition,
+                    hammerQuaternion: hammerQuaternion,
+                },[positions.buffer, quaternions.buffer]);
+            }
         </script>
     </body>
 </html>
