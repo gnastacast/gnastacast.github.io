@@ -18,8 +18,57 @@
         <script id="worker1" type="module">
             var world;
             var hammer;
-            self.onmessage = function(e) {
+            var hand = [];
+            var lastPositions;
 
+            function bodyFromMesh(mesh, options) {
+                options = options || {};
+                body = new CANNON.Body(options);
+                for(var i=0; i<mesh.length; i++) {
+                    var verts=[], faces=[], norms=[];
+                    // Get vertices
+                    var vertices = mesh[i].vertices.array.values();
+                    var normals = mesh[i].normals.array.values();
+                    var count = 0;
+                    var face = [0,0,0];
+                    for (var j=0; j<mesh[i].vertices.count; j+=1) {
+                        if (count % 3 == 0 && count !=0){
+                            var idx = verts.length-1;
+                            var testNorm = verts[idx-1].vsub(verts[idx-2]).cross(verts[idx].vsub(verts[idx-2]));
+                            var n = norms[idx-2].dot(testNorm)
+                            if(false){//n < 0){
+                                faces.push(face[0], face[2], face[1])
+                            }
+                            else {
+                                faces.push(face);
+                            }
+                        }
+                        verts.push(new CANNON.Vec3(vertices.next().value,
+                                                   vertices.next().value,
+                                                   vertices.next().value));
+                        norms.push(new CANNON.Vec3(normals.next().value,
+                                                   normals.next().value,
+                                                   normals.next().value));
+                        face[count%3] = j%3;
+                        count ++;
+                    }
+                    var bodyPart = new CANNON.ConvexPolyhedron(verts,faces);
+                    body.addShape(bodyPart)
+                }
+                return body;
+            }
+
+            self.onmessage = function(e) {
+                if(!e.data.bonePositions) {
+                    var positions = e.data.positions;
+                    var quaternions = e.data.quaternions;
+                    self.postMessage({
+                        positions:positions,
+                        quaternions:quaternions
+                    }, [positions.buffer,
+                        quaternions.buffer]);
+                    return;
+                }
                 if (e.data.cannonUrl && !world) {
                     // Load cannon.js
                     importScripts(e.data.cannonUrl);
@@ -27,11 +76,14 @@
                     // Init physics
                     world = new CANNON.World();
                     world.broadphase = new CANNON.NaiveBroadphase();
-                    world.gravity.set(0,0,-6);
-                    world.solver.tolerance = 0.000001;
-                    world.solver.iterations = 2000;
+                    world.narrowphase
+                    world.gravity.set(0,0,-9.8);
+                    world.solver.tolerance = 0.0001;
+                    world.solver.iterations = 100;
                     world.defaultContactMaterial.contactEquationStiffness = 1e10;
                     world.defaultContactMaterial.contactEquationRelaxation = 10;
+                    world.defaultContactMaterial.restitution = 0.5;
+                    world.quatNormalizeFast = true;
 
                     // Ground plane
                     var plane = new CANNON.Plane();
@@ -41,76 +93,77 @@
                     groundBody.position.set(0,0,-.2);
                     world.addBody(groundBody);
 
-                    // // Create N cubes
-                    // var shape = new CANNON.Box(new CANNON.Vec3(0.05,0.05,0.05));
-                    // for(var i=0; i!==e.data.N; i++){
-                    //     var body = new CANNON.Body({ mass: .1 });
-                    //     body.addShape(shape);
-                    //     body.position.set(Math.random()*.1-0.05,0.25*(i+1)+0.05,Math.random()*.1-0.05);
-                    //     world.addBody(body);
-                    // }
+                    // Create N cubes
+                    var shape = new CANNON.Box(new CANNON.Vec3(0.05,0.05,0.05));
+                    for(var i=0; i!==e.data.N; i++){
+                        var body = new CANNON.Body({ mass: .1 });
+                        body.addShape(shape);
+                        body.position.set(Math.random()*.1-0.05, Math.random()*.1-0.05, 0.25*(i+1)+0.05);
+                        world.addBody(body);
+                    }
 
                     // Create hammer
-                    hammer = new CANNON.Body({ mass: .1});
-                    for(var i=0; i<e.data.hammerMesh.length; i++) {
-                        var verts=[], faces=[], norms=[];
-                        // Get vertices
-                        var vertices = e.data.hammerMesh[i].vertices.array.values();
-                        var normals = e.data.hammerMesh[i].normals.array.values();
-                        var count = 0;
-                        var face = [0,0,0];
-                        for (var j=0; j<e.data.hammerMesh[i].vertices.count; j+=1) {
-                            if (count % 3 == 0 && count !=0){
-                                var idx = verts.length-1;
-                                var testNorm = verts[idx-1].vsub(verts[idx-2]).cross(verts[idx].vsub(verts[idx-2]));
-                                var n = norms[idx-2].dot(testNorm)
-                                if(false){//n < 0){
-                                    faces.push(face[0], face[2], face[1])
-                                }
-                                else {
-                                    faces.push(face);
-                                }
-                                console.log(idx,n);
-                            }
-                            verts.push(new CANNON.Vec3(vertices.next().value,
-                                                       vertices.next().value,
-                                                       vertices.next().value));
-                            norms.push(new CANNON.Vec3(normals.next().value,
-                                                       normals.next().value,
-                                                       normals.next().value));
-                            face[count%3] = j%3;
-                            count ++;
-                        }
-                        console.log("N faces", faces.length)
-                        console.log(faces, verts);
-                        // for(var j=0; j<e.data.hammerMesh[i].vertices.count; j+=3){
-                        //     verts.push(new CANNON.Vec3(e.data.hammerMesh[i].vertices[j+0],
-                        //                                e.data.hammerMesh[i].vertices[j+1],
-                        //                                e.data.hammerMesh[i].vertices[j+2]))
-                        // }
-                        // // Get faces
-                        // for(var j=0; j<e.data.hammerMesh[i].faces.length; j+=3){
-                        //     faces.push([e.data.hammerMesh[i].faces[j].a,
-                        //                 e.data.hammerMesh[i].faces[j].b,
-                        //                 e.data.hammerMesh[i].faces[j].c]);
-                        // }
-                        // Construct polyhedron
-                        // console.log(i)
-                        var hammerPart = new CANNON.ConvexPolyhedron(verts,faces);
-                        hammer.addShape(hammerPart)
-                    }
-                    hammer.position.set(0,0,0.1)
-                    world.addBody(hammer);
-                    console.log(e.data.hammerMesh);
+                    hammer = bodyFromMesh(e.data.hammerMesh, {mass:0.5})
+                    hammer.position.set(0.1,.1,0.1);
+                    hammer.quaternion.set(0,-0.005,0,1)
+                    hammer.quaternion.normalize()
+                    world.addBody(hammer)
+
+                    // Create hand
+                    for(var i=0; i < e.data.handMesh.length; i++){
+                        var pos = new CANNON.Vec3(e.data.bonePositions[i * 3 + 0],
+                                                  e.data.bonePositions[i * 3 + 1],
+                                                  e.data.bonePositions[i * 3 + 2]);
+                        var quat = new CANNON.Quaternion(e.data.boneQuaternions[i * 4 + 0],
+                                                         e.data.boneQuaternions[i * 4 + 1],
+                                                         e.data.boneQuaternions[i * 4 + 2],
+                                                         e.data.boneQuaternions[i * 4 + 3]);
+                        var mesh = bodyFromMesh(e.data.handMesh[i], {mass: 0,
+                                                                     angularDamping:0,
+                                                                     linearDamping:0,
+                                                                     type: CANNON.Body.KINEMATIC,
+                                                                     position: pos,
+                                                                     quaternion: quat})
+                        console.log(e.data.boneQuaternions[i * 4 + 0],
+                                    e.data.boneQuaternions[i * 4 + 1],
+                                    e.data.boneQuaternions[i * 4 + 2],
+                                    e.data.boneQuaternions[i * 4 + 3], quat, mesh);
+                        // mesh.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
+                        world.addBody(mesh);
+                        // console.log(i,mesh)
+                    };
                 }
 
+                // Hand update
+                for(var i=0; i<e.data.handIndices.length; i++){
+                    // We don't need to update the hand. It's the first frame.
+                    if(!lastPositions) {
+                        continue;
+                    }
+                    var idx = e.data.handIndices[i]
+                    // Rotation is set directly without angular velocity
+                    var rot = [e.data.boneQuaternions[i * 4 + 0],
+                               e.data.boneQuaternions[i * 4 + 1],
+                               e.data.boneQuaternions[i * 4 + 2],
+                               e.data.boneQuaternions[i * 4 + 3]];
+                    world.bodies[idx].quaternion.set(rot[0], rot[1], rot[2], rot[3]);
+                    // Position is applied via velocity
+                    var vel = [(e.data.bonePositions[i * 3 + 0] - world.bodies[idx].position.x) / e.data.dt,
+                               (e.data.bonePositions[i * 3 + 1] - world.bodies[idx].position.y) / e.data.dt,
+                               (e.data.bonePositions[i * 3 + 2] - world.bodies[idx].position.z) / e.data.dt]
+                    world.bodies[idx].velocity.set(vel[0], vel[1], vel[2]);
+                }
+
+                lastPositions = [...e.data.bonePositions];
                 // Step the world
                 world.step(e.data.dt);
+                // world.collisionMatrixTick ()
+                // console.log(world)
 
                 // Copy over the data to the buffers
                 var positions = e.data.positions;
                 var quaternions = e.data.quaternions;
-                for(var i=0; i !== world.bodies.length; i++){
+                for(var i=0; i < world.bodies.length; i++){
                     var b = world.bodies[i],
                         p = b.position,
                         q = b.quaternion;
@@ -123,26 +176,12 @@
                     quaternions[4*i + 3] = q.w;
                 }
 
-                var hammerPosition = e.data.hammerPosition;
-                var hammerQuaternion = e.data.hammerQuaternion;
-                hammerPosition[0] = hammer.position.x
-                hammerPosition[1] = hammer.position.y
-                hammerPosition[2] = hammer.position.z
-                hammerQuaternion[0] = hammer.quaternion.x
-                hammerQuaternion[1] = hammer.quaternion.y
-                hammerQuaternion[2] = hammer.quaternion.z
-                hammerQuaternion[3] = hammer.quaternion.w
-
                 // Send data back to the main thread
                 self.postMessage({
                     positions:positions,
-                    quaternions:quaternions,
-                    hammerPosition: hammerPosition,
-                    hammerQuaternion: hammerQuaternion,
+                    quaternions:quaternions
                 }, [positions.buffer,
-                    quaternions.buffer,
-                    hammerPosition.buffer,
-                    hammerQuaternion.buffer,]);
+                    quaternions.buffer]);
             };
         </script>
 
@@ -164,11 +203,15 @@
             var mixer;
             var manager = new THREE.LoadingManager();
             var doneLoading = false;
+            var handMesh = [];
+            var handIndices = [];
+            var handBones = [];
             var hammerMesh;
             var hammerObject;
-            var hammerCollision;
+            var hammerIndex;
+            var meshInitialPose = [];
 
-            var N = 10;
+            var N = 5;
 
             init();
             animate();
@@ -207,17 +250,19 @@
                 mesh.receiveShadow = true;
                 scene.add( mesh );
                 mesh.position.y = -1;
+                meshInitialPose.push(new THREE.Matrix4());
                 meshes.push(mesh);
 
                 // cubes
-                // var cubeGeo = new THREE.BoxGeometry( .1, .1, .1);
-                // var cubeMaterial = new THREE.MeshStandardMaterial( { color: 0x888888 } );
-                // for(var i=0; i<N; i++){
-                //     var cubeMesh = new THREE.Mesh( cubeGeo, cubeMaterial );
-                //     cubeMesh.castShadow = true;
-                //     meshes.push(cubeMesh);
-                //     scene.add( cubeMesh );
-                // }
+                var cubeGeo = new THREE.BoxGeometry( .1, .1, .1);
+                var cubeMaterial = new THREE.MeshStandardMaterial( { color: 0x888888 } );
+                for(var i=0; i<N; i++){
+                    var cubeMesh = new THREE.Mesh( cubeGeo, cubeMaterial );
+                    cubeMesh.castShadow = true;
+                    meshes.push(cubeMesh);
+                    meshInitialPose.push(new THREE.Matrix4());
+                    scene.add( cubeMesh );
+                }
 
                 // var grid = new THREE.GridHelper( 2000, 20, 0x000000, 0x000000 );
                 // grid.material.opacity = 0.2;
@@ -228,8 +273,11 @@
                 manager.onLoad = function ( ) {
                     console.log( 'Loading complete!');
                     // Start the worker!
+                    positions = new Float32Array(meshes.length*3)
+                    quaternions = new Float32Array(meshes.length*4)
+                    bonePositions = new Float32Array(handIndices.length*3)
+                    boneQuaternions = new Float32Array(handIndices.length*4)
                     sendDataToWorker();
-                    hammerCollision.parent = hammerObject;
                     doneLoading = true;
                 };
                 var loader = new FBXLoader(manager);
@@ -265,7 +313,6 @@
                                     skinning: true,
                                     color: 0x000000
                                 });
-                                console.log(child);
 
                             } else if(child.name == "Hand") {
                                 child.castShadow = true;
@@ -275,6 +322,21 @@
                                     skinning: true,
                                     map: texLoader.load('textures/HandLines.png'),
                                 });
+                            } else if(child.name.slice(0, 3) == "COL") {
+                                handBones.push(child.parent);
+                                // console.log(child);
+                                child.parent = null;
+                                var mat = child.matrix.clone();
+                                // var mat = new THREE.Matrix4();
+                                // mat.setPosition(0,0,0);
+                                meshInitialPose.push(mat);
+                                // console.log(child.quaternion);
+                                child.material.wireframe = true;
+                                handMesh.push([{vertices: child.geometry.attributes.position,
+                                                normals: child.geometry.attributes.normal}]);
+                                handIndices.push(meshes.length);
+                                // console.log(handIndices)
+                                meshes.push(child);
                             }
                             
                         }
@@ -289,9 +351,15 @@
 
                 loader.load( 'models/hammer.fbx', function ( object ) {
 
-                    object.traverse( function ( child ) {
+                    hammerMesh = []
 
-                        if ( child.isMesh ) {
+                    object.traverse( function ( child ) {
+                        if ( child.isMesh && child.name.slice(0, 3) == "COL") {
+                            child.material.wireframe = true;
+                            hammerMesh.push({vertices: child.geometry.attributes.position,
+                                             normals: child.geometry.attributes.normal});
+                        }
+                        else if ( child.isMesh ) {
                             var diffuse = texLoader.load( "textures/HammerDiffuse_high_res.png" );
                             diffuse.encoding = THREE.sRGBEncoding;
                             var normalMap = texLoader.load( "textures/HammerNormals_final.png" );
@@ -314,50 +382,10 @@
 
                     } );
 
-                    // object.rotation.y = Math.PI/4;
-                    // object.rotation.x = -Math.PI/6;
-                    // object.rotation.z = Math.PI/4;
-
-                    // object.position.y = -0.1;
-                    // object.position.x = -0.1;
-
                     scene.add( object );
-
                     hammerObject = object;
-                    // hammerMesh = new THREE.Geometry().fromBufferGeometry(object.children[0].geometry);
-
-                } );
-
-                loader.load( 'models/hammer_collision.fbx', function ( object ) {
-
-                    object.traverse( function ( child ) {
-                        if ( child.isMesh ) {
-                            child.material.wireframe = true;
-                            // var geom = new THREE.Geometry().fromBufferGeometry(child.geometry) 
-                            // var tempNorm = new THREE.Vector3();
-                            // for (const face in geom.faces) {
-                            //     console.log(face);
-                            //     tempNorm.copy(object.geometry.vertices[face.a]);
-                            //     // tempNorm.cross(object.geometry.vertices[face.b])
-                            //     console.log(tempNorm);
-                            // }
-                        }
-                        
-                    } );
-
-                    // object.rotation.y = Math.PI/4;
-                    // object.rotation.x = -Math.PI/6;
-                    // object.rotation.z = Math.PI/4;
-
-                    // object.position.y = -0.1;
-                    // object.position.x = -0.1;
-                    scene.add( object );
-                    hammerCollision = object;
-                    hammerMesh = []
-                    for(var i=0; i!==object.children.length; i++){
-                        hammerMesh.push({vertices: object.children[i].geometry.attributes.position,
-                                         normals: object.children[i].geometry.attributes.normal});
-                    }
+                    meshInitialPose.push(object.matrix.clone());
+                    meshes.push(object)
 
                 } );
 
@@ -407,20 +435,16 @@
                 stats.update();
                 if(!doneLoading)
                     return;
-                // hammerObject.quaternion.set(quaternions[4*i+0],
-                //                             quaternions[4*i+1],
-                //                             quaternions[4*i+2],
-                //                             quaternions[4*i+3]);
             }
 
             // Parameters
-            var dt = 1/60, N=10;
+            var dt = 1/240;
 
             // Data arrays. Contains all our kinematic data we need for rendering.
-            var positions = new Float32Array(N*3);
-            var quaternions = new Float32Array(N*4);
-            var hammerPosition = new Float32Array(3);
-            var hammerQuaternion = new Float32Array(4);
+            var positions;
+            var quaternions;
+            var bonePositions;
+            var boneQuaternions;
 
             // Create a blob for the inline worker code
             var blob = new Blob([document.querySelector('#worker1').textContent],{type:'text/javascript'});
@@ -436,8 +460,10 @@
                 positions = e.data.positions;
                 quaternions = e.data.quaternions;
 
+                // console.log(e.data.positions)
+                // console.log(meshes.length * 3, positions.length, e.data.positions.length, meshes);
                 // Update rendering meshes
-                for(var i=0; i!==meshes.length; i++){
+                for(var i=0; i < meshes.length; i++){
                     meshes[i].position.set( positions[3*i+0],
                                             positions[3*i+1],
                                             positions[3*i+2] );
@@ -447,23 +473,47 @@
                                              quaternions[4*i+3]);
                 }
 
-
-                hammerObject.position.set(e.data.hammerPosition[0],
-                                          e.data.hammerPosition[1],
-                                          e.data.hammerPosition[2]);
-                hammerObject.quaternion.set(e.data.hammerQuaternion[0],
-                                            e.data.hammerQuaternion[1],
-                                            e.data.hammerQuaternion[2],
-                                            e.data.hammerQuaternion[3]);
-
                 // If the worker was faster than the time step (dt seconds), we want to delay the next timestep
-                var delay = dt * 1000 - (Date.now()-sendTime);
+                var delay =  0; //dt * 1000 - (Date.now()-sendTime);
                 if(delay < 0){
                     delay = 0;
                 }
                 setTimeout(sendDataToWorker,delay);
             }
+            var firstDataSent = true;
             function sendDataToWorker(){
+                if ( mixer ){
+                    for(var i=0; i < handBones.length; i++) {
+                        var position = new THREE.Vector3();
+                        var quaternion = new THREE.Quaternion();
+                        var scale = new THREE.Vector3();
+                        // var mat = new THREE.Matrix4();
+                        // mat.makeRotationX(-3.14/2);
+                        // var mat = meshInitialPose[handIndices[i]]
+                        // mat.premultiply(handBones[i].matrixWorld)
+                        var mat = handBones[i].matrixWorld.clone();
+                        // mat.setPosition(0,0,0)
+                        mat.multiply(meshInitialPose[handIndices[i]])
+                        mat.decompose( position, quaternion, scale );
+                        bonePositions[i * 3 + 0] = position.x;
+                        bonePositions[i * 3 + 1] = position.y;
+                        bonePositions[i * 3 + 2] = position.z;
+
+                        boneQuaternions[i * 4 + 0] = quaternion.x;
+                        boneQuaternions[i * 4 + 1] = quaternion.y;
+                        boneQuaternions[i * 4 + 2] = quaternion.z;
+                        boneQuaternions[i * 4 + 3] = quaternion.w;
+                    }
+                }
+
+                // update dt
+                if (typeof sendTime !== 'undefined') {
+                    var nAverage = 5;
+                    var newdt = (dt * (nAverage - 1) + (Date.now()-sendTime) / 1000.0) / nAverage;
+                    console.log(1/newdt, sendTime)
+                    dt = newdt;
+                }
+
                 sendTime = Date.now();
                 worker.postMessage({
                     N : N,
@@ -471,10 +521,14 @@
                     cannonUrl : document.location.href.replace(/\/[^/]*$/,"/") + "./js/cannon.js",
                     positions : positions,
                     quaternions : quaternions,
-                    hammerMesh : hammerMesh,
-                    hammerPosition: hammerPosition,
-                    hammerQuaternion: hammerQuaternion,
+                    hammerMesh : (firstDataSent ? hammerMesh : null),
+                    handMesh :   (firstDataSent ? handMesh : null),
+                    bonePositions: bonePositions,
+                    boneQuaternions: boneQuaternions,
+                    handIndices: handIndices,
+                    hammerIndex: hammerIndex,
                 },[positions.buffer, quaternions.buffer]);
+                firstDataSent = false;
             }
         </script>
     </body>
