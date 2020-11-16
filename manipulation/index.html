@@ -10,16 +10,42 @@
                 background: radial-gradient(#cda381, #8b6a4e);
                 margin:0;
             }
+            #controls {
+                position:fixed;
+                top:0;
+                right:0;
+                font-size:50px;
+            }
+            #controls > div {
+                margin:10px;
+            }
+            #fps{
+                font-size:12pt;
+            }
+            #reset::after {
+                content:"\01F501";
+            } #playpause::after {
+                content:"\023EF";
+            } #wireframes::after {
+                content:"\01F310"; 
+            }
         </style>
     </head>
 
     <body>
+        <div id="controls">
+            <div id="fps">fps: 0</div>
+            <div id="reset"></div>
+            <div id="playpause"></div>
+            <div id="wireframes"></div>
+        </div>
         <!-- Worker script, will be run in separate thread -->
         <script id="worker1" type="module">
             var world;
             var hammer;
             var hand = [];
             var lastPositions;
+            var n_cubes;
 
             function bodyFromMesh(mesh, options) {
                 options = options || {};
@@ -58,6 +84,26 @@
                 return body;
             }
 
+            function resetBodies() {
+                // Everything but the floor and hand
+                for(var i=1; i < n_cubes + 2; i++)
+                {
+                    // cubes
+                    if(i < n_cubes+1)
+                    {
+                        world.bodies[i].position.set(Math.random()*.1-0.05,
+                                                     Math.random()*.1-0.05,
+                                                     0.25*(i+1)+0.05);
+                    } else { // hammer
+                        world.bodies[i].position.set(0.1,.1,0.1);
+                        world.bodies[i].quaternion.set(0,-0.005,0,1);
+                        hammer.quaternion.normalize();
+                    }
+                    world.bodies[i].velocity.set(0,0,0);
+                    world.bodies[i].angularVelocity.set(0,0,0);
+                }
+            }
+
             self.onmessage = function(e) {
                 if(!e.data.bonePositions) {
                     var positions = e.data.positions;
@@ -65,8 +111,8 @@
                     self.postMessage({
                         positions:positions,
                         quaternions:quaternions
-                    }, [positions.buffer,
-                        quaternions.buffer]);
+                    }, [(positions ? positions.buffer : []),
+                        (positions ? quaternions.buffer : [])]);
                     return;
                 }
                 if (e.data.cannonUrl && !world) {
@@ -82,7 +128,7 @@
                     world.solver.iterations = 100;
                     world.defaultContactMaterial.contactEquationStiffness = 1e10;
                     world.defaultContactMaterial.contactEquationRelaxation = 10;
-                    world.defaultContactMaterial.restitution = 0.5;
+                    world.defaultContactMaterial.restitution = 0.1;
                     world.quatNormalizeFast = true;
 
                     // Ground plane
@@ -98,16 +144,15 @@
                     for(var i=0; i!==e.data.N; i++){
                         var body = new CANNON.Body({ mass: .1 });
                         body.addShape(shape);
-                        body.position.set(Math.random()*.1-0.05, Math.random()*.1-0.05, 0.25*(i+1)+0.05);
                         world.addBody(body);
                     }
 
                     // Create hammer
                     hammer = bodyFromMesh(e.data.hammerMesh, {mass:0.5})
-                    hammer.position.set(0.1,.1,0.1);
-                    hammer.quaternion.set(0,-0.005,0,1)
-                    hammer.quaternion.normalize()
                     world.addBody(hammer)
+
+                    n_cubes = e.data.N;
+                    resetBodies();
 
                     // Create hand
                     for(var i=0; i < e.data.handMesh.length; i++){
@@ -124,14 +169,14 @@
                                                                      type: CANNON.Body.KINEMATIC,
                                                                      position: pos,
                                                                      quaternion: quat})
-                        console.log(e.data.boneQuaternions[i * 4 + 0],
-                                    e.data.boneQuaternions[i * 4 + 1],
-                                    e.data.boneQuaternions[i * 4 + 2],
-                                    e.data.boneQuaternions[i * 4 + 3], quat, mesh);
                         // mesh.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
                         world.addBody(mesh);
                         // console.log(i,mesh)
                     };
+                }
+
+                if(e.data.reset) {
+                    resetBodies();
                 }
 
                 // Hand update
@@ -200,7 +245,7 @@
 
             var clock = new THREE.Clock();
 
-            var mixer;
+            var mixer, action;
             var manager = new THREE.LoadingManager();
             var doneLoading = false;
             var handMesh = [];
@@ -212,11 +257,29 @@
             var meshInitialPose = [];
 
             var N = 5;
+            var maxFPS = 240;
+
+            // For debugging
+            var reset = false;
+            var showDebug = true;
+            var debugObj = [];
+            var playAnim = true;
 
             init();
             animate();
 
             function init() {
+                document.getElementById("reset").onclick = function() { reset = true;};
+                document.getElementById("playpause").onclick = function() {
+                    playAnim = !playAnim;
+                    action.paused = playAnim;
+                };
+                document.getElementById("wireframes").onclick = function() {
+                    showDebug = !showDebug;
+                    for(var i=0; i<debugObj.length; i++) {
+                        debugObj[i].visible = showDebug;
+                    }
+                };
 
                 container = document.createElement( 'div' );
                 document.body.appendChild( container );
@@ -229,6 +292,8 @@
                 camera.updateProjectionMatrix();
 
                 scene = new THREE.Scene();
+                window.scene = scene;
+                window.THREE = THREE;
 
                 light = new THREE.DirectionalLight( 0xffffff );
                 light.position.set( 0, 0, 1.5);
@@ -300,7 +365,7 @@
 
                     mixer = new THREE.AnimationMixer( object );
 
-                    var action = mixer.clipAction( object.animations[ 0 ] );
+                    action = mixer.clipAction( object.animations[ 0 ] );
                     action.play();
 
                     object.traverse( function ( child ) {
@@ -335,6 +400,7 @@
                                 handMesh.push([{vertices: child.geometry.attributes.position,
                                                 normals: child.geometry.attributes.normal}]);
                                 handIndices.push(meshes.length);
+                                debugObj.push(child);
                                 // console.log(handIndices)
                                 meshes.push(child);
                             }
@@ -343,7 +409,7 @@
 
                     } );
 
-                    console.log(object)
+                    // console.log(object)
 
                     scene.add( object );
 
@@ -358,6 +424,7 @@
                             child.material.wireframe = true;
                             hammerMesh.push({vertices: child.geometry.attributes.position,
                                              normals: child.geometry.attributes.normal});
+                            debugObj.push(child);
                         }
                         else if ( child.isMesh ) {
                             var diffuse = texLoader.load( "textures/HammerDiffuse_high_res.png" );
@@ -435,6 +502,8 @@
                 stats.update();
                 if(!doneLoading)
                     return;
+
+                document.getElementById("fps").innerHTML = `fps: ${Math.round(1/dt)}`;
             }
 
             // Parameters
@@ -474,7 +543,7 @@
                 }
 
                 // If the worker was faster than the time step (dt seconds), we want to delay the next timestep
-                var delay =  0; //dt * 1000 - (Date.now()-sendTime);
+                var delay =  1000 / maxFPS - (Date.now()-sendTime);
                 if(delay < 0){
                     delay = 0;
                 }
@@ -508,14 +577,14 @@
 
                 // update dt
                 if (typeof sendTime !== 'undefined') {
-                    var nAverage = 5;
-                    var newdt = (dt * (nAverage - 1) + (Date.now()-sendTime) / 1000.0) / nAverage;
-                    console.log(1/newdt, sendTime)
-                    dt = newdt;
+                    var newdt = (Date.now()-sendTime) / 1000.0;
+                    var nAverage = 60;
+                    dt = Math.max(1/maxFPS, (dt * (nAverage - 1) + newdt) / nAverage);
                 }
 
                 sendTime = Date.now();
                 worker.postMessage({
+                    reset : reset,
                     N : N,
                     dt : dt,
                     cannonUrl : document.location.href.replace(/\/[^/]*$/,"/") + "./js/cannon.js",
@@ -529,6 +598,8 @@
                     hammerIndex: hammerIndex,
                 },[positions.buffer, quaternions.buffer]);
                 firstDataSent = false;
+
+                reset = false;
             }
         </script>
     </body>
