@@ -10,6 +10,16 @@
                 background: radial-gradient(#cda381, #8b6a4e);
                 margin:0;
             }
+            #blackout {
+                position:fixed;
+                left:0;
+                right:0;
+                width:100vw;
+                height:100vh;
+                background-color: black;
+                z-index:-100;
+                display:none;
+            }
             #controls {
                 position:fixed;
                 top:0;
@@ -33,6 +43,8 @@
     </head>
 
     <body>
+        <div id="blackout">
+        </div>
         <div id="controls">
             <div id="fps">fps: 0</div>
             <div id="reset"></div>
@@ -42,10 +54,15 @@
         <!-- Worker script, will be run in separate thread -->
         <script id="worker1" type="module">
             var world;
-            var hammer;
+            var hammerBody;
+            var groundBody;
+            var handBody;
+            var hammerPivot;
             var hand = [];
             var lastPositions;
             var n_cubes;
+            var indexConstraint, thumbConstraint, handConstraint;
+            var isGrasped = false;
 
             function bodyFromMesh(mesh, options) {
                 options = options || {};
@@ -95,9 +112,9 @@
                                                      Math.random()*.1-0.05,
                                                      0.25*(i+1)+0.05);
                     } else { // hammer
-                        world.bodies[i].position.set(0.1,.1,0.1);
+                        world.bodies[i].position.set(0.2,.1,0.1);
                         world.bodies[i].quaternion.set(0,-0.005,0,1);
-                        hammer.quaternion.normalize();
+                        hammerBody.quaternion.normalize();
                     }
                     world.bodies[i].velocity.set(0,0,0);
                     world.bodies[i].angularVelocity.set(0,0,0);
@@ -105,7 +122,7 @@
             }
 
             self.onmessage = function(e) {
-                if(!e.data.bonePositions) {
+                if(!e.data.bonePositions || !e.data.playAnim) {
                     var positions = e.data.positions;
                     var quaternions = e.data.quaternions;
                     self.postMessage({
@@ -124,19 +141,18 @@
                     world.broadphase = new CANNON.NaiveBroadphase();
                     world.narrowphase
                     world.gravity.set(0,0,-9.8);
-                    world.solver.tolerance = 0.0001;
-                    world.solver.iterations = 100;
-                    world.defaultContactMaterial.contactEquationStiffness = 1e10;
-                    world.defaultContactMaterial.contactEquationRelaxation = 10;
-                    world.defaultContactMaterial.restitution = 0.1;
+                    // world.solver = new CANNON.SplitSolver(world.solver);
+                    // world.defaultContactMaterial.contactEquationStiffness = 1e10;
+                    // world.defaultContactMaterial.contactEquationRelaxation = 10;
+                    // world.defaultContactMaterial.restitution = 0.1;
                     world.quatNormalizeFast = true;
 
                     // Ground plane
                     var plane = new CANNON.Plane();
-                    var groundBody = new CANNON.Body({ mass: 0 });
+                    groundBody = new CANNON.Body({ mass: 0 });
                     groundBody.addShape(plane);
                     // groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
-                    groundBody.position.set(0,0,-.2);
+                    groundBody.position.set(0,0,e.data.floorHeight);
                     world.addBody(groundBody);
 
                     // Create N cubes
@@ -148,8 +164,8 @@
                     }
 
                     // Create hammer
-                    hammer = bodyFromMesh(e.data.hammerMesh, {mass:0.5})
-                    world.addBody(hammer)
+                    hammerBody = bodyFromMesh(e.data.hammerMesh, {mass:0.5})
+                    world.addBody(hammerBody)
 
                     n_cubes = e.data.N;
                     resetBodies();
@@ -168,15 +184,79 @@
                                                                      linearDamping:0,
                                                                      type: CANNON.Body.KINEMATIC,
                                                                      position: pos,
-                                                                     quaternion: quat})
+                                                                     quaternion: quat,
+                                                                     collisionFilterGroup:2})
+                        var name = e.data.handMesh[i][0].name
+                        console.log("name: ", name);
+
+                        if (name == "COL_Hand") {
+                            palmConstraint = new CANNON.LockConstraint(hammerBody, mesh);
+                            // world.addConstraint(palmConstraint);
+                        }
+                        if (name == "COL_Hand001") {
+                            var centerA = new CANNON.Vec3(0,0,-.15);
+                            var centerB = new CANNON.Vec3(0,-0.02220,0.027414);
+                            indexConstraint = new CANNON.PointToPointConstraint(hammerBody, centerA, mesh, centerB,0.1)
+                            world.addConstraint(indexConstraint);
+                        }
+                        if (name == "COL_Hand010") {
+                            var centerA = new CANNON.Vec3(0,0,-.15);
+                            var centerB = new CANNON.Vec3(-0.018637,0.002901,0.028293);
+                            thumbConstraint = new CANNON.PointToPointConstraint(hammerBody, centerA, mesh, centerB,0.1)
+                            world.addConstraint(thumbConstraint);
+                        }
+                        if (name == "COL_HammerPivot") {
+                            hammerPivot = mesh;
+                            mesh.collisionFilterGroup = 4;
+                            palmConstraint = new CANNON.LockConstraint(hammerBody, mesh,0.001);
+                            palmConstraint.pivotA = new CANNON.Vec3(0,0,-.15 / 2);
+                            world.addConstraint(palmConstraint);
+                        }
                         // mesh.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
                         world.addBody(mesh);
                         // console.log(i,mesh)
                     };
+
+                    // handBody = new CANNON.Body({ mass: 0.5,
+                    //                              damping:0.6,
+                    //                              collisionFilterGroup:8});
+                    handBody = new CANNON.Body({ mass: 0,
+                                                 type: CANNON.Body.KINEMATIC,
+                                                 collisionFilterGroup:8});
+                    handBody.addShape(new CANNON.Sphere(0.05));
+                    world.addBody(handBody); 
                 }
 
                 if(e.data.reset) {
                     resetBodies();
+                }
+
+                if(e.data.hammerCanCollide && !e.data.isGrasped)
+                    hammerBody.collisionFilterMask = 1|2;
+                else
+                    hammerBody.collisionFilterMask = 1;
+
+
+                if(e.data.isPinched) {
+                    indexConstraint.enable();
+                    thumbConstraint.enable();
+                } else {
+                    indexConstraint.disable();
+                    thumbConstraint.disable();
+                }
+
+                if(e.data.isGrasped) {
+                    if(!isGrasped) {
+                        world.removeConstraint(palmConstraint);
+                        palmConstraint = new CANNON.LockConstraint(hammerBody, hammerPivot, 0.01);
+                        palmConstraint.pivotA = new CANNON.Vec3(0,0,-.15/2);
+                        world.addConstraint(palmConstraint);
+                        palmConstraint.enable();
+                    }
+                    isGrasped = true;
+                } else {
+                    palmConstraint.disable();
+                    isGrasped = false;
                 }
 
                 // Hand update
@@ -197,11 +277,40 @@
                                (e.data.bonePositions[i * 3 + 1] - world.bodies[idx].position.y) / e.data.dt,
                                (e.data.bonePositions[i * 3 + 2] - world.bodies[idx].position.z) / e.data.dt]
                     world.bodies[idx].velocity.set(vel[0], vel[1], vel[2]);
+
+                    // world.bodies[idx].position.set(e.data.bonePositions[i * 3 + 0],
+                    //                                e.data.bonePositions[i * 3 + 1],
+                    //                                e.data.bonePositions[i * 3 + 2]);
+                }
+
+                var handPos = new CANNON.Vec3(e.data.handPos[0],
+                                              e.data.handPos[1],
+                                              e.data.handPos[2]);
+
+                handBody.quaternion.set(e.data.handRot[0],
+                                        e.data.handRot[1],
+                                        e.data.handRot[2],
+                                        e.data.handRot[3]);
+                // e.data.desiredPose
+                diff = handPos.vsub(handBody.position).scale(1 / e.data.dt);
+                // console.log(diff);
+                handBody.velocity.set(diff.x, diff.y, diff.z);
+                // handBody.position.set(handPos.x, handPos.y, handPos.z)
+
+
+                // diff.scale(2)
+                // for(var i=0; i<e.data.handIndices.length; i++){
+                //     var idx = e.data.handIndices[i];
+                //     world.bodies[idx].velocity = world.bodies[idx].velocity.vadd(diff);
+                // }
+                if(isGrasped){
+                    hammerBody.velocity.set(diff.x, diff.y, diff.z);
                 }
 
                 lastPositions = [...e.data.bonePositions];
                 // Step the world
                 world.step(e.data.dt);
+                
                 // world.collisionMatrixTick ()
                 // console.log(world)
 
@@ -231,13 +340,15 @@
         </script>
 
         <script type="module">
-            import * as THREE from './jsm/THREE/three.module.js';
+            import * as THREE from 'https://unpkg.com/three@0.123.0/build/three.module.js';
 
-            import Stats from './jsm/THREE/libs/stats.module.js';
+            import Stats from 'https://unpkg.com/three@0.123.0/examples/jsm/libs/stats.module.js';
 
-            import { OrbitControls } from './jsm/THREE/controls/OrbitControls.js';
-            import { FBXLoader } from './jsm/THREE/loaders/FBXLoader.js';
-            import { HDRCubeTextureLoader } from './jsm/THREE/loaders/HDRCubeTextureLoader.js';
+            import { OrbitControls } from 'https://unpkg.com/three@0.123.0/examples/jsm/controls/OrbitControls.js';
+            import { FBXLoader } from 'https://unpkg.com/three@0.123.0/examples/jsm/loaders/FBXLoader.js';
+            import { HDRCubeTextureLoader } from 'https://unpkg.com/three@0.123.0/examples/jsm/loaders/HDRCubeTextureLoader.js';
+
+            var floorHeight = -0.2
 
             var meshes = [];
             var container, stats, controls;
@@ -245,7 +356,8 @@
 
             var clock = new THREE.Clock();
 
-            var mixer, action;
+            var mixer, actions, actionWeights, currentAction;
+            var idleAction, pickUpLeftAction, pickUpRightAction, hammerAction;
             var manager = new THREE.LoadingManager();
             var doneLoading = false;
             var handMesh = [];
@@ -254,41 +366,69 @@
             var hammerMesh;
             var hammerObject;
             var hammerIndex;
+            var handObject;
             var meshInitialPose = [];
 
-            var N = 5;
+            var isPinched = false;
+            var isGrasped = false;
+            var pinchPos = new THREE.Vector3(0,0,0);
+            var desiredPose = new THREE.Matrix4();
+            var moveTime = 0;
+            var handAccel = 0.1;
+            var handVel = 0;
+            var hammerCanCollide = false;
+            var N = 0;
             var maxFPS = 240;
 
             // For debugging
             var reset = false;
-            var showDebug = true;
+            var showDebug = false;
             var debugObj = [];
+            var displayObj = [];
             var playAnim = true;
 
             init();
             animate();
 
             function init() {
-                document.getElementById("reset").onclick = function() { reset = true;};
+                document.getElementById("reset").onclick = function() {
+                    reset = true;
+                    isPinched = false;
+                    isGrasped = false;
+                    pinchPos.set(0,0,0);
+                    hammerCanCollide = false;
+                    playAnim=true;
+                    switchAction(idleAction, 0.5);
+                };
                 document.getElementById("playpause").onclick = function() {
                     playAnim = !playAnim;
-                    action.paused = playAnim;
+                    if(playAnim) {
+                        unPauseAllActions();
+                    } else {
+                        pauseAllActions();
+                    }
                 };
                 document.getElementById("wireframes").onclick = function() {
                     showDebug = !showDebug;
-                    for(var i=0; i<debugObj.length; i++) {
-                        debugObj[i].visible = showDebug;
+                    for(var i=0; i<displayObj.length; i++) {
+                        displayObj[i].material.visible = !showDebug;
                     }
+                    for(var i=0; i<debugObj.length; i++) {
+                        debugObj[i].material.visible = showDebug;
+                        console.log(debugObj[i].name)
+                    }
+                    document.getElementById('blackout').style.display = (showDebug ?  "block":"none")
                 };
 
                 container = document.createElement( 'div' );
                 document.body.appendChild( container );
 
                 camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
-                camera.position.set( 0, .7, 0.2 );
+                camera.position.set( 0, .7, 0.2 + floorHeight );
                 camera.up.set(0,0,1)
                 camera.near = 0.001;
                 camera.far = 5;
+                camera.lookAt(0,0,floorHeight - .5);
                 camera.updateProjectionMatrix();
 
                 scene = new THREE.Scene();
@@ -314,9 +454,9 @@
                 mesh.material.opacity = 0.2;
                 mesh.receiveShadow = true;
                 scene.add( mesh );
-                mesh.position.y = -1;
                 meshInitialPose.push(new THREE.Matrix4());
                 meshes.push(mesh);
+                displayObj.push(mesh);
 
                 // cubes
                 var cubeGeo = new THREE.BoxGeometry( .1, .1, .1);
@@ -329,10 +469,14 @@
                     scene.add( cubeMesh );
                 }
 
-                // var grid = new THREE.GridHelper( 2000, 20, 0x000000, 0x000000 );
-                // grid.material.opacity = 0.2;
-                // grid.material.transparent = true;
-                // scene.add( grid );
+                var grid = new THREE.GridHelper( 20, 200);
+                grid.rotation.set(Math.PI/2,0,0);
+                grid.position.set(0,0,floorHeight)
+                grid.material.opacity = 0.2;
+                grid.material.transparent = true;
+                grid.material.visible=false;
+                debugObj.push(grid);
+                scene.add( grid );
 
                 // model
                 manager.onLoad = function ( ) {
@@ -365,8 +509,29 @@
 
                     mixer = new THREE.AnimationMixer( object );
 
-                    action = mixer.clipAction( object.animations[ 0 ] );
-                    action.play();
+                    for (var i = 0; i < object.animations.length; i++) {
+                        var name = object.animations[i].name
+                        console.log(name)
+                        if(name == "Armature|FingerWag") {//.includes("Armature|FingerWag")) {
+                            idleAction = mixer.clipAction(object.animations[i]);
+                        }
+                        if(name == "Armature|LiftFloorLeft") {//.includes("LiftFloorLeft")) {
+                            pickUpLeftAction = mixer.clipAction(object.animations[i]);
+                        }
+                        if(name == "Armature|LiftFloorRight") {//.includes("LiftFloorRight")) {
+                            pickUpRightAction = mixer.clipAction(object.animations[i]);
+                        }
+                        if(name == "Armature|Hammer") {//.includes("LiftFloorRight")) {
+                            hammerAction = mixer.clipAction(object.animations[i]);
+                        }
+                    }
+
+                    actions = [idleAction, pickUpLeftAction, pickUpRightAction, hammerAction];
+                    console.log(actions)
+                    actionWeights = [1.0, 0.0, 0.0, 0.0];
+                    currentAction = idleAction;
+
+                    activateAllActions();
 
                     object.traverse( function ( child ) {
 
@@ -378,8 +543,9 @@
                                     skinning: true,
                                     color: 0x000000
                                 });
+                                displayObj.push(child);
 
-                            } else if(child.name == "Hand") {
+                            } else if(child.name == "HandMesh" || child.name == "Hand") {
                                 child.castShadow = true;
                                 child.receiveShadow = true;
                                 child.material = new THREE.MeshStandardMaterial( {
@@ -387,7 +553,12 @@
                                     skinning: true,
                                     map: texLoader.load('textures/HandLines.png'),
                                 });
-                            } else if(child.name.slice(0, 3) == "COL") {
+                                displayObj.push(child);
+                            } else if(child.name.slice(0, 4) == "COL_") {
+                                child.material= new THREE.MeshBasicMaterial( {
+                                    color: 0x250505,
+                                    wireframe: true
+                                });
                                 handBones.push(child.parent);
                                 // console.log(child);
                                 child.parent = null;
@@ -396,13 +567,15 @@
                                 // mat.setPosition(0,0,0);
                                 meshInitialPose.push(mat);
                                 // console.log(child.quaternion);
-                                child.material.wireframe = true;
                                 handMesh.push([{vertices: child.geometry.attributes.position,
-                                                normals: child.geometry.attributes.normal}]);
+                                                normals: child.geometry.attributes.normal,
+                                                name: child.name}]);
                                 handIndices.push(meshes.length);
                                 debugObj.push(child);
+                                child.matrixAutoUpdate  = false;
                                 // console.log(handIndices)
                                 meshes.push(child);
+                                child.material.visible = showDebug;
                             }
                             
                         }
@@ -412,6 +585,15 @@
                     // console.log(object)
 
                     scene.add( object );
+                    handObject = object;
+
+                    var sphere = new THREE.Mesh(new THREE.SphereGeometry(0.05,6,4),
+                                                new THREE.MeshBasicMaterial({color: 0x050505,
+                                                                             wireframe: true}));
+                    scene.add( sphere );
+                    handObject.parent = sphere;
+                    sphere.material.visible = showDebug;
+                    meshes.push(sphere);
 
                 } );
 
@@ -420,11 +602,15 @@
                     hammerMesh = []
 
                     object.traverse( function ( child ) {
-                        if ( child.isMesh && child.name.slice(0, 3) == "COL") {
-                            child.material.wireframe = true;
+                        if ( child.isMesh && child.name.slice(0, 4) == "COL_") {
+                            child.material= new THREE.MeshBasicMaterial( {
+                                color: 0x101010,
+                                wireframe: true
+                            });
                             hammerMesh.push({vertices: child.geometry.attributes.position,
                                              normals: child.geometry.attributes.normal});
                             debugObj.push(child);
+                            child.material.visible = showDebug;
                         }
                         else if ( child.isMesh ) {
                             var diffuse = texLoader.load( "textures/HammerDiffuse_high_res.png" );
@@ -445,6 +631,7 @@
                                 normalScale: new THREE.Vector2( 0.25, 0.25 )
                             } );
                             child.material = material;
+                            displayObj.push(child);
                         }
 
                     } );
@@ -489,6 +676,303 @@
 
             }
 
+            function deactivateAllActions() {
+
+                actions.forEach( function ( action ) {
+
+                    action.stop();
+
+                } );
+
+            }
+
+            function pauseAllActions() {
+
+                actions.forEach( function ( action ) {
+
+                    action.paused = true;
+
+                } );
+
+            }
+
+            function unPauseAllActions() {
+
+                actions.forEach( function ( action ) {
+
+                    action.paused = false;
+
+                } );
+
+            }
+
+            function switchAction(endAction, duration) {
+                console.log("switching", currentAction, endAction);
+                if(currentAction == endAction) {
+                    console.log("Already playing action:", currentAction)
+                    return;
+                }
+                unPauseAllActions();
+                setWeight( endAction, 1 );
+                console.log(actionWeights)
+                endAction.time = 0;
+                currentAction.crossFadeTo( endAction, duration, false );
+                currentAction = endAction;
+            }
+
+            // This function is needed, since animationAction.crossFadeTo() disables its start action and sets
+            // the start action's timeScale to ((start animation's duration) / (end animation's duration))
+
+            function setWeight( action, weight ) {
+                action.enabled = true;
+                action.setEffectiveTimeScale( 1 );
+                action.setEffectiveWeight( weight );
+            }
+
+            function activateAllActions() {
+                for (var i = 0; i <  actions.length; i++) {
+                    setWeight( actions[i], actionWeights[i]);
+                    actions[i].play();
+                }
+
+            }
+
+            function setDesiredPose(pose) {
+                // moveTime = 0;
+                var position = new THREE.Vector3();
+                var rotation = new THREE.Quaternion();
+                desiredPose.decompose(position, rotation, new THREE.Vector3());
+                var newPosition = new THREE.Vector3();
+                var newRotation = new THREE.Quaternion();
+                pose.decompose(newPosition, newRotation, new THREE.Vector3());
+                position.lerp(newPosition, 0.1);
+                rotation.slerp(newRotation, 0.05);
+                // rotation.setFromRotationMatrix(pose);
+                // console.log(position, rotation, pose, desiredPose)
+                desiredPose.compose(position, rotation, new THREE.Vector3(1,1,1));
+                // desiredPose.copy(pose);
+            }
+
+            // function moveHand(dt) {
+            //     var oldPos = new THREE.Vector3();
+            //     var oldRot = new THREE.Quaternion();
+            //     var desiredPos = new THREE.Vector3();
+            //     var desiredRot = new THREE.Quaternion();
+            //     handObject.matrix.decompose(oldPos, oldRot, new THREE.Vector3());
+            //     desiredPose.decompose(desiredPos, desiredRot, new THREE.Vector3());
+            //     moveTime += dt;
+            //     var diff = (new THREE.Vector3()).subVectors(desiredPos, oldPos);
+            //     var dist = diff.length();
+            //     // handVel += (dist > 0 ? handAccel : -handAccel)
+            //     // handVel = Math.min(2, Math.max(handVel, 0))
+            //     // handVel = Math.min(2, (dist + handVel * 2) / 5.0);
+            //     // handVel = Math.min(2, dist);
+            //     handVel = 4;
+            //     // console.log(handVel, dist, moveTime)
+            //     if(handVel > 0 && dist > 0){
+            //         var totTime = dist * handVel;
+            //         moveTime = Math.min(moveTime, totTime);
+            //         handObject.position.lerpVectors(oldPos, desiredPos, moveTime / totTime);
+            //     }
+
+            //     handObject.position.copy(desiredPos);
+            // }
+
+            function matchHandWithHammer(dt) {
+                var mat = (new THREE.Matrix4()).copy(hammerObject.matrixWorld);
+                var pos = new THREE.Vector3();
+                var quat = new THREE.Quaternion();
+                mat.decompose(pos, quat, new THREE.Vector3())
+                var eul = (new THREE.Euler()).setFromQuaternion(quat);
+                var x_vec = new THREE.Vector3();
+                var y_vec = new THREE.Vector3();
+                var z_vec = new THREE.Vector3();
+                mat.extractBasis(x_vec, y_vec, z_vec);
+                var offset = (new THREE.Vector3()).copy(z_vec);
+                offset.multiplyScalar(-0.15)
+
+                var direction = "none"
+
+                // Move to hammer if it's tilted
+                if(currentAction != hammerAction) {
+                    var newRot = new THREE.Matrix4();
+                    var new_z = new THREE.Vector3(0,0,1);
+                    var new_x = (new THREE.Vector3()).crossVectors(new_z, z_vec).normalize ();
+                    var new_y = (new THREE.Vector3()).crossVectors(new_z, new_x);
+                    newRot.set(new_x.x, new_y.x, new_z.x, 0,
+                               new_x.y, new_y.y, new_z.y, 0,
+                               new_x.z, new_y.z, new_z.z, 0,
+                               0      , 0      , 0      , 1)
+                     if(Math.abs(z_vec.dot(new THREE.Vector3(0,0,1))) < 0.2) {
+                        direction = (x_vec.z > 0 ? "right" : "left")
+                     }
+                }
+
+                if(currentAction == idleAction) {
+                    hammerCanCollide = true;
+                    if (direction == "left") {
+                        switchAction(pickUpLeftAction, 0.5)
+                    }
+                    if (direction == "right") {
+                        switchAction(pickUpRightAction, 0.5)
+                    }
+                } else if(currentAction == pickUpLeftAction || currentAction == pickUpRightAction) {
+                    hammerCanCollide = false;
+                    // Check pinch and grasp state for constraints
+                    if(currentAction.time > 20/24 && currentAction.time < 35/24){
+                        isPinched = true;
+                    } else {
+                        isPinched = false;
+                    }
+                    if(currentAction.time > 35/24) {
+                        isGrasped = true;
+                    }
+
+                    if(currentAction.time > currentAction.getClip().duration - 20/24) {
+                        switchAction(hammerAction, 1)
+                    }
+                    // go to idle if we fail to pinch or grasp before hammer moves
+                    if (direction == "none" && !isPinched && !isGrasped) {
+                        switchAction(idleAction, 0.5);
+                    }
+                    // Move to target
+                    pos.setZ(floorHeight);
+                    pos.add(offset);
+                    var handPose = (new THREE.Matrix4()).copy(newRot);
+                    // console.log(newRot)
+                    handPose.setPosition(pos);
+                    setDesiredPose(handPose);
+
+                } else if(currentAction == hammerAction) {
+                    hammerCanCollide = false;
+                    var ca = Math.cos((new Date()).getTime()  / 1000 / 17)
+                    var cb = Math.cos((new Date()).getTime()  / 1000 / 11)
+                    var frequency = 10 + (cb + ca) / 2 * 1
+                    // console.log(frequency)
+                    frequency = 15;
+                    var sinVal = Math.sin((new Date()).getTime() / 1000 * frequency)
+                    var newPose = new THREE.Matrix4();
+                    newPose.makeRotationX(-sinVal * 2);
+                    newPose.premultiply((new THREE.Matrix4()).makeRotationZ(-Math.PI/2));
+                    var zRot = Math.sin((new Date()).getTime() / 1000) + 1;
+                    newPose.premultiply((new THREE.Matrix4()).makeRotationZ(zRot * Math.PI / 4 - 2));
+                    newPose.setPosition(0, 0, (1+sinVal) / 2 * 0.3 - 0.2);
+                    setDesiredPose(newPose);
+                }
+                
+                // // actionWeights=[1,0,0, 0];
+                // isPinched = false;
+
+                // var newRot = new THREE.Matrix4();
+                // // newRot.set(x_vec.x, y_vec.x, z_vec.x, 0,
+                // //            x_vec.y, y_vec.y, z_vec.y, 0,
+                // //            x_vec.z, y_vec.z, z_vec.z, 0,
+                // //            0      , 0      , 0      , 1)
+                
+                // // newRot.multiply((new THREE.Matrix4()).makeRotationX(-Math.PI/2))
+                // // newRot.multiply((new THREE.Matrix4()).makeRotationY(Math.PI))
+
+                // if(Math.abs(z_vec.dot(new THREE.Vector3(0,0,1))) < 0.2 || isPinched || isGrasped){
+                //     var new_z = new THREE.Vector3(0,0,1);
+                //     var new_x = (new THREE.Vector3()).crossVectors(new_z, z_vec).normalize ();
+                //     var new_y = (new THREE.Vector3()).crossVectors(new_z, new_x);
+                //     newRot.set(new_x.x, new_y.x, new_z.x, 0,
+                //                new_x.y, new_y.y, new_z.y, 0,
+                //                new_x.z, new_y.z, new_z.z, 0,
+                //                0      , 0      , 0      , 1)
+                //     hammerCanCollide = false;
+                //     var direction = (x_vec.z > 0 ? "right" : "left")
+                //     // var new_z = new THREE.Vector3(0,0,1);
+                //     // var new_y = (new THREE.Vector3()).crossVectors(new_z, z_vec);
+                //     // var new_x = (new THREE.Vector3()).crossVectors(new_z, new_y);
+                //     // var newRot = new THREE.Matrix4();
+                //     // newRot.set(new_x.x, new_y.x, new_z.x, 0,
+                //     //            new_x.y, new_y.y, new_z.y, 0,
+                //     //            new_x.z, new_y.z, new_z.z, 0,
+                //     //            0      , 0      , 0      , 1)
+                //     // handObject.rotation.setFromRotationMatrix (newRot);
+                //     // console.log(handObject.rotation)
+                //     // // console.log("horizontal", direction, eul)
+                //     var isIdle = !isHammering && !isPinched && !isGrasped
+                //     if (direction == "left" && isIdle) {
+                //         if(pickUpLeftAction.time > 20/24 && pickUpLeftAction.time < 35/24){
+                //             isPinched = true;
+                //         } else {
+                //             isPinched = false;
+                //         }
+
+                //         if(pickUpLeftAction.time > 35/24) {
+                //             isGrasped = true;
+                //         }
+
+                //         if(pickUpRightAction.time > 70/24) {
+                //             isHammering = true;
+                //         }
+
+                //         switchAction(pickUpLeftAction, 0.5)
+                //     } else if(isIdle) {
+                //         if(pickUpRightAction.time > 20/24 && pickUpRightAction.time < 35/24){
+                //             isPinched = true;
+                //         } else {
+                //             isPinched = false;
+                //         } 
+
+                //         if(pickUpRightAction.time > 35/24) {
+                //             isGrasped = true;
+                //         }
+
+                //         if(pickUpRightAction.time > 50/24) {
+                //             isHammering = true;
+                //         }
+                //         switchAction(pickUpLeftAction, 0.5)
+                //     }
+
+                //     if(!isPinched) {
+                //         pinchPos.set(0,0,0);
+                //     }
+
+                //     if(pinchPos.length() == 0 && !isGrasped) {
+                //         // pickUpLeftAction.time = 0;
+                //         // pickUpRightAction.time = 0;
+                //         pinchPos.copy(pos);
+                //         pinchPos.setZ(floorHeight);
+                //         pinchPos.add(offset);
+                //         // handObject.position.copy(pinchPos);
+                //     }
+                //     // // console.log(handObject.rotation)
+                // } else if(!isHammering){
+                //     pickUpLeftAction.time = 0;
+                //     pickUpRightAction.time = 0;
+                //     // hammerCanCollide = true;
+                //     // actionWeights=[1,0,0];
+                //     // isPinched = false;
+                // }
+                // if(!isGrasped) {
+                //     var handPose = (new THREE.Matrix4()).copy(newRot);
+                //     // console.log(newRot)
+                //     handPose.setPosition(pinchPos);
+                //     setDesiredPose(handPose);
+                //     // handObject.rotation.setFromRotationMatrix (newRot);
+                // } if(isHammering) {
+                //     var newPose = new THREE.Matrix4();
+                //     var sinVal = Math.sin((new Date()).getTime() / 1000 * 10)
+                //     newPose.makeRotationX(sinVal);
+                //     // newPose.premultiply((new THREE.Matrix4).makeRotationX(Math.PI/2));
+                //     // newPose.set(1,0,0,0,
+                //     //             0,0,-1,0,
+                //     //             0,1,0,0,
+                //     //             0,0,0,1)
+                //     // newPose.makeRotationX(Math.PI/2);
+                //     // newPose.multiply((new THREE.Matrix4).makeRotationZ(-sinVal + 0.5));
+                //     // newPose.multiply((new THREE.Matrix4).makeRotationY(-Math.PI/2))
+                //     newPose.setPosition(0, 0, (1+sinVal) / 2 * 0.3 - 0.1);
+                //     setDesiredPose(newPose);
+                //     console.log("Switch to hammer")
+                //     switchAction(hammerAction, 1);
+                // }
+                // // activateAllActions()
+            }
+
             //
             function animate() {
                 requestAnimationFrame( animate );
@@ -496,13 +980,16 @@
                 var delta = clock.getDelta();
 
                 if ( mixer ) mixer.update( delta );
-
                 renderer.render( scene, camera );
 
                 stats.update();
-                if(!doneLoading)
+                if(!doneLoading){
+                    console.log(handObject);
+                    console.log(hammerObject);
                     return;
-
+                }
+                // moveHand(dt);
+                matchHandWithHammer(dt);
                 document.getElementById("fps").innerHTML = `fps: ${Math.round(1/dt)}`;
             }
 
@@ -540,6 +1027,7 @@
                                              quaternions[4*i+1],
                                              quaternions[4*i+2],
                                              quaternions[4*i+3]);
+                    meshes[i].updateMatrix();
                 }
 
                 // If the worker was faster than the time step (dt seconds), we want to delay the next timestep
@@ -583,6 +1071,9 @@
                 }
 
                 sendTime = Date.now();
+                var handPos = new THREE.Vector3();
+                var handRot = new THREE.Quaternion();
+                desiredPose.decompose(handPos, handRot, new THREE.Vector3());
                 worker.postMessage({
                     reset : reset,
                     N : N,
@@ -596,6 +1087,14 @@
                     boneQuaternions: boneQuaternions,
                     handIndices: handIndices,
                     hammerIndex: hammerIndex,
+                    isPinched: isPinched,
+                    isGrasped: isGrasped,
+                    hammerCanCollide: hammerCanCollide,
+                    floorHeight:floorHeight,
+                    handPos:handPos.toArray(),
+                    handRot:handRot.toArray(),
+                    playAnim: playAnim,
+
                 },[positions.buffer, quaternions.buffer]);
                 firstDataSent = false;
 
