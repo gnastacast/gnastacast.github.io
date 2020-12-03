@@ -483,14 +483,9 @@
                     onPointerDownLat = 0;
                     isVR = !isVR;
                     if(isVR) {
-                        document.addEventListener( 'pointerdown', onPointerDown, false );
                         document.addEventListener( 'pointermove', onPointerMove, false );
-                        document.addEventListener( 'pointerup', onPointerUp, false );
                     } else {
-                        document.removeEventListener( 'pointerdown', onPointerDown );
                         document.removeEventListener( 'pointermove', onPointerMove );
-                        document.removeEventListener( 'pointerup', onPointerUp );
-
                     }
                 };
                 document.getElementById("text").onclick = function() {
@@ -691,16 +686,16 @@
                             child.material.visible = showDebug;
                         }
                         else if ( child.isMesh ) {
-                            var diffuse = texLoader.load( "textures/HammerDiffuse_high_res.png" );
+                            var diffuse = texLoader.load( "textures/HammerDiffuse_1024.png" );
                             diffuse.encoding = THREE.sRGBEncoding;
                             var normalMap = texLoader.load( "textures/HammerNormals_final.png" );
-                            var roughness = texLoader.load('textures/HammerRoughness.png');
+                            var roughness = texLoader.load('textures/HammerRoughness_1024.png');
                             roughness.encoding = THREE.sRGBEncoding;
 
                             child.castShadow = true;
                             child.receiveShadow = true;
                             var material = new THREE.MeshStandardMaterial( {
-                                metalnessMap: texLoader.load('textures/HammerMetalness.png'),
+                                metalnessMap: texLoader.load('textures/HammerMetalness_1024.png'),
                                 roughnessMap: roughness,
                                 color: 0xffffff, 
                                 map: diffuse,
@@ -740,7 +735,7 @@
                 renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
                 renderer.setPixelRatio( window.devicePixelRatio );
                 renderer.setSize( window.innerWidth, window.innerHeight );
-                renderer.outputEncoding = THREE.sRGBEncoding;
+                // Color space vars are updated in animate function
                 renderer.shadowMap.enabled = true;
                 container.appendChild( renderer.domElement );
 
@@ -805,7 +800,6 @@
             function switchAction(endAction, duration) {
                 console.log("switching", currentAction, endAction);
                 if(currentAction == endAction) {
-                    console.log("Already playing action:", currentAction)
                     return;
                 }
                 unPauseAllActions();
@@ -818,7 +812,6 @@
 
             // This function is needed, since animationAction.crossFadeTo() disables its start action and sets
             // the start action's timeScale to ((start animation's duration) / (end animation's duration))
-
             function setWeight( action, weight ) {
                 action.enabled = true;
                 action.setEffectiveTimeScale( 1 );
@@ -833,20 +826,19 @@
 
             }
 
-            function setDesiredPose(pose) {
-                // moveTime = 0;
+            function setDesiredPose(pose, dt) {
                 var position = new THREE.Vector3();
                 var rotation = new THREE.Quaternion();
                 desiredPose.decompose(position, rotation, new THREE.Vector3());
                 var newPosition = new THREE.Vector3();
                 var newRotation = new THREE.Quaternion();
                 pose.decompose(newPosition, newRotation, new THREE.Vector3());
-                position.lerp(newPosition, 0.1);
-                rotation.slerp(newRotation, 0.05);
-                // rotation.setFromRotationMatrix(pose);
-                // console.log(position, rotation, pose, desiredPose)
+                console.log(dt);
+                // To make up for difference in frame rates
+                var scalingFactor = Math.max(Math.min(10, dt / 0.005), 0.5);
+                position.lerp(newPosition, 0.1 * scalingFactor);
+                rotation.slerp(newRotation, 0.05 * scalingFactor);
                 desiredPose.compose(position, rotation, new THREE.Vector3(1,1,1));
-                // desiredPose.copy(pose);
             }
 
             function matchHandWithHammer(dt) {
@@ -912,7 +904,7 @@
                     var handPose = (new THREE.Matrix4()).copy(newRot);
                     // console.log(newRot)
                     handPose.setPosition(pos);
-                    setDesiredPose(handPose);
+                    setDesiredPose(handPose, dt);
 
                 } else if(currentAction == hammerAction) {
                     hammerCanCollide = false;
@@ -928,132 +920,8 @@
                     var zRot = Math.sin((new Date()).getTime() / 1000) + 1;
                     newPose.premultiply((new THREE.Matrix4()).makeRotationZ(zRot * Math.PI / 4 - 2));
                     newPose.setPosition(0, 0, (1+sinVal) / 2 * 0.3 - 0.2);
-                    setDesiredPose(newPose);
+                    setDesiredPose(newPose, dt);
                 }
-                
-                // // actionWeights=[1,0,0, 0];
-                // isPinched = false;
-
-                // var newRot = new THREE.Matrix4();
-                // // newRot.set(x_vec.x, y_vec.x, z_vec.x, 0,
-                // //            x_vec.y, y_vec.y, z_vec.y, 0,
-                // //            x_vec.z, y_vec.z, z_vec.z, 0,
-                // //            0      , 0      , 0      , 1)
-                
-                // // newRot.multiply((new THREE.Matrix4()).makeRotationX(-Math.PI/2))
-                // // newRot.multiply((new THREE.Matrix4()).makeRotationY(Math.PI))
-
-                // if(Math.abs(z_vec.dot(new THREE.Vector3(0,0,1))) < 0.2 || isPinched || isGrasped){
-                //     var new_z = new THREE.Vector3(0,0,1);
-                //     var new_x = (new THREE.Vector3()).crossVectors(new_z, z_vec).normalize ();
-                //     var new_y = (new THREE.Vector3()).crossVectors(new_z, new_x);
-                //     newRot.set(new_x.x, new_y.x, new_z.x, 0,
-                //                new_x.y, new_y.y, new_z.y, 0,
-                //                new_x.z, new_y.z, new_z.z, 0,
-                //                0      , 0      , 0      , 1)
-                //     hammerCanCollide = false;
-                //     var direction = (x_vec.z > 0 ? "right" : "left")
-                //     // var new_z = new THREE.Vector3(0,0,1);
-                //     // var new_y = (new THREE.Vector3()).crossVectors(new_z, z_vec);
-                //     // var new_x = (new THREE.Vector3()).crossVectors(new_z, new_y);
-                //     // var newRot = new THREE.Matrix4();
-                //     // newRot.set(new_x.x, new_y.x, new_z.x, 0,
-                //     //            new_x.y, new_y.y, new_z.y, 0,
-                //     //            new_x.z, new_y.z, new_z.z, 0,
-                //     //            0      , 0      , 0      , 1)
-                //     // handObject.rotation.setFromRotationMatrix (newRot);
-                //     // console.log(handObject.rotation)
-                //     // // console.log("horizontal", direction, eul)
-                //     var isIdle = !isHammering && !isPinched && !isGrasped
-                //     if (direction == "left" && isIdle) {
-                //         if(pickUpLeftAction.time > 20/24 && pickUpLeftAction.time < 35/24){
-                //             isPinched = true;
-                //         } else {
-                //             isPinched = false;
-                //         }
-
-                //         if(pickUpLeftAction.time > 35/24) {
-                //             isGrasped = true;
-                //         }
-
-                //         if(pickUpRightAction.time > 70/24) {
-                //             isHammering = true;
-                //         }
-
-                //         switchAction(pickUpLeftAction, 0.5)
-                //     } else if(isIdle) {
-                //         if(pickUpRightAction.time > 20/24 && pickUpRightAction.time < 35/24){
-                //             isPinched = true;
-                //         } else {
-                //             isPinched = false;
-                //         } 
-
-                //         if(pickUpRightAction.time > 35/24) {
-                //             isGrasped = true;
-                //         }
-
-                //         if(pickUpRightAction.time > 50/24) {
-                //             isHammering = true;
-                //         }
-                //         switchAction(pickUpLeftAction, 0.5)
-                //     }
-
-                //     if(!isPinched) {
-                //         pinchPos.set(0,0,0);
-                //     }
-
-                //     if(pinchPos.length() == 0 && !isGrasped) {
-                //         // pickUpLeftAction.time = 0;
-                //         // pickUpRightAction.time = 0;
-                //         pinchPos.copy(pos);
-                //         pinchPos.setZ(floorHeight);
-                //         pinchPos.add(offset);
-                //         // handObject.position.copy(pinchPos);
-                //     }
-                //     // // console.log(handObject.rotation)
-                // } else if(!isHammering){
-                //     pickUpLeftAction.time = 0;
-                //     pickUpRightAction.time = 0;
-                //     // hammerCanCollide = true;
-                //     // actionWeights=[1,0,0];
-                //     // isPinched = false;
-                // }
-                // if(!isGrasped) {
-                //     var handPose = (new THREE.Matrix4()).copy(newRot);
-                //     // console.log(newRot)
-                //     handPose.setPosition(pinchPos);
-                //     setDesiredPose(handPose);
-                //     // handObject.rotation.setFromRotationMatrix (newRot);
-                // } if(isHammering) {
-                //     var newPose = new THREE.Matrix4();
-                //     var sinVal = Math.sin((new Date()).getTime() / 1000 * 10)
-                //     newPose.makeRotationX(sinVal);
-                //     // newPose.premultiply((new THREE.Matrix4).makeRotationX(Math.PI/2));
-                //     // newPose.set(1,0,0,0,
-                //     //             0,0,-1,0,
-                //     //             0,1,0,0,
-                //     //             0,0,0,1)
-                //     // newPose.makeRotationX(Math.PI/2);
-                //     // newPose.multiply((new THREE.Matrix4).makeRotationZ(-sinVal + 0.5));
-                //     // newPose.multiply((new THREE.Matrix4).makeRotationY(-Math.PI/2))
-                //     newPose.setPosition(0, 0, (1+sinVal) / 2 * 0.3 - 0.1);
-                //     setDesiredPose(newPose);
-                //     console.log("Switch to hammer")
-                //     switchAction(hammerAction, 1);
-                // }
-                // // activateAllActions()
-            }
-
-            function onPointerDown( event ) {
-
-                // isUserInteracting = true;
-
-                onPointerDownPointerX = event.clientX;
-                onPointerDownPointerY = event.clientY;
-
-                onPointerDownLon = lon;
-                onPointerDownLat = lat;
-
             }
 
             function onPointerMove( event ) {
@@ -1067,12 +935,6 @@
 
             }
 
-            function onPointerUp() {
-
-                // isUserInteracting = false;
-
-            }
-
 
             //
             function animate() {
@@ -1080,7 +942,10 @@
 
                 var delta = clock.getDelta();
 
+                // Update animations
                 if ( mixer ) mixer.update( delta );
+
+                // Handle mouse interaction in VR mode
                 if(isVR) {
                     lat = Math.max( - 85, Math.min( 85, lat ) );
                     phi = THREE.MathUtils.degToRad( 90 - lat );
@@ -1093,21 +958,18 @@
                     renderer.toneMappingExposure = 0.75;
                     renderer.outputEncoding = THREE.LinearEncoding;
                     renderer.render( sceneVR, cameraVR );
-                } else {
+                } else { // Make sure colors are right for EXR lighting
                     renderer.toneMapping = THREE.ACESFilmicToneMapping;
                     renderer.toneMappingExposure = 1.25;
                     renderer.outputEncoding = THREE.sRGBEncoding;
                     renderer.render( scene, camera );
                 }
 
-                // stats.update();
-                if(!doneLoading){
-                    console.log(handObject);
-                    console.log(hammerObject);
-                    return;
-                }
-                // moveHand(dt);
+
+                // Update hand state
                 matchHandWithHammer(dt);
+
+                // stats.update();
                 document.getElementById("fps").innerHTML = `fps: ${Math.round(1/dt)}`;
             }
 
@@ -1134,8 +996,6 @@
                 positions = e.data.positions;
                 quaternions = e.data.quaternions;
 
-                // console.log(e.data.positions)
-                // console.log(meshes.length * 3, positions.length, e.data.positions.length, meshes);
                 // Update rendering meshes
                 for(var i=0; i < meshes.length; i++){
                     meshes[i].position.set( positions[3*i+0],
