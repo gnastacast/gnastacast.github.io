@@ -835,7 +835,7 @@
                 pose.decompose(newPosition, newRotation, new THREE.Vector3());
                 console.log(dt);
                 // To make up for difference in frame rates
-                var scalingFactor = Math.max(Math.min(10, dt / 0.005), 0.5);
+                var scalingFactor = Math.max(Math.min(10, dt / (1/60)), 0.5);
                 position.lerp(newPosition, 0.1 * scalingFactor);
                 rotation.slerp(newRotation, 0.05 * scalingFactor);
                 desiredPose.compose(position, rotation, new THREE.Vector3(1,1,1));
@@ -970,7 +970,7 @@
                 }
 
                 // Update hand state
-                matchHandWithHammer(dt);
+                matchHandWithHammer(delta);
 
                 // stats.update();
                 document.getElementById("fps").innerHTML = `fps: ${Math.round(1/dt)}`;
