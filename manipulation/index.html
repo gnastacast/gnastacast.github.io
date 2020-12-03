@@ -319,10 +319,6 @@
                                (e.data.bonePositions[i * 3 + 1] - world.bodies[idx].position.y) / e.data.dt,
                                (e.data.bonePositions[i * 3 + 2] - world.bodies[idx].position.z) / e.data.dt]
                     world.bodies[idx].velocity.set(vel[0], vel[1], vel[2]);
-
-                    // world.bodies[idx].position.set(e.data.bonePositions[i * 3 + 0],
-                    //                                e.data.bonePositions[i * 3 + 1],
-                    //                                e.data.bonePositions[i * 3 + 2]);
                 }
 
                 var handPos = new CANNON.Vec3(e.data.handPos[0],
@@ -333,28 +329,18 @@
                                         e.data.handRot[1],
                                         e.data.handRot[2],
                                         e.data.handRot[3]);
-                // e.data.desiredPose
+
                 diff = handPos.vsub(handBody.position).scale(1 / e.data.dt);
-                // console.log(diff);
                 handBody.velocity.set(diff.x, diff.y, diff.z);
-                // handBody.position.set(handPos.x, handPos.y, handPos.z)
 
-
-                // diff.scale(2)
-                // for(var i=0; i<e.data.handIndices.length; i++){
-                //     var idx = e.data.handIndices[i];
-                //     world.bodies[idx].velocity = world.bodies[idx].velocity.vadd(diff);
-                // }
                 if(isGrasped){
                     hammerBody.velocity.set(diff.x, diff.y, diff.z);
                 }
 
                 lastPositions = [...e.data.bonePositions];
+
                 // Step the world
                 world.step(e.data.dt);
-
-                // world.collisionMatrixTick ()
-                // console.log(world)
 
                 // Copy over the data to the buffers
                 var positions = e.data.positions;
@@ -798,13 +784,12 @@
             }
 
             function switchAction(endAction, duration) {
-                console.log("switching", currentAction, endAction);
                 if(currentAction == endAction) {
                     return;
                 }
+                console.log("switching", currentAction, endAction);
                 unPauseAllActions();
                 setWeight( endAction, 1 );
-                console.log(actionWeights)
                 endAction.time = 0;
                 currentAction.crossFadeTo( endAction, duration, false );
                 currentAction = endAction;
@@ -833,7 +818,6 @@
                 var newPosition = new THREE.Vector3();
                 var newRotation = new THREE.Quaternion();
                 pose.decompose(newPosition, newRotation, new THREE.Vector3());
-                console.log(dt);
                 // To make up for difference in frame rates
                 var scalingFactor = Math.max(Math.min(10, dt / (1/60)), 0.5);
                 position.lerp(newPosition, 0.1 * scalingFactor);
