@@ -965,6 +965,9 @@
                     renderer.render( scene, camera );
                 }
 
+                if(!doneLoading){
+                    return;
+                }
 
                 // Update hand state
                 matchHandWithHammer(dt);
