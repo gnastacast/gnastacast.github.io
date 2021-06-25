@@ -4,3 +4,6 @@
 [submodule "manipulation/jsm/cannon-es"]
 	path = manipulation/jsm/cannon-es
 	url = https://github.com/gnastacast/cannon-es.git
+[submodule "madonna_generator"]
+	path = madonna_generator
+	url = https://github.com/gnastacast/madonna_generator.git
