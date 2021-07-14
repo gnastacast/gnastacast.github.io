@@ -35,12 +35,13 @@
                 right:0;
                 font-size:50px;
             }
-            #controls > div {
+            #controls div {
                 margin:10px;
             }
             #fps{
                 font-size:12pt;
             }
+
             #reset::after {
                 content:"\01F501";
             } #playpause::after {
@@ -51,7 +52,9 @@
                 content:"\01F3A5" ;
             } #text::after {
                 content:"\01F4C3" ;
-            }
+            } #info::after {
+                content:"💾";
+            } 
 
         </style>
     </head>
@@ -82,10 +85,11 @@
         <div id="controls">
             <div id="fps" style="display:none;">fps: 0</div>
             <div id="reset"></div>
-            <div id="playpause"></div>
+            <div id="playpause" style="display:none;"></div>
             <div id="wireframes"></div>
             <div id="vr"></div>
             <div id="text"></div>
+            <a href="UntitledToolAnalysis.pdf#toolbar=0&navpanes=0&scrollbar=0" style="text-decoration: none"><div id="info"></div></a>
         </div>
 
         <video id="video" loop muted crossOrigin="anonymous" playsinline style="display:none">
@@ -103,7 +107,7 @@
             var hand = [];
             var lastPositions;
             var n_cubes;
-            var indexConstraint, thumbConstraint, handConstraint;
+            var indexConstraint, thumbConstraint, handConstraint, palmConstraint;
             var isGrasped = false;
 
             function bodyFromMesh(mesh, options) {
@@ -144,6 +148,9 @@
             }
 
             function resetBodies() {
+                if (typeof palmConstraint !== 'undefined') {   
+                    world.removeConstraint(palmConstraint);
+                }
                 // Everything but the floor and hand
                 for(var i=1; i < n_cubes + 2; i++)
                 {
@@ -156,10 +163,17 @@
                     } else { // hammer
                         world.bodies[i].position.set(0.2,.1,0.1);
                         world.bodies[i].quaternion.set(0,-0.005,0,1);
-                        hammerBody.quaternion.normalize();
+                        world.bodies[i].quaternion.normalize();
                     }
                     world.bodies[i].velocity.set(0,0,0);
                     world.bodies[i].angularVelocity.set(0,0,0);
+                    world.bodies[i].inertia.set(0,0,0);
+                    world.bodies[i].vlambda.set(0,0,0);
+                    world.bodies[i].wlambda.set(0,0,0);
+                    if(hammerBody == world.bodies[i]) console.log(world.bodies[i]);
+                    // world.bodies[i].updateInertiaWorld();
+                    // world.bodies[i].updateMassProperties();
+                    // world.bodies[i].updateSolveMassProperties();
                 }
             }
 
@@ -231,10 +245,6 @@
                         var name = e.data.handMesh[i][0].name
                         console.log("name: ", name);
 
-                        if (name == "COL_Hand") {
-                            palmConstraint = new CANNON.LockConstraint(hammerBody, mesh);
-                            // world.addConstraint(palmConstraint);
-                        }
                         if (name == "COL_Hand001") {
                             var centerA = new CANNON.Vec3(0,0,-.15);
                             var centerB = new CANNON.Vec3(0,-0.02220,0.027414);
@@ -250,9 +260,6 @@
                         if (name == "COL_HammerPivot") {
                             hammerPivot = mesh;
                             mesh.collisionFilterGroup = 4;
-                            palmConstraint = new CANNON.LockConstraint(hammerBody, mesh,0.001);
-                            palmConstraint.pivotA = new CANNON.Vec3(0,0,-.15 / 2);
-                            world.addConstraint(palmConstraint);
                         }
                         // mesh.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
                         world.addBody(mesh);
@@ -267,10 +274,6 @@
                                                  collisionFilterGroup:8});
                     handBody.addShape(new CANNON.Sphere(0.05));
                     world.addBody(handBody); 
-                }
-
-                if(e.data.reset) {
-                    resetBodies();
                 }
 
                 if(e.data.hammerCanCollide && !e.data.isGrasped)
@@ -289,7 +292,9 @@
 
                 if(e.data.isGrasped) {
                     if(!isGrasped) {
-                        world.removeConstraint(palmConstraint);
+                        if (typeof palmConstraint !== 'undefined') {   
+                            world.removeConstraint(palmConstraint);
+                        }
                         palmConstraint = new CANNON.LockConstraint(hammerBody, hammerPivot, 0.01);
                         palmConstraint.pivotA = new CANNON.Vec3(0,0,-.15/2);
                         world.addConstraint(palmConstraint);
@@ -297,7 +302,9 @@
                     }
                     isGrasped = true;
                 } else {
-                    palmConstraint.disable();
+                    if (typeof palmConstraint !== 'undefined') {   
+                        palmConstraint.disable();
+                    }
                     isGrasped = false;
                 }
 
@@ -338,7 +345,10 @@
                 }
 
                 lastPositions = [...e.data.bonePositions];
-
+                
+                if(e.data.reset) {
+                    resetBodies();
+                }
                 // Step the world
                 world.step(e.data.dt);
 
@@ -430,8 +440,19 @@
             init();
             animate();
 
+            document.addEventListener("visibilitychange", event => {
+              if (document.visibilityState == "visible") {
+                playAnim = true
+              } else {
+                playAnim = false
+              }
+            })
+
             function init() {
                 document.getElementById("reset").onclick = function() {
+                    if (showContent) { document.getElementById("text").onclick() }
+                    if (isVR) { document.getElementById("vr").onclick() }
+                    if (!playAnim) { document.getElementById("playpause").onclick() }
                     reset = true;
                     isPinched = false;
                     isGrasped = false;
@@ -441,6 +462,8 @@
                     switchAction(idleAction, 0.5);
                 };
                 document.getElementById("playpause").onclick = function() {
+                    if (showContent) { document.getElementById("text").onclick() }
+                    if (isVR) { document.getElementById("vr").onclick() }
                     playAnim = !playAnim;
                     if(playAnim) {
                         unPauseAllActions();
@@ -449,6 +472,8 @@
                     }
                 };
                 document.getElementById("wireframes").onclick = function() {
+                    if (showContent) { document.getElementById("text").onclick() }
+                    if (isVR) { document.getElementById("vr").onclick() }
                     showDebug = !showDebug;
                     for(var i=0; i<displayObj.length; i++) {
                         displayObj[i].material.visible = !showDebug;
@@ -460,6 +485,7 @@
                     document.getElementById('blackout').style.display = (showDebug ?  "block":"none")
                 };
                 document.getElementById("vr").onclick = function() {
+                    if (showContent) { document.getElementById("text").onclick() }
                     isUserInteracting = true;
                     lon = 0; lat = 0;
                     phi = 0; theta = 0;
@@ -468,6 +494,7 @@
                     onPointerDownLon = 0;
                     onPointerDownLat = 0;
                     isVR = !isVR;
+                    playAnim = !isVR;
                     if(isVR) {
                         document.addEventListener( 'pointermove', onPointerMove, false );
                     } else {
@@ -475,7 +502,9 @@
                     }
                 };
                 document.getElementById("text").onclick = function() {
+                    if (isVR) { document.getElementById("vr").onclick() }
                     showContent = !showContent;
+                    playAnim = !showContent;
                     document.getElementById('content').style.display = (showContent ?  "block":"none")
                 }
 
@@ -850,7 +879,7 @@
                                new_x.y, new_y.y, new_z.y, 0,
                                new_x.z, new_y.z, new_z.z, 0,
                                0      , 0      , 0      , 1)
-                     if(Math.abs(z_vec.dot(new THREE.Vector3(0,0,1))) < 0.2) {
+                     if(Math.abs(z_vec.dot(new THREE.Vector3(0,0,1))) < 0.2 && pos.z < 0.1) {
                         direction = (x_vec.z > 0 ? "right" : "left")
                      }
                 }
@@ -863,6 +892,8 @@
                     if (direction == "right") {
                         switchAction(pickUpRightAction, 0.5)
                     }
+                    var handPose = (new THREE.Matrix4()).copy(handObject.matrixWorld);
+                    setDesiredPose(handPose, dt);
                 } else if(currentAction == pickUpLeftAction || currentAction == pickUpRightAction) {
                     hammerCanCollide = false;
                     // Check pinch and grasp state for constraints
