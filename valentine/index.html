@@ -25,7 +25,6 @@
               </a>  
             </li>
         </ul>
-        <!-- <img src="tunnel.png" style="display:inline-block; height:100%;"/> -->
     </div>
 </div>
 
@@ -277,6 +276,16 @@
                 Nico
             </p>        </p>
     </div>
+    <div class="overlay map">
+        <iframe
+          width="100%"
+          height="1000px"
+          style="border:0; height:100vh"
+          loading="lazy"
+          allowfullscreen
+          src="https://www.google.com/maps/d/embed?mid=1RFMg6c73T5m2Nj1vIwO3JcM2C37caO94&z=02">
+        </iframe>
+    </div>
     <ul class="dots" style="padding:0px">
         <li>
           <a href="#" onclick="return overlayOff(this)">
@@ -296,6 +305,11 @@
         <li >
           <a class="active" href="#" onclick="return gotoMessage(this)">
           <span class="glyphicon glyphicon-none">3</span>
+          </a>  
+        </li>
+        <li >
+          <a href="#" onclick="return gotoMessage(this)">
+          <span class="glyphicon glyphicon-globe"></span>
           </a>  
         </li>
     </ul>
