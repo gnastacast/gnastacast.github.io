@@ -32,6 +32,12 @@ section.module p {
   font-size: 16px;
   font-weight: 300;
 }
+
+h3 {
+  color:grey;
+  font-weight:normal;
+}
+
 section.module p:last-child {
   margin-bottom: 0;
 }
