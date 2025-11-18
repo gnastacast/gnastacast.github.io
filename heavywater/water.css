@@ -1,0 +1,47 @@
+body{
+    background-color: black;
+    color:lightslategrey;
+    font-family: "EB Garamond", serif;
+    font-size: 1em;
+}
+
+video {
+    width:100%;
+    margin:1rem 0;
+}
+
+h1 {
+    font-family: "UnifrakturCook", cursive;
+    font-size: 4em;
+    text-align: center;
+    color:white;
+}
+
+p a {
+    color:white;
+    vertical-align: super;
+    font-size:smaller;
+    margin-left:3pt;
+    text-decoration: none;
+}
+
+.container {
+    max-width: 1280px;
+    margin: auto;
+    padding:0 3rem;
+}
+
+
+@media (min-width: 660px) {
+  .video{
+    margin:1rem 0;
+  }
+  
+
+  h1 {
+    font-size: 10em;
+  }
+  body {
+    font-size: 1.3rem;
+  }
+ }
