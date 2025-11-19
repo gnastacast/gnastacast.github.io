@@ -1,3 +1,14 @@
+.script {
+  font-family: "Courier Prime", monospace;
+  margin-bottom: 3rem;
+}
+.script::before {
+    content: "[...]";
+}
+.script::after {
+    content: "[...]";
+}
+
 video {
     width:100%;
     margin-bottom:3rem;
@@ -8,11 +19,31 @@ h1, h2, h3 h4{
 h2 {
     color:lightslategrey;
     font-weight: 200;
+    font-size: 1rem;
 }
 .container {
     max-width: 960px;
     margin:auto;
 }
+
+.scene {
+    margin-left:0
+}
+
+.character {
+    margin:1rem 12rem;
+}
+
+.dialogue {
+    margin:1rem 12rem 1rem 6rem;
+}
+
+.redacted {
+    color: black;
+    background-color: black;
+}
+
+
 @media (min-width: 660px) {
   .video{
     width:45%;
