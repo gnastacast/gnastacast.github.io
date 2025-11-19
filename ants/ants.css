@@ -1,6 +1,7 @@
 .script {
   font-family: "Courier Prime", monospace;
   margin-bottom: 3rem;
+  margin:2rem;
 }
 .script::before {
     content: "[...]";
@@ -11,7 +12,6 @@
 
 video {
     width:100%;
-    margin-bottom:3rem;
 }
 h1, h2, h3 h4{
     text-align: center;
@@ -31,11 +31,11 @@ h2 {
 }
 
 .character {
-    margin:1rem 12rem;
+    margin:1rem 2rem 1rem 7rem;
 }
 
 .dialogue {
-    margin:1rem 12rem 1rem 6rem;
+    margin:1rem 1rem 1rem 5rem;
 }
 
 .redacted {
@@ -44,9 +44,9 @@ h2 {
 }
 
 
-@media (min-width: 660px) {
-  .video{
-    width:45%;
-    margin:auto;
-  }
+@media (min-width: 1000px) {
+    .script {
+        margin:2rem 0rem;
+    }
+
  }
