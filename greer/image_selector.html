@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto-Fetch and Parse .csv.gz</title>
+    
+    <script src="./fflate.min.js"></script>
+    <script src="./papaparse.min.js"></script>
+    
+    <style>
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        margin: 20px;
+        background-color: #f9f9f9;
+      }
+
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 16px;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      .grid-item {
+        background: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .grid-item img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .grid-item span {
+        padding: 10px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      /* Style when selected */
+      .grid-item.selected {
+        border-color: #007bff; /* Bright blue outline */
+        background-color: rgba(0, 123, 255, 0.05);
+      }
+
+      .grid-item.selected .select-overlay {
+        background: #007bff;
+        border-color: #007bff;
+      }
+
+      #button-div {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 1000;
+      }
+
+      .class-btn {
+        padding: 2px 12px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+      }
+
+      .class-btn.active {
+        background-color: #505050;
+        color: white;
+      }
+
+      /* Optional sticky layout treatment for download button */
+      .float-btn {
+        padding: 12px 24px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 30px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      }
+      .float-btn:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+      
+    </style>
+
+    <style id="dynamic-style"></style>
+</head>
+<body>
+
+    <h2>Greer image picker</h2>
+    <p id="statusLabel" class="status">Initializing...</p>
+    <div id="button-div">
+      <button class="float-btn" id="download-btn" disabled>Download (0)</button>
+    </div>
+    <div id="image-grid" class="grid-container"></div>
+
+
+
+    <script>
+      const FILE_URL = './greer_archive.csv.gz'; 
+
+      // --- STATE MANAGEMENT ---
+      let currentIndex = 0;
+      const BATCH_SIZE = 240000;
+      let allData = [];
+      let classes = [];
+      let scrollObserver = null;
+
+      // Track selected URLs using a Set to prevent duplicates
+      const selectedImages = new Set();
+
+      function initialize_table(data) {
+        allData = data;
+        currentIndex = 0;
+        selectedImages.clear(); // Reset selections on reload
+        updateDownloadButtonState();
+        
+        const gridContainer = document.getElementById('image-grid');
+        gridContainer.innerHTML = '';
+
+        const oldSentinel = document.getElementById('scroll-sentinel');
+        if (oldSentinel) oldSentinel.remove();
+        
+        const sentinel = document.createElement('div');
+        sentinel.id = 'scroll-sentinel';
+        sentinel.style.height = '20px'; 
+        gridContainer.after(sentinel);
+        
+        scrollObserver = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                load_next_batch();
+            }
+        }, { rootMargin: '300px' }); // Starts loading 300px before the user reaches the bottom
+
+        scrollObserver.observe(sentinel);
+      }
+
+      function load_next_batch() {
+          const gridContainer = document.getElementById('image-grid');
+          const sentinel = document.getElementById('scroll-sentinel');
+          
+          const batch = allData.slice(currentIndex, currentIndex + BATCH_SIZE);
+          
+          if (batch.length === 0) {
+              if (scrollObserver && sentinel) {
+                  scrollObserver.unobserve(sentinel);
+                  sentinel.remove();
+              }
+              return;
+          }
+
+          batch.forEach(row => {
+              const itemDiv = document.createElement('div');
+              itemDiv.className = 'grid-item';
+              const cat = row.archive_id.match("^GL[\.]([a-zA-Z0-9]+)[\.]");
+              itemDiv.classList.add(cat === null ? "catLankton" : "cat" + cat[1]);
+              // Check if this item was already selected (relevant if data re-filters/reloads)
+              if (selectedImages.has(row.thumb)) {
+                  itemDiv.classList.add('selected');
+              }
+
+              const img = document.createElement('img');
+              img.loading = 'lazy'; 
+              img.src = row.thumb;
+              img.alt = row.archive_id;
+
+              const span = document.createElement('span');
+              // span.textContent = row.alt == "[BLANK]" ? "" : row.alt;
+              span.textContent = row.archive_id;
+
+              itemDiv.appendChild(img);
+              itemDiv.appendChild(span);
+              gridContainer.appendChild(itemDiv);
+
+              // Click event listener to toggle selection
+              itemDiv.addEventListener('click', () => {
+                  const id = row.archive_id;
+                  
+                  if (selectedImages.has(id)) {
+                      selectedImages.delete(id);
+                      itemDiv.classList.remove('selected');
+                  } else {
+                      selectedImages.add(id);
+                      itemDiv.classList.add('selected');
+                  }
+                  updateDownloadButtonState();
+              });
+          });
+
+          currentIndex += BATCH_SIZE;
+      }
+
+      function updateClassButtonState(event) {
+        const dynamicStyle = document.getElementById('dynamic-style');
+        event.currentTarget.classList.toggle('active');
+        let style = ""
+        classes.forEach(category => {
+          const active = document.getElementById(category).classList.contains('active');
+          style += `
+            .grid-item.cat${category} { 
+              display: ${active ? "block" : "none"}; 
+            }
+          `;
+        });
+        dynamicStyle.innerHTML = style;
+        load_next_batch()
+      }
+
+      // Update the text and state of your download button
+      function updateDownloadButtonState() {
+          const btn = document.getElementById('download-btn');
+          if (!btn) return;
+          
+          const count = selectedImages.size;
+          btn.textContent = `Download (${count})`;
+          btn.disabled = count === 0;
+      }
+
+      // Function to generate and trigger the text file download
+      function downloadSelectionAsTextFile() {
+          if (selectedImages.size === 0) return;
+
+          const fileContent = Array.from(selectedImages).join('\n');
+          
+          const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
+          const url = URL.createObjectURL(blob);
+          
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = 'selected_images.txt';
+          
+          document.body.appendChild(link);
+          link.click();
+          
+          // Clean up memory
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+      }
+
+      // --- DOM READY FETCH & PARSE LOGIC ---
+      document.addEventListener('DOMContentLoaded', async () => {
+          const statusLabel = document.getElementById('statusLabel');
+          
+          // Hook up the download button event listener
+          const downloadBtn = document.getElementById('download-btn');
+          if (downloadBtn) {
+              downloadBtn.addEventListener('click', downloadSelectionAsTextFile);
+          }
+          
+          statusLabel.textContent = "Fetching file from server...";
+
+          try {
+              const response = await fetch(FILE_URL);
+              if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+              
+              const arrayBuffer = await response.arrayBuffer();
+              const uint8Array = new Uint8Array(arrayBuffer);
+
+              statusLabel.textContent = "Decompressing data...";
+
+              fflate.gunzip(uint8Array, (err, decompressedData) => {
+                  if (err) {
+                      statusLabel.textContent = "Decompression failed.";
+                      return;
+                  }
+
+                  statusLabel.textContent = "Parsing CSV text...";
+
+                  const decoder = new TextDecoder('utf-8');
+                  const csvText = decoder.decode(decompressedData);
+
+                  Papa.parse(csvText, {
+                      header: true,
+                      skipEmptyLines: true,
+                      complete: (results) => {
+                          classes = [...new Set(results.data.map(row => {
+                            const cat = row.archive_id.match("^GL[\.]([a-zA-Z0-9]+)[\.]");
+                            return cat === null ? "Lankton" : cat[1];
+                          }))];
+                          const itemDiv = document.getElementById('button-div');
+                          classes.forEach(c => {
+                            const b = document.createElement('button');
+                            b.id = c;
+                            b.className = 'class-btn';
+                            b.classList.add("active");
+                            b.innerHTML = c;
+                            b.addEventListener("click", event => {
+                                updateClassButtonState(event);
+                            });
+                            itemDiv.appendChild(b);
+                          });
+                          statusLabel.textContent = "Data loaded successfully!";
+                          initialize_table(results.data);
+                      },
+                      error: (parseError) => {
+                          statusLabel.textContent = "CSV Parse error.";
+                      }
+                  });
+              });
+
+          } catch (err) {
+              statusLabel.textContent = "Network or Fetch Error.";
+              outputEl.textContent = err.message;
+          }
+      });
+    </script>
+</body>
+</html>
